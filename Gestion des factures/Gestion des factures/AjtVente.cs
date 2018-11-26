@@ -48,6 +48,16 @@ namespace Gestion_des_factures
         {
             EnableMskPx(false);
         }
+
+        private void mskt_pxpresn_MaskInputRejected(object sender, MaskInputRejectedEventArgs e)
+        {
+
+        }
+
+        private void mskt_pxpresn_TextChanged(object sender, EventArgs e)
+        {
+            lbl_prix.Text = mskt_pxpresn.Text;
+        }
         
     }
 }

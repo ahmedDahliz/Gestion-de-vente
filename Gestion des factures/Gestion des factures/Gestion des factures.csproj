@@ -47,11 +47,29 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AffDette.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AffDette.Designer.cs">
+      <DependentUpon>AffDette.cs</DependentUpon>
+    </Compile>
     <Compile Include="AffProduit.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="AffProduit.Designer.cs">
       <DependentUpon>AffProduit.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AffVente.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AffVente.Designer.cs">
+      <DependentUpon>AffVente.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AjtDette.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AjtDette.Designer.cs">
+      <DependentUpon>AjtDette.cs</DependentUpon>
     </Compile>
     <Compile Include="AjtProduits.cs">
       <SubType>Form</SubType>
@@ -65,11 +83,23 @@
     <Compile Include="AjtVente.Designer.cs">
       <DependentUpon>AjtVente.cs</DependentUpon>
     </Compile>
+    <Compile Include="Connexion.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Connexion.Designer.cs">
+      <DependentUpon>Connexion.cs</DependentUpon>
+    </Compile>
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MdfDette.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MdfDette.Designer.cs">
+      <DependentUpon>MdfDette.cs</DependentUpon>
     </Compile>
     <Compile Include="MdfProduit.cs">
       <SubType>Form</SubType>
@@ -77,10 +107,25 @@
     <Compile Include="MdfProduit.Designer.cs">
       <DependentUpon>MdfProduit.cs</DependentUpon>
     </Compile>
+    <Compile Include="MfdConnexion.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MfdConnexion.Designer.cs">
+      <DependentUpon>MfdConnexion.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="AffDette.resx">
+      <DependentUpon>AffDette.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="AffProduit.resx">
       <DependentUpon>AffProduit.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AffVente.resx">
+      <DependentUpon>AffVente.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AjtDette.resx">
+      <DependentUpon>AjtDette.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="AjtProduits.resx">
       <DependentUpon>AjtProduits.cs</DependentUpon>
@@ -88,11 +133,20 @@
     <EmbeddedResource Include="AjtVente.resx">
       <DependentUpon>AjtVente.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Connexion.resx">
+      <DependentUpon>Connexion.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="MdfDette.resx">
+      <DependentUpon>MdfDette.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="MdfProduit.resx">
       <DependentUpon>MdfProduit.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MfdConnexion.resx">
+      <DependentUpon>MfdConnexion.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

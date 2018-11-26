@@ -16,7 +16,7 @@ namespace Gestion_des_factures
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new AjtVente());
+            Application.Run(new Form1());
         }
     }
 }
