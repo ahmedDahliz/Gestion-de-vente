@@ -19,10 +19,35 @@ namespace Gestion_des_factures
 
         private void AjtVente_Load(object sender, EventArgs e)
         {
-
+            lbl_datAjr.Text = DateTime.Today.ToShortDateString();
            
         }
 
-      
+        private void rb_persn_CheckedChanged(object sender, EventArgs e)
+        {
+            EnableMskPx(true);
+        }
+
+        public void EnableMskPx(Boolean b)
+        {
+            mskt_pxpresn.Enabled = b;
+            if (!b) mskt_pxpresn.Text = "";
+        }
+
+        private void radioButton1_CheckedChanged(object sender, EventArgs e)
+        {
+            EnableMskPx(false);
+        }
+
+        private void rd_B_CheckedChanged(object sender, EventArgs e)
+        {
+            EnableMskPx(false);
+        }
+
+        private void rb_C_CheckedChanged(object sender, EventArgs e)
+        {
+            EnableMskPx(false);
+        }
+        
     }
 }
