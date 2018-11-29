@@ -1,6 +1,6 @@
 ﻿namespace Gestion_des_factures
 {
-    partial class Form1
+    partial class Acceuil
     {
         /// <summary>
         /// Variable nécessaire au concepteur.
@@ -49,17 +49,17 @@
             this.label6 = new System.Windows.Forms.Label();
             this.lbl_PrdPrsqFini = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.dataGridView2 = new System.Windows.Forms.DataGridView();
+            this.dgv_dernProdajt = new System.Windows.Forms.DataGridView();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.dgv_prodFini = new System.Windows.Forms.DataGridView();
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgv_dernProdajt)).BeginInit();
             this.groupBox2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgv_prodFini)).BeginInit();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -87,14 +87,14 @@
             // AjtVentToolStripMenuItem
             // 
             this.AjtVentToolStripMenuItem.Name = "AjtVentToolStripMenuItem";
-            this.AjtVentToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.AjtVentToolStripMenuItem.Size = new System.Drawing.Size(136, 22);
             this.AjtVentToolStripMenuItem.Text = "إضافة بيع";
             this.AjtVentToolStripMenuItem.Click += new System.EventHandler(this.AjtVentToolStripMenuItem_Click);
             // 
             // ttVentToolStripMenuItem
             // 
             this.ttVentToolStripMenuItem.Name = "ttVentToolStripMenuItem";
-            this.ttVentToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.ttVentToolStripMenuItem.Size = new System.Drawing.Size(136, 22);
             this.ttVentToolStripMenuItem.Text = "جميع المبيعات";
             this.ttVentToolStripMenuItem.Click += new System.EventHandler(this.ttVentToolStripMenuItem_Click);
             // 
@@ -111,21 +111,21 @@
             // AffProdToolStripMenuItem
             // 
             this.AffProdToolStripMenuItem.Name = "AffProdToolStripMenuItem";
-            this.AffProdToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.AffProdToolStripMenuItem.Size = new System.Drawing.Size(129, 22);
             this.AffProdToolStripMenuItem.Text = "إظهار السلع";
             this.AffProdToolStripMenuItem.Click += new System.EventHandler(this.AffProdToolStripMenuItem_Click);
             // 
             // AjtProdToolStripMenuItem
             // 
             this.AjtProdToolStripMenuItem.Name = "AjtProdToolStripMenuItem";
-            this.AjtProdToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.AjtProdToolStripMenuItem.Size = new System.Drawing.Size(129, 22);
             this.AjtProdToolStripMenuItem.Text = "إضافة السلع";
             this.AjtProdToolStripMenuItem.Click += new System.EventHandler(this.AjtProdToolStripMenuItem_Click);
             // 
             // MdfProdToolStripMenuItem
             // 
             this.MdfProdToolStripMenuItem.Name = "MdfProdToolStripMenuItem";
-            this.MdfProdToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.MdfProdToolStripMenuItem.Size = new System.Drawing.Size(129, 22);
             this.MdfProdToolStripMenuItem.Text = "تعديل السلع";
             this.MdfProdToolStripMenuItem.Click += new System.EventHandler(this.MdfProdToolStripMenuItem_Click);
             // 
@@ -142,21 +142,21 @@
             // AffDtToolStripMenuItem
             // 
             this.AffDtToolStripMenuItem.Name = "AffDtToolStripMenuItem";
-            this.AffDtToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.AffDtToolStripMenuItem.Size = new System.Drawing.Size(137, 22);
             this.AffDtToolStripMenuItem.Text = "إظهار القروض";
             this.AffDtToolStripMenuItem.Click += new System.EventHandler(this.AffDtToolStripMenuItem_Click);
             // 
             // AjtDtToolStripMenuItem
             // 
             this.AjtDtToolStripMenuItem.Name = "AjtDtToolStripMenuItem";
-            this.AjtDtToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.AjtDtToolStripMenuItem.Size = new System.Drawing.Size(137, 22);
             this.AjtDtToolStripMenuItem.Text = "إضافة قرض";
             this.AjtDtToolStripMenuItem.Click += new System.EventHandler(this.AjtDtToolStripMenuItem_Click);
             // 
             // MdfDtToolStripMenuItem
             // 
             this.MdfDtToolStripMenuItem.Name = "MdfDtToolStripMenuItem";
-            this.MdfDtToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.MdfDtToolStripMenuItem.Size = new System.Drawing.Size(137, 22);
             this.MdfDtToolStripMenuItem.Text = "تعديل قرض";
             this.MdfDtToolStripMenuItem.Click += new System.EventHandler(this.MdfDtToolStripMenuItem_Click);
             // 
@@ -233,7 +233,7 @@
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.dataGridView2);
+            this.groupBox1.Controls.Add(this.dgv_dernProdajt);
             this.groupBox1.Location = new System.Drawing.Point(14, 94);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(448, 252);
@@ -241,17 +241,20 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "آخر السلع المضافة";
             // 
-            // dataGridView2
+            // dgv_dernProdajt
             // 
-            this.dataGridView2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView2.Location = new System.Drawing.Point(6, 19);
-            this.dataGridView2.Name = "dataGridView2";
-            this.dataGridView2.Size = new System.Drawing.Size(436, 223);
-            this.dataGridView2.TabIndex = 1;
+            this.dgv_dernProdajt.AllowUserToAddRows = false;
+            this.dgv_dernProdajt.AllowUserToDeleteRows = false;
+            this.dgv_dernProdajt.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgv_dernProdajt.Location = new System.Drawing.Point(6, 19);
+            this.dgv_dernProdajt.Name = "dgv_dernProdajt";
+            this.dgv_dernProdajt.ReadOnly = true;
+            this.dgv_dernProdajt.Size = new System.Drawing.Size(436, 223);
+            this.dgv_dernProdajt.TabIndex = 1;
             // 
             // groupBox2
             // 
-            this.groupBox2.Controls.Add(this.dataGridView1);
+            this.groupBox2.Controls.Add(this.dgv_prodFini);
             this.groupBox2.Controls.Add(this.label4);
             this.groupBox2.Controls.Add(this.lbl_PrdFini);
             this.groupBox2.Location = new System.Drawing.Point(507, 94);
@@ -261,13 +264,16 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "السلع المنتهية : ";
             // 
-            // dataGridView1
+            // dgv_prodFini
             // 
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(6, 19);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(436, 284);
-            this.dataGridView1.TabIndex = 0;
+            this.dgv_prodFini.AllowUserToAddRows = false;
+            this.dgv_prodFini.AllowUserToDeleteRows = false;
+            this.dgv_prodFini.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgv_prodFini.Location = new System.Drawing.Point(6, 19);
+            this.dgv_prodFini.Name = "dgv_prodFini";
+            this.dgv_prodFini.ReadOnly = true;
+            this.dgv_prodFini.Size = new System.Drawing.Size(436, 284);
+            this.dgv_prodFini.TabIndex = 0;
             // 
             // button1
             // 
@@ -298,7 +304,7 @@
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
-            // Form1
+            // Acceuil
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -315,7 +321,7 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
-            this.Name = "Form1";
+            this.Name = "Acceuil";
             this.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.RightToLeftLayout = true;
             this.Text = "إدارة المبيعات";
@@ -323,10 +329,10 @@
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.groupBox1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgv_dernProdajt)).EndInit();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgv_prodFini)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -352,8 +358,8 @@
         private System.Windows.Forms.ToolStripMenuItem القروضToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem AjtDtToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem MdfDtToolStripMenuItem;
-        private System.Windows.Forms.DataGridView dataGridView2;
-        private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.DataGridView dgv_dernProdajt;
+        private System.Windows.Forms.DataGridView dgv_prodFini;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.ToolStripMenuItem AjtVentToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem ttVentToolStripMenuItem;
