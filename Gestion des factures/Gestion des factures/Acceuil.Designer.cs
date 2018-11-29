@@ -44,9 +44,9 @@
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.lbl_nbrPrdStk = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
+            this.lbl_Nmpf = new System.Windows.Forms.Label();
             this.lbl_PrdFini = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
+            this.lbl_Nmpsf = new System.Windows.Forms.Label();
             this.lbl_PrdPrsqFini = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.dgv_dernProdajt = new System.Windows.Forms.DataGridView();
@@ -71,7 +71,7 @@
             this.تعديلالدخولToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(972, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(1130, 24);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -171,7 +171,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Mistral", 27.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(393, 37);
+            this.label1.Location = new System.Drawing.Point(493, 35);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(187, 44);
             this.label1.TabIndex = 1;
@@ -180,7 +180,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(11, 364);
+            this.label2.Location = new System.Drawing.Point(17, 384);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(96, 13);
             this.label2.TabIndex = 2;
@@ -189,43 +189,43 @@
             // lbl_nbrPrdStk
             // 
             this.lbl_nbrPrdStk.AutoSize = true;
-            this.lbl_nbrPrdStk.Location = new System.Drawing.Point(113, 364);
+            this.lbl_nbrPrdStk.Location = new System.Drawing.Point(119, 384);
             this.lbl_nbrPrdStk.Name = "lbl_nbrPrdStk";
             this.lbl_nbrPrdStk.Size = new System.Drawing.Size(13, 13);
             this.lbl_nbrPrdStk.TabIndex = 3;
             this.lbl_nbrPrdStk.Text = "0";
             // 
-            // label4
+            // lbl_Nmpf
             // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(344, 313);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(101, 13);
-            this.label4.TabIndex = 4;
-            this.label4.Text = " عدد السلع المنتهية : ";
+            this.lbl_Nmpf.AutoSize = true;
+            this.lbl_Nmpf.Location = new System.Drawing.Point(416, 309);
+            this.lbl_Nmpf.Name = "lbl_Nmpf";
+            this.lbl_Nmpf.Size = new System.Drawing.Size(101, 13);
+            this.lbl_Nmpf.TabIndex = 4;
+            this.lbl_Nmpf.Text = " عدد السلع المنتهية : ";
             // 
             // lbl_PrdFini
             // 
             this.lbl_PrdFini.AutoSize = true;
-            this.lbl_PrdFini.Location = new System.Drawing.Point(325, 313);
+            this.lbl_PrdFini.Location = new System.Drawing.Point(397, 309);
             this.lbl_PrdFini.Name = "lbl_PrdFini";
             this.lbl_PrdFini.Size = new System.Drawing.Size(13, 13);
             this.lbl_PrdFini.TabIndex = 5;
             this.lbl_PrdFini.Text = "0";
             // 
-            // label6
+            // lbl_Nmpsf
             // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(160, 364);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(126, 13);
-            this.label6.TabIndex = 6;
-            this.label6.Text = "سلع شارفة على الإنتهاء : ";
+            this.lbl_Nmpsf.AutoSize = true;
+            this.lbl_Nmpsf.Location = new System.Drawing.Point(166, 384);
+            this.lbl_Nmpsf.Name = "lbl_Nmpsf";
+            this.lbl_Nmpsf.Size = new System.Drawing.Size(126, 13);
+            this.lbl_Nmpsf.TabIndex = 6;
+            this.lbl_Nmpsf.Text = "سلع شارفة على الإنتهاء : ";
             // 
             // lbl_PrdPrsqFini
             // 
             this.lbl_PrdPrsqFini.AutoSize = true;
-            this.lbl_PrdPrsqFini.Location = new System.Drawing.Point(292, 364);
+            this.lbl_PrdPrsqFini.Location = new System.Drawing.Point(298, 384);
             this.lbl_PrdPrsqFini.Name = "lbl_PrdPrsqFini";
             this.lbl_PrdPrsqFini.Size = new System.Drawing.Size(13, 13);
             this.lbl_PrdPrsqFini.TabIndex = 7;
@@ -236,7 +236,7 @@
             this.groupBox1.Controls.Add(this.dgv_dernProdajt);
             this.groupBox1.Location = new System.Drawing.Point(14, 94);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(448, 252);
+            this.groupBox1.Size = new System.Drawing.Size(566, 287);
             this.groupBox1.TabIndex = 9;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "آخر السلع المضافة";
@@ -249,17 +249,17 @@
             this.dgv_dernProdajt.Location = new System.Drawing.Point(6, 19);
             this.dgv_dernProdajt.Name = "dgv_dernProdajt";
             this.dgv_dernProdajt.ReadOnly = true;
-            this.dgv_dernProdajt.Size = new System.Drawing.Size(436, 223);
+            this.dgv_dernProdajt.Size = new System.Drawing.Size(554, 262);
             this.dgv_dernProdajt.TabIndex = 1;
             // 
             // groupBox2
             // 
             this.groupBox2.Controls.Add(this.dgv_prodFini);
-            this.groupBox2.Controls.Add(this.label4);
+            this.groupBox2.Controls.Add(this.lbl_Nmpf);
             this.groupBox2.Controls.Add(this.lbl_PrdFini);
-            this.groupBox2.Location = new System.Drawing.Point(507, 94);
+            this.groupBox2.Location = new System.Drawing.Point(595, 94);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(450, 338);
+            this.groupBox2.Size = new System.Drawing.Size(523, 338);
             this.groupBox2.TabIndex = 10;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "السلع المنتهية : ";
@@ -272,12 +272,12 @@
             this.dgv_prodFini.Location = new System.Drawing.Point(6, 19);
             this.dgv_prodFini.Name = "dgv_prodFini";
             this.dgv_prodFini.ReadOnly = true;
-            this.dgv_prodFini.Size = new System.Drawing.Size(436, 284);
+            this.dgv_prodFini.Size = new System.Drawing.Size(508, 284);
             this.dgv_prodFini.TabIndex = 0;
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(848, 438);
+            this.button1.Location = new System.Drawing.Point(1009, 444);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(109, 42);
             this.button1.TabIndex = 11;
@@ -308,14 +308,14 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(972, 492);
+            this.ClientSize = new System.Drawing.Size(1130, 492);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.lbl_PrdPrsqFini);
-            this.Controls.Add(this.label6);
+            this.Controls.Add(this.lbl_Nmpsf);
             this.Controls.Add(this.lbl_nbrPrdStk);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
@@ -346,9 +346,9 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label lbl_nbrPrdStk;
-        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label lbl_Nmpf;
         private System.Windows.Forms.Label lbl_PrdFini;
-        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label lbl_Nmpsf;
         private System.Windows.Forms.Label lbl_PrdPrsqFini;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.GroupBox groupBox2;
