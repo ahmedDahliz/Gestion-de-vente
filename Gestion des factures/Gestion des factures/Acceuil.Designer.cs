@@ -111,21 +111,21 @@
             // AffProdToolStripMenuItem
             // 
             this.AffProdToolStripMenuItem.Name = "AffProdToolStripMenuItem";
-            this.AffProdToolStripMenuItem.Size = new System.Drawing.Size(129, 22);
+            this.AffProdToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.AffProdToolStripMenuItem.Text = "إظهار السلع";
             this.AffProdToolStripMenuItem.Click += new System.EventHandler(this.AffProdToolStripMenuItem_Click);
             // 
             // AjtProdToolStripMenuItem
             // 
             this.AjtProdToolStripMenuItem.Name = "AjtProdToolStripMenuItem";
-            this.AjtProdToolStripMenuItem.Size = new System.Drawing.Size(129, 22);
+            this.AjtProdToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.AjtProdToolStripMenuItem.Text = "إضافة السلع";
             this.AjtProdToolStripMenuItem.Click += new System.EventHandler(this.AjtProdToolStripMenuItem_Click);
             // 
             // MdfProdToolStripMenuItem
             // 
             this.MdfProdToolStripMenuItem.Name = "MdfProdToolStripMenuItem";
-            this.MdfProdToolStripMenuItem.Size = new System.Drawing.Size(129, 22);
+            this.MdfProdToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.MdfProdToolStripMenuItem.Text = "تعديل السلع";
             this.MdfProdToolStripMenuItem.Click += new System.EventHandler(this.MdfProdToolStripMenuItem_Click);
             // 
@@ -358,7 +358,6 @@
         private System.Windows.Forms.ToolStripMenuItem القروضToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem AjtDtToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem MdfDtToolStripMenuItem;
-        private System.Windows.Forms.DataGridView dgv_dernProdajt;
         private System.Windows.Forms.DataGridView dgv_prodFini;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.ToolStripMenuItem AjtVentToolStripMenuItem;
@@ -367,6 +366,7 @@
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.ToolStripMenuItem تعديلالدخولToolStripMenuItem;
         private System.Windows.Forms.Button button3;
+        public System.Windows.Forms.DataGridView dgv_dernProdajt;
     }
 }
 

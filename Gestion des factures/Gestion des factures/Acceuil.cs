@@ -19,7 +19,7 @@ namespace Gestion_des_factures
             InitializeComponent();
         }
         public static SQLiteConnection cnx = new SQLiteConnection(@"Data Source=C:\Users\Ahmed\AppData\Roaming\GestionFactures\db\GestionStckFct.db;Version=3;");
-        DataSet ds = new DataSet();
+        public static DataSet ds = new DataSet();
 
         //fonction pour ouvrir les fenaitre depuis la bare menu
         public void OuvrirForm(Form f)
@@ -27,7 +27,11 @@ namespace Gestion_des_factures
             Form form = f;
             form.ShowDialog();
         }
-        private void Form1_Load(object sender, EventArgs e)
+        public void RefreshGv() {
+            dgv_dernProdajt.DataSource = ds;
+            dgv_dernProdajt.DataMember = "DerProduitsAjt";
+        }
+        public void LoadForm()
         {
             SQLiteDataAdapter dta = new SQLiteDataAdapter("select * from Stocks", cnx);
             dta.Fill(ds, "Stocks");
@@ -35,13 +39,15 @@ namespace Gestion_des_factures
             var dv = ds.Tables["Stocks"].DefaultView;
             dv.RowFilter = "QttProd <= QttPrsFini AND QttProd <> 0";
             lbl_PrdPrsqFini.Text = dv.ToTable().Rows.Count.ToString();
-            if (lbl_PrdPrsqFini.Text != "0") {
+            if (lbl_PrdPrsqFini.Text != "0")
+            {
                 lbl_PrdPrsqFini.ForeColor = Color.Orange;
                 lbl_Nmpsf.ForeColor = Color.Orange;
             }
             dv.RowFilter = "QttProd = 0";
             lbl_PrdFini.Text = dv.ToTable().Rows.Count.ToString();
-            if (lbl_PrdFini.Text != "0") {
+            if (lbl_PrdFini.Text != "0")
+            {
                 lbl_PrdFini.ForeColor = Color.Red;
                 lbl_Nmpf.ForeColor = Color.Red;
             }
@@ -51,7 +57,10 @@ namespace Gestion_des_factures
             dta2.Fill(ds, "DerProduitsAjt");
             dgv_prodFini.DataSource = ds.Tables["ProduitsFini"];
             dgv_dernProdajt.DataSource = ds.Tables["DerProduitsAjt"];
-
+        }
+        public void Form1_Load(object sender, EventArgs e)
+        {
+            LoadForm();
         }
 
         private void button1_Click(object sender, EventArgs e)
