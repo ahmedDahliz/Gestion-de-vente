@@ -112,6 +112,7 @@
     <Compile Include="MdfProduit.Designer.cs">
       <DependentUpon>MdfProduit.cs</DependentUpon>
     </Compile>
+    <Compile Include="MessageBoxManager.cs" />
     <Compile Include="MfdConnexion.cs">
       <SubType>Form</SubType>
     </Compile>

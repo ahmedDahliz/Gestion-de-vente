@@ -13,9 +13,11 @@ namespace Gestion_des_factures
 {
     public partial class AjtProduits : Form
     {
-        public AjtProduits()
+        private readonly Acceuil FrmAcc;
+        public AjtProduits(Acceuil ac)
         {
             InitializeComponent();
+            FrmAcc = ac;
         }
         SQLiteDataAdapter dtaType = new SQLiteDataAdapter("Select * from Types", Acceuil.cnx);
         SQLiteDataAdapter dtaProduit = new SQLiteDataAdapter("Select * from Produits", Acceuil.cnx);
@@ -84,6 +86,7 @@ namespace Gestion_des_factures
                         saved = false;
                         button1.PerformClick();
                         lbl_prdAjt.Text = dtnp.Rows.Count.ToString();
+                        dgr_nvProd.ClearSelection();
 
                     }
                     else MessageBox.Show("عدد السلعة يساوي 0, المرجوا إدخال عدد السلعة", "عدد السلعة فارغ", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -106,7 +109,7 @@ namespace Gestion_des_factures
             cb_tpPrd.DataSource = ds.Tables["Types"];
             idT = int.Parse(ds.Tables["Types"].Rows[ds.Tables["Types"].Rows.Count - 1]["NumType"].ToString());
             idP = int.Parse(ds.Tables["Produits"].Rows[ds.Tables["Produits"].Rows.Count - 1]["NumPrd"].ToString());
-            dtnp.Columns.Add("رقم السلعة");
+            dtnp.Columns.Add("الرقم");
             dtnp.Columns.Add("الإسم");
             dtnp.Columns.Add("الكمية");
             dtnp.Columns.Add("الكمية الأدنى");
@@ -154,20 +157,22 @@ namespace Gestion_des_factures
             dtaStocke.Update(ds, "Stocks");
             saved = true;
             Acceuil.cnx.Close();
-            MessageBox.Show("تم حفض المعلومات بنجاح", " حفض المعلومات", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show("تم حفض المعلومات بنجاح", " حفض المعلومات", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button2, MessageBoxOptions.RightAlign);
         }
 
         private void button6_Click(object sender, EventArgs e)
         {
-            Acceuil a = new Acceuil();
             if(saved){
-                a.RefreshGv();
+                FrmAcc.RefreshAccui();
                 Close();
-            }
-                //    if (rep = )
-            //    {
+            }else {
+                var rep = MessageBox.Show("لم تقم بحفض المعلومات, سيتم إلغاء الإضافات الجديدة !, هل تريد الإستمرار في الخروج ؟ ","إلغاء العملية", MessageBoxButtons.YesNo, MessageBoxIcon.Question,MessageBoxDefaultButton.Button1, MessageBoxOptions.RightAlign);
+                if (rep == DialogResult.Yes) {
+                    Close();
+                }
+            
                     
-            //    }
+            }
             
         }
 
@@ -193,7 +198,72 @@ namespace Gestion_des_factures
 
         private void dgr_nvProd_SelectionChanged(object sender, EventArgs e)
         {
-            
+            button7.Enabled = (dgr_nvProd.SelectedRows.Count == 1)? true : false;
         }
+        public string DesP,idPr;
+        private void button7_Click(object sender, EventArgs e)
+        {
+            if (dgr_nvProd.SelectedRows.Count == 1)
+            {
+                DesP = dtnp.Rows[dgr_nvProd.CurrentRow.Index][1].ToString();
+                idPr = dtnp.Rows[dgr_nvProd.CurrentRow.Index][0].ToString();
+                txt_nomPrd.Text = dgr_nvProd.CurrentRow.Cells[1].Value.ToString();
+                nud_qtt.Value = int.Parse(dgr_nvProd.CurrentRow.Cells[2].Value.ToString());
+                nud_qttMn.Value = int.Parse(dgr_nvProd.CurrentRow.Cells[3].Value.ToString());
+                txt_prxA.Text = dgr_nvProd.CurrentRow.Cells[4].Value.ToString();
+                txt_prxB.Text = dgr_nvProd.CurrentRow.Cells[5].Value.ToString();
+                txt_prxC.Text = dgr_nvProd.CurrentRow.Cells[6].Value.ToString();
+                cb_tpPrd.SelectedIndex = cb_tpPrd.FindStringExact(dgr_nvProd.CurrentRow.Cells[7].Value.ToString());
+                button8.Visible = true;
+                button2.Visible = false;
+            }
+        }
+
+        private void button8_Click(object sender, EventArgs e)
+        {
+            int iP = ds.Tables["Produits"].Rows.IndexOf(ds.Tables["Produits"].Select("Desingation = '" + DesP + "'")[0]);
+            int iPA = ds.Tables["TypPA"].Rows.IndexOf(ds.Tables["TypPA"].Select("NuPrd = " + idPr)[0]);
+            int iPB = ds.Tables["TypPB"].Rows.IndexOf(ds.Tables["TypPB"].Select("NuPrd = " + idPr)[0]);
+            int iPC = ds.Tables["TypPC"].Rows.IndexOf(ds.Tables["TypPC"].Select("NuPrd = " + idPr)[0]);
+            int iS = ds.Tables["Stocks"].Rows.IndexOf(ds.Tables["Stocks"].Select("NuPrd = " + idPr)[0]);
+            int idg = dtnp.Rows.IndexOf(dtnp.Select("الرقم = " + idPr)[0]);
+            //Update DataTable Product
+            ds.Tables["Produits"].Rows[iP].BeginEdit();
+            ds.Tables["Produits"].Rows[iP]["Desingation"] = txt_nomPrd.Text;
+            ds.Tables["Produits"].Rows[iP]["NuType"] = cb_tpPrd.SelectedValue;
+            ds.Tables["Produits"].Rows[iP].EndEdit();
+            //Update DataTable TypPA
+            ds.Tables["TypPA"].Rows[iPA].BeginEdit();
+            ds.Tables["TypPA"].Rows[iPA]["Prix"] = txt_prxA.Text;
+            ds.Tables["TypPA"].Rows[iPA].EndEdit();
+            //Update DatTable TypPB
+            ds.Tables["TypPB"].Rows[iPB].BeginEdit();
+            ds.Tables["TypPB"].Rows[iPB]["Prix"] = txt_prxB.Text;
+            ds.Tables["TypPB"].Rows[iPB].EndEdit();
+            //Update DataTable TypPC
+            ds.Tables["TypPC"].Rows[iPC].BeginEdit();
+            ds.Tables["TypPC"].Rows[iPC]["Prix"] = txt_prxC.Text;
+            ds.Tables["TypPC"].Rows[iPC].EndEdit();
+            //Update DataTable Stock
+            ds.Tables["Stocks"].Rows[iS].BeginEdit();
+            ds.Tables["Stocks"].Rows[iS]["QttPrsFini"] = nud_qttMn.Value;
+            ds.Tables["Stocks"].Rows[iS]["QttProd"] = nud_qtt.Value;
+            ds.Tables["Stocks"].Rows[iS].EndEdit();
+            //Update DataTable DTNP of GridView
+            dtnp.Rows[idg].BeginEdit();
+            dtnp.Rows[idg]["الإسم"] = txt_nomPrd.Text;
+            dtnp.Rows[idg]["الكمية"] = nud_qtt.Value;
+            dtnp.Rows[idg]["الكمية الأدنى"] = nud_qttMn.Value;
+            dtnp.Rows[idg]["ثمن A"] = txt_prxA.Text;
+            dtnp.Rows[idg]["ثمن B"] = txt_prxB.Text;
+            dtnp.Rows[idg]["ثمن C"] = txt_prxB.Text;
+            dtnp.Rows[idg]["النوع"] = cb_tpPrd.Text;
+            dtnp.Rows[idg].EndEdit();
+            button8.Visible = false;
+            button2.Visible = true;
+            button1.PerformClick();
+            MessageBox.Show("تم تعديل المعلومات بنجاح", " تعديل المعلومات", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button2, MessageBoxOptions.RightAlign);
+
+          }
     }
 }

@@ -14,6 +14,10 @@ namespace Gestion_des_factures
         [STAThread]
         static void Main()
         {
+            MessageBoxManager.OK = "حسنا";
+            MessageBoxManager.Yes = "نعم";
+            MessageBoxManager.No = "لا";
+            MessageBoxManager.Register();
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Acceuil());

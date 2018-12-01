@@ -60,7 +60,7 @@ namespace Gestion_des_factures
             String flNum = (nuPr != "") ? " AND p.NumPrd = "+nuPr : "";
             String flNom = (NmPr != "") ? " AND p.Desingation LIKE '%" + NmPr + "%'" : "";
             String fltype = (cb_type.SelectedValue.ToString() != "0") ? " AND tp.NumType = " + TpPr : "";
-            String flDate = (dtp_datAjout.Value.ToShortDateString() != "31/12/9998") ? " AND s.DateAjout = '" + dtPr + "'" : "";
+            String flDate = (!ch_ShDt.Checked) ? " AND s.DateAjout = '" + dtPr + "'" : "";
             string rqt = "select p.NumPrd as 'رقم السلعة', p.Desingation as 'الإسم', s.QttProd as 'الكمية', s.QttPrsFini as 'الكمية الأدنى', pa.Prix as 'ثمن A', pb.Prix as 'ثمن B', pc.prix as 'ثمن C', tp.NomType as 'النوع', s.DateAjout as 'تاريخ اللإضافة'"+
                 " from Stocks s, Produits p, TypePrixA pa, TypePrixB pb, TypePrixC pc, Types tp "+
                 "where tp.NumType = p.NuType AND s.NuPrd = p.NumPrd AND p.NumPrd = pa.NuPrd AND p.NumPrd =  pb.NuPrd AND p.NumPrd =  pc.NuPrd"+
@@ -207,6 +207,7 @@ namespace Gestion_des_factures
             txt_nuProd.Text = "";
             txt_NomProd.Text = "";
             cb_type.SelectedValue = 0;
+            ch_ShDt.Checked = true;
             rb_sansprx.Checked = true;
             
         }
@@ -219,6 +220,24 @@ namespace Gestion_des_factures
         private void AffProduit_FormClosed(object sender, FormClosedEventArgs e)
         {
             
+        }
+
+        private void dgv_AfficheProd_SelectionChanged(object sender, EventArgs e)
+        {
+           
+        }
+
+        private void radioButton1_CheckedChanged(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+            dtp_datAjout.Enabled = !ch_ShDt.Checked;
+            dgv_AfficheProd.DataSource = GetFiltredData(txt_nuProd.Text, txt_NomProd.Text, cb_type.SelectedValue.ToString(), txt_prix.Text, tpPrix, dtp_datAjout.Text);
+            ColorEmp(); 
+
         } 
     }
 }

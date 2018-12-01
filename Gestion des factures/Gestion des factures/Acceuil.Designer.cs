@@ -142,21 +142,21 @@
             // AffDtToolStripMenuItem
             // 
             this.AffDtToolStripMenuItem.Name = "AffDtToolStripMenuItem";
-            this.AffDtToolStripMenuItem.Size = new System.Drawing.Size(137, 22);
+            this.AffDtToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.AffDtToolStripMenuItem.Text = "إظهار القروض";
             this.AffDtToolStripMenuItem.Click += new System.EventHandler(this.AffDtToolStripMenuItem_Click);
             // 
             // AjtDtToolStripMenuItem
             // 
             this.AjtDtToolStripMenuItem.Name = "AjtDtToolStripMenuItem";
-            this.AjtDtToolStripMenuItem.Size = new System.Drawing.Size(137, 22);
+            this.AjtDtToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.AjtDtToolStripMenuItem.Text = "إضافة قرض";
             this.AjtDtToolStripMenuItem.Click += new System.EventHandler(this.AjtDtToolStripMenuItem_Click);
             // 
             // MdfDtToolStripMenuItem
             // 
             this.MdfDtToolStripMenuItem.Name = "MdfDtToolStripMenuItem";
-            this.MdfDtToolStripMenuItem.Size = new System.Drawing.Size(137, 22);
+            this.MdfDtToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.MdfDtToolStripMenuItem.Text = "تعديل قرض";
             this.MdfDtToolStripMenuItem.Click += new System.EventHandler(this.MdfDtToolStripMenuItem_Click);
             // 
@@ -169,6 +169,7 @@
             // 
             // label1
             // 
+            this.label1.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Mistral", 27.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.Location = new System.Drawing.Point(493, 35);
@@ -179,6 +180,7 @@
             // 
             // label2
             // 
+            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(17, 384);
             this.label2.Name = "label2";
@@ -188,6 +190,7 @@
             // 
             // lbl_nbrPrdStk
             // 
+            this.lbl_nbrPrdStk.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lbl_nbrPrdStk.AutoSize = true;
             this.lbl_nbrPrdStk.Location = new System.Drawing.Point(119, 384);
             this.lbl_nbrPrdStk.Name = "lbl_nbrPrdStk";
@@ -197,6 +200,7 @@
             // 
             // lbl_Nmpf
             // 
+            this.lbl_Nmpf.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lbl_Nmpf.AutoSize = true;
             this.lbl_Nmpf.Location = new System.Drawing.Point(416, 309);
             this.lbl_Nmpf.Name = "lbl_Nmpf";
@@ -206,6 +210,7 @@
             // 
             // lbl_PrdFini
             // 
+            this.lbl_PrdFini.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lbl_PrdFini.AutoSize = true;
             this.lbl_PrdFini.Location = new System.Drawing.Point(397, 309);
             this.lbl_PrdFini.Name = "lbl_PrdFini";
@@ -215,6 +220,7 @@
             // 
             // lbl_Nmpsf
             // 
+            this.lbl_Nmpsf.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lbl_Nmpsf.AutoSize = true;
             this.lbl_Nmpsf.Location = new System.Drawing.Point(166, 384);
             this.lbl_Nmpsf.Name = "lbl_Nmpsf";
@@ -224,6 +230,7 @@
             // 
             // lbl_PrdPrsqFini
             // 
+            this.lbl_PrdPrsqFini.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lbl_PrdPrsqFini.AutoSize = true;
             this.lbl_PrdPrsqFini.Location = new System.Drawing.Point(298, 384);
             this.lbl_PrdPrsqFini.Name = "lbl_PrdPrsqFini";
@@ -233,6 +240,9 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox1.Controls.Add(this.dgv_dernProdajt);
             this.groupBox1.Location = new System.Drawing.Point(14, 94);
             this.groupBox1.Name = "groupBox1";
@@ -245,15 +255,23 @@
             // 
             this.dgv_dernProdajt.AllowUserToAddRows = false;
             this.dgv_dernProdajt.AllowUserToDeleteRows = false;
+            this.dgv_dernProdajt.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.dgv_dernProdajt.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgv_dernProdajt.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgv_dernProdajt.Location = new System.Drawing.Point(6, 19);
+            this.dgv_dernProdajt.MultiSelect = false;
             this.dgv_dernProdajt.Name = "dgv_dernProdajt";
             this.dgv_dernProdajt.ReadOnly = true;
+            this.dgv_dernProdajt.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgv_dernProdajt.Size = new System.Drawing.Size(554, 262);
             this.dgv_dernProdajt.TabIndex = 1;
             // 
             // groupBox2
             // 
+            this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox2.Controls.Add(this.dgv_prodFini);
             this.groupBox2.Controls.Add(this.lbl_Nmpf);
             this.groupBox2.Controls.Add(this.lbl_PrdFini);
@@ -268,15 +286,21 @@
             // 
             this.dgv_prodFini.AllowUserToAddRows = false;
             this.dgv_prodFini.AllowUserToDeleteRows = false;
+            this.dgv_prodFini.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.dgv_prodFini.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgv_prodFini.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgv_prodFini.Location = new System.Drawing.Point(6, 19);
             this.dgv_prodFini.Name = "dgv_prodFini";
             this.dgv_prodFini.ReadOnly = true;
+            this.dgv_prodFini.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgv_prodFini.Size = new System.Drawing.Size(508, 284);
             this.dgv_prodFini.TabIndex = 0;
             // 
             // button1
             // 
+            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.button1.Location = new System.Drawing.Point(1009, 444);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(109, 42);
@@ -287,6 +311,7 @@
             // 
             // button2
             // 
+            this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.button2.Location = new System.Drawing.Point(12, 444);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(112, 36);
@@ -296,6 +321,7 @@
             // 
             // button3
             // 
+            this.button3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.button3.Location = new System.Drawing.Point(146, 444);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(112, 36);

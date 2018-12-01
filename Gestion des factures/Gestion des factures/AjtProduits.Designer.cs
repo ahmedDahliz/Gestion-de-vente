@@ -49,14 +49,15 @@
             this.button5 = new System.Windows.Forms.Button();
             this.button6 = new System.Windows.Forms.Button();
             this.groubbox1 = new System.Windows.Forms.GroupBox();
+            this.txt_prxB = new System.Windows.Forms.TextBox();
+            this.txt_prxC = new System.Windows.Forms.TextBox();
+            this.txt_prxA = new System.Windows.Forms.TextBox();
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
-            this.txt_prxA = new System.Windows.Forms.TextBox();
-            this.txt_prxC = new System.Windows.Forms.TextBox();
-            this.txt_prxB = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.button7 = new System.Windows.Forms.Button();
             this.lbl_prdAjt = new System.Windows.Forms.Label();
+            this.button8 = new System.Windows.Forms.Button();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nud_qttMn)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nud_qtt)).BeginInit();
@@ -141,6 +142,7 @@
             // 
             // cb_tpPrd
             // 
+            this.cb_tpPrd.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cb_tpPrd.FormattingEnabled = true;
             this.cb_tpPrd.Location = new System.Drawing.Point(572, 53);
             this.cb_tpPrd.Name = "cb_tpPrd";
@@ -230,8 +232,10 @@
             this.dgr_nvProd.AllowUserToDeleteRows = false;
             this.dgr_nvProd.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgr_nvProd.Location = new System.Drawing.Point(12, 253);
+            this.dgr_nvProd.MultiSelect = false;
             this.dgr_nvProd.Name = "dgr_nvProd";
             this.dgr_nvProd.ReadOnly = true;
+            this.dgr_nvProd.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgr_nvProd.Size = new System.Drawing.Size(827, 260);
             this.dgr_nvProd.TabIndex = 27;
             this.dgr_nvProd.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgr_nvProd_CellContentClick);
@@ -263,6 +267,7 @@
             this.groubbox1.Controls.Add(this.txt_prxC);
             this.groubbox1.Controls.Add(this.txt_prxA);
             this.groubbox1.Controls.Add(this.button1);
+            this.groubbox1.Controls.Add(this.button8);
             this.groubbox1.Controls.Add(this.button2);
             this.groubbox1.Controls.Add(this.label6);
             this.groubbox1.Controls.Add(this.txt_nomPrd);
@@ -283,6 +288,27 @@
             this.groubbox1.TabStop = false;
             this.groubbox1.Text = "معلومات السلعة";
             // 
+            // txt_prxB
+            // 
+            this.txt_prxB.Location = new System.Drawing.Point(347, 51);
+            this.txt_prxB.Name = "txt_prxB";
+            this.txt_prxB.Size = new System.Drawing.Size(82, 20);
+            this.txt_prxB.TabIndex = 5;
+            // 
+            // txt_prxC
+            // 
+            this.txt_prxC.Location = new System.Drawing.Point(347, 76);
+            this.txt_prxC.Name = "txt_prxC";
+            this.txt_prxC.Size = new System.Drawing.Size(82, 20);
+            this.txt_prxC.TabIndex = 6;
+            // 
+            // txt_prxA
+            // 
+            this.txt_prxA.Location = new System.Drawing.Point(347, 25);
+            this.txt_prxA.Name = "txt_prxA";
+            this.txt_prxA.Size = new System.Drawing.Size(82, 20);
+            this.txt_prxA.TabIndex = 4;
+            // 
             // button1
             // 
             this.button1.Location = new System.Drawing.Point(311, 134);
@@ -295,34 +321,13 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(435, 134);
+            this.button2.Location = new System.Drawing.Point(405, 134);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(91, 32);
             this.button2.TabIndex = 7;
             this.button2.Text = "إضافة";
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
-            // 
-            // txt_prxA
-            // 
-            this.txt_prxA.Location = new System.Drawing.Point(347, 25);
-            this.txt_prxA.Name = "txt_prxA";
-            this.txt_prxA.Size = new System.Drawing.Size(82, 20);
-            this.txt_prxA.TabIndex = 4;
-            // 
-            // txt_prxC
-            // 
-            this.txt_prxC.Location = new System.Drawing.Point(347, 76);
-            this.txt_prxC.Name = "txt_prxC";
-            this.txt_prxC.Size = new System.Drawing.Size(82, 20);
-            this.txt_prxC.TabIndex = 6;
-            // 
-            // txt_prxB
-            // 
-            this.txt_prxB.Location = new System.Drawing.Point(347, 51);
-            this.txt_prxB.Name = "txt_prxB";
-            this.txt_prxB.Size = new System.Drawing.Size(82, 20);
-            this.txt_prxB.TabIndex = 5;
             // 
             // label2
             // 
@@ -342,7 +347,7 @@
             this.button7.TabIndex = 28;
             this.button7.Text = "تعديل";
             this.button7.UseVisualStyleBackColor = true;
-            this.button7.Click += new System.EventHandler(this.button5_Click);
+            this.button7.Click += new System.EventHandler(this.button7_Click);
             // 
             // lbl_prdAjt
             // 
@@ -352,6 +357,17 @@
             this.lbl_prdAjt.Size = new System.Drawing.Size(13, 13);
             this.lbl_prdAjt.TabIndex = 5;
             this.lbl_prdAjt.Text = "0";
+            // 
+            // button8
+            // 
+            this.button8.Location = new System.Drawing.Point(405, 134);
+            this.button8.Name = "button8";
+            this.button8.Size = new System.Drawing.Size(91, 32);
+            this.button8.TabIndex = 7;
+            this.button8.Text = "تعديل";
+            this.button8.UseVisualStyleBackColor = true;
+            this.button8.Visible = false;
+            this.button8.Click += new System.EventHandler(this.button8_Click);
             // 
             // AjtProduits
             // 
@@ -414,5 +430,6 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button button7;
         private System.Windows.Forms.Label lbl_prdAjt;
+        private System.Windows.Forms.Button button8;
     }
 }

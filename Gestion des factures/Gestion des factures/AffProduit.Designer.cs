@@ -53,12 +53,14 @@
             this.label5 = new System.Windows.Forms.Label();
             this.lbl_nmProd = new System.Windows.Forms.Label();
             this.lbl_titrLstProd = new System.Windows.Forms.Label();
+            this.ch_ShDt = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_AfficheProd)).BeginInit();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // button6
             // 
+            this.button6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.button6.Location = new System.Drawing.Point(869, 546);
             this.button6.Name = "button6";
             this.button6.Size = new System.Drawing.Size(88, 36);
@@ -71,16 +73,24 @@
             // 
             this.dgv_AfficheProd.AllowUserToAddRows = false;
             this.dgv_AfficheProd.AllowUserToDeleteRows = false;
+            this.dgv_AfficheProd.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.dgv_AfficheProd.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgv_AfficheProd.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgv_AfficheProd.Location = new System.Drawing.Point(9, 236);
             this.dgv_AfficheProd.Name = "dgv_AfficheProd";
             this.dgv_AfficheProd.ReadOnly = true;
+            this.dgv_AfficheProd.RowHeadersVisible = false;
+            this.dgv_AfficheProd.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgv_AfficheProd.Size = new System.Drawing.Size(948, 301);
             this.dgv_AfficheProd.TabIndex = 30;
+            this.dgv_AfficheProd.SelectionChanged += new System.EventHandler(this.dgv_AfficheProd_SelectionChanged);
             this.dgv_AfficheProd.Sorted += new System.EventHandler(this.dgv_AfficheProd_Sorted);
             // 
             // label1
             // 
+            this.label1.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Mistral", 27.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.Location = new System.Drawing.Point(412, 9);
@@ -91,6 +101,9 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox2.Controls.Add(this.ch_ShDt);
             this.groupBox2.Controls.Add(this.txt_prix);
             this.groupBox2.Controls.Add(this.txt_nuProd);
             this.groupBox2.Controls.Add(this.label4);
@@ -118,6 +131,7 @@
             // 
             // txt_prix
             // 
+            this.txt_prix.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.txt_prix.Enabled = false;
             this.txt_prix.Location = new System.Drawing.Point(754, 53);
             this.txt_prix.Name = "txt_prix";
@@ -127,6 +141,7 @@
             // 
             // txt_nuProd
             // 
+            this.txt_nuProd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.txt_nuProd.Location = new System.Drawing.Point(715, 21);
             this.txt_nuProd.Name = "txt_nuProd";
             this.txt_nuProd.Size = new System.Drawing.Size(123, 20);
@@ -135,6 +150,7 @@
             // 
             // label4
             // 
+            this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label4.AutoSize = true;
             this.label4.Location = new System.Drawing.Point(869, 24);
             this.label4.Name = "label4";
@@ -144,6 +160,7 @@
             // 
             // label3
             // 
+            this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label3.AutoSize = true;
             this.label3.Location = new System.Drawing.Point(115, 24);
             this.label3.Name = "label3";
@@ -153,7 +170,9 @@
             // 
             // dtp_datAjout
             // 
+            this.dtp_datAjout.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.dtp_datAjout.Checked = false;
+            this.dtp_datAjout.Enabled = false;
             this.dtp_datAjout.Format = System.Windows.Forms.DateTimePickerFormat.Short;
             this.dtp_datAjout.Location = new System.Drawing.Point(13, 21);
             this.dtp_datAjout.Name = "dtp_datAjout";
@@ -164,6 +183,7 @@
             // 
             // rb_b
             // 
+            this.rb_b.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.rb_b.AutoSize = true;
             this.rb_b.Location = new System.Drawing.Point(668, 54);
             this.rb_b.Name = "rb_b";
@@ -175,6 +195,7 @@
             // 
             // rb_c
             // 
+            this.rb_c.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.rb_c.AutoSize = true;
             this.rb_c.Location = new System.Drawing.Point(716, 54);
             this.rb_c.Name = "rb_c";
@@ -186,6 +207,7 @@
             // 
             // rb_sansprx
             // 
+            this.rb_sansprx.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.rb_sansprx.AutoSize = true;
             this.rb_sansprx.Checked = true;
             this.rb_sansprx.Location = new System.Drawing.Point(518, 54);
@@ -199,6 +221,7 @@
             // 
             // rb_a
             // 
+            this.rb_a.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.rb_a.AutoSize = true;
             this.rb_a.Location = new System.Drawing.Point(622, 54);
             this.rb_a.Name = "rb_a";
@@ -210,6 +233,7 @@
             // 
             // label9
             // 
+            this.label9.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.label9.AutoSize = true;
             this.label9.Location = new System.Drawing.Point(892, 56);
             this.label9.Name = "label9";
@@ -219,6 +243,7 @@
             // 
             // button1
             // 
+            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.button1.Location = new System.Drawing.Point(599, 88);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(134, 23);
@@ -229,6 +254,7 @@
             // 
             // txt_NomProd
             // 
+            this.txt_NomProd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.txt_NomProd.Location = new System.Drawing.Point(409, 21);
             this.txt_NomProd.Name = "txt_NomProd";
             this.txt_NomProd.Size = new System.Drawing.Size(197, 20);
@@ -237,6 +263,7 @@
             // 
             // label6
             // 
+            this.label6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label6.AutoSize = true;
             this.label6.Location = new System.Drawing.Point(612, 24);
             this.label6.Name = "label6";
@@ -246,6 +273,7 @@
             // 
             // label2
             // 
+            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(346, 24);
             this.label2.Name = "label2";
@@ -255,16 +283,18 @@
             // 
             // cb_type
             // 
+            this.cb_type.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.cb_type.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cb_type.FormattingEnabled = true;
             this.cb_type.Location = new System.Drawing.Point(226, 21);
             this.cb_type.Name = "cb_type";
             this.cb_type.Size = new System.Drawing.Size(114, 21);
             this.cb_type.TabIndex = 12;
-            this.cb_type.Text = " ";
             this.cb_type.SelectedIndexChanged += new System.EventHandler(this.cb_type_SelectedIndexChanged);
             // 
             // button3
             // 
+            this.button3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.button3.Location = new System.Drawing.Point(518, 88);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(75, 23);
@@ -275,6 +305,7 @@
             // 
             // button2
             // 
+            this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.button2.Location = new System.Drawing.Point(739, 88);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(91, 23);
@@ -285,6 +316,7 @@
             // 
             // button4
             // 
+            this.button4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.button4.Location = new System.Drawing.Point(836, 88);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(91, 23);
@@ -295,6 +327,7 @@
             // 
             // label5
             // 
+            this.label5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label5.AutoSize = true;
             this.label5.Location = new System.Drawing.Point(6, 548);
             this.label5.Name = "label5";
@@ -304,6 +337,7 @@
             // 
             // lbl_nmProd
             // 
+            this.lbl_nmProd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lbl_nmProd.AutoSize = true;
             this.lbl_nmProd.Location = new System.Drawing.Point(84, 548);
             this.lbl_nmProd.Name = "lbl_nmProd";
@@ -313,6 +347,8 @@
             // 
             // lbl_titrLstProd
             // 
+            this.lbl_titrLstProd.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.lbl_titrLstProd.AutoSize = true;
             this.lbl_titrLstProd.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lbl_titrLstProd.Location = new System.Drawing.Point(12, 203);
@@ -320,6 +356,20 @@
             this.lbl_titrLstProd.Size = new System.Drawing.Size(63, 20);
             this.lbl_titrLstProd.TabIndex = 27;
             this.lbl_titrLstProd.Text = "جميع السلع";
+            // 
+            // ch_ShDt
+            // 
+            this.ch_ShDt.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.ch_ShDt.AutoSize = true;
+            this.ch_ShDt.Checked = true;
+            this.ch_ShDt.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.ch_ShDt.Location = new System.Drawing.Point(91, 56);
+            this.ch_ShDt.Name = "ch_ShDt";
+            this.ch_ShDt.Size = new System.Drawing.Size(98, 17);
+            this.ch_ShDt.TabIndex = 31;
+            this.ch_ShDt.Text = "بحث بدون تاريخ";
+            this.ch_ShDt.UseVisualStyleBackColor = true;
+            this.ch_ShDt.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
             // 
             // AffProduit
             // 
@@ -374,5 +424,6 @@
         private System.Windows.Forms.TextBox txt_prix;
         private System.Windows.Forms.RadioButton rb_sansprx;
         private System.Windows.Forms.Label lbl_titrLstProd;
+        private System.Windows.Forms.CheckBox ch_ShDt;
     }
 }
