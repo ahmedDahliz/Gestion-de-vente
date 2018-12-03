@@ -33,12 +33,14 @@ namespace Gestion_des_factures
             cb_type.DisplayMember = "NomType";
             cb_type.DataSource = ds.Tables["Types"];
             lbl_nmProd.Text = ds.Tables["ProduitsAjt"].Rows.Count.ToString();
+            dgv_AfficheProd.ClearSelection();
         }
         public DataTable GetEmptyProducts()
         {
             DataView dv = ds.Tables["ProduitsAjt"].DefaultView;
             dv.RowFilter = "الكمية = 0";
             lbl_nmProd.Text = dv.ToTable().Rows.Count.ToString();
+            dgv_AfficheProd.ClearSelection();
             return dv.ToTable();
 
         }
@@ -48,6 +50,7 @@ namespace Gestion_des_factures
             DataSet dts = new DataSet();
             da.Fill(dts, "PrduiPrsFini");
             lbl_nmProd.Text = dts.Tables["PrduiPrsFini"].Rows.Count.ToString();
+            dgv_AfficheProd.ClearSelection();
             return dts.Tables["PrduiPrsFini"];
 
         }
@@ -70,6 +73,7 @@ namespace Gestion_des_factures
             da.Fill(dst, "Prduifiltrd");
             lbl_nmProd.Text = dst.Tables["Prduifiltrd"].Rows.Count.ToString();
             lbl_titrLstProd.Text = "بحث متخصص";
+            dgv_AfficheProd.ClearSelection();
             return dst.Tables["Prduifiltrd"];
         }
         void ClearDgv() {
@@ -95,6 +99,7 @@ namespace Gestion_des_factures
         {
             GetAllProduct();
             ColorEmp();
+
         }
 
         private void button4_Click(object sender, EventArgs e)
@@ -125,8 +130,7 @@ namespace Gestion_des_factures
 
         private void cb_type_SelectedIndexChanged(object sender, EventArgs e)
         {
-            dgv_AfficheProd.DataSource = GetFiltredData(txt_nuProd.Text, txt_NomProd.Text, cb_type.SelectedValue.ToString(), txt_prix.Text, tpPrix, dtp_datAjout.Text);
-            ColorEmp();
+            
         }
 
         private void dgv_AfficheProd_Sorted(object sender, EventArgs e)
@@ -224,7 +228,7 @@ namespace Gestion_des_factures
 
         private void dgv_AfficheProd_SelectionChanged(object sender, EventArgs e)
         {
-           
+            button5.Enabled = (dgv_AfficheProd.SelectedRows.Count == 1)? true : false;
         }
 
         private void radioButton1_CheckedChanged(object sender, EventArgs e)
@@ -238,6 +242,18 @@ namespace Gestion_des_factures
             dgv_AfficheProd.DataSource = GetFiltredData(txt_nuProd.Text, txt_NomProd.Text, cb_type.SelectedValue.ToString(), txt_prix.Text, tpPrix, dtp_datAjout.Text);
             ColorEmp(); 
 
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            MdfProduit frmMdf = new MdfProduit(int.Parse(dgv_AfficheProd.CurrentRow.Cells[0].Value.ToString()), this);
+            frmMdf.ShowDialog();
+        }
+
+        private void cb_type_SelectionChangeCommitted(object sender, EventArgs e)
+        {
+            dgv_AfficheProd.DataSource = GetFiltredData(txt_nuProd.Text, txt_NomProd.Text, cb_type.SelectedValue.ToString(), txt_prix.Text, tpPrix, dtp_datAjout.Text);
+            ColorEmp();
         } 
     }
 }

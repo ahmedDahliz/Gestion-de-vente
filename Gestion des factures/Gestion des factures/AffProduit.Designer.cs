@@ -32,6 +32,7 @@
             this.dgv_AfficheProd = new System.Windows.Forms.DataGridView();
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.ch_ShDt = new System.Windows.Forms.CheckBox();
             this.txt_prix = new System.Windows.Forms.TextBox();
             this.txt_nuProd = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
@@ -53,7 +54,7 @@
             this.label5 = new System.Windows.Forms.Label();
             this.lbl_nmProd = new System.Windows.Forms.Label();
             this.lbl_titrLstProd = new System.Windows.Forms.Label();
-            this.ch_ShDt = new System.Windows.Forms.CheckBox();
+            this.button5 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_AfficheProd)).BeginInit();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -128,6 +129,20 @@
             this.groupBox2.TabIndex = 34;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "بحث حسب";
+            // 
+            // ch_ShDt
+            // 
+            this.ch_ShDt.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.ch_ShDt.AutoSize = true;
+            this.ch_ShDt.Checked = true;
+            this.ch_ShDt.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.ch_ShDt.Location = new System.Drawing.Point(91, 56);
+            this.ch_ShDt.Name = "ch_ShDt";
+            this.ch_ShDt.Size = new System.Drawing.Size(98, 17);
+            this.ch_ShDt.TabIndex = 31;
+            this.ch_ShDt.Text = "بحث بدون تاريخ";
+            this.ch_ShDt.UseVisualStyleBackColor = true;
+            this.ch_ShDt.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
             // 
             // txt_prix
             // 
@@ -291,6 +306,7 @@
             this.cb_type.Size = new System.Drawing.Size(114, 21);
             this.cb_type.TabIndex = 12;
             this.cb_type.SelectedIndexChanged += new System.EventHandler(this.cb_type_SelectedIndexChanged);
+            this.cb_type.SelectionChangeCommitted += new System.EventHandler(this.cb_type_SelectionChangeCommitted);
             // 
             // button3
             // 
@@ -357,25 +373,23 @@
             this.lbl_titrLstProd.TabIndex = 27;
             this.lbl_titrLstProd.Text = "جميع السلع";
             // 
-            // ch_ShDt
+            // button5
             // 
-            this.ch_ShDt.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.ch_ShDt.AutoSize = true;
-            this.ch_ShDt.Checked = true;
-            this.ch_ShDt.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.ch_ShDt.Location = new System.Drawing.Point(91, 56);
-            this.ch_ShDt.Name = "ch_ShDt";
-            this.ch_ShDt.Size = new System.Drawing.Size(98, 17);
-            this.ch_ShDt.TabIndex = 31;
-            this.ch_ShDt.Text = "بحث بدون تاريخ";
-            this.ch_ShDt.UseVisualStyleBackColor = true;
-            this.ch_ShDt.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
+            this.button5.Enabled = false;
+            this.button5.Location = new System.Drawing.Point(127, 543);
+            this.button5.Name = "button5";
+            this.button5.Size = new System.Drawing.Size(85, 36);
+            this.button5.TabIndex = 36;
+            this.button5.Text = "تعديل";
+            this.button5.UseVisualStyleBackColor = true;
+            this.button5.Click += new System.EventHandler(this.button5_Click);
             // 
             // AffProduit
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(969, 594);
+            this.Controls.Add(this.button5);
             this.Controls.Add(this.lbl_nmProd);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.groupBox2);
@@ -425,5 +439,6 @@
         private System.Windows.Forms.RadioButton rb_sansprx;
         private System.Windows.Forms.Label lbl_titrLstProd;
         private System.Windows.Forms.CheckBox ch_ShDt;
+        private System.Windows.Forms.Button button5;
     }
 }

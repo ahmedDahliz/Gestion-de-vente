@@ -45,9 +45,9 @@ namespace Gestion_des_factures
             float pa, pb, pc;
             if (txt_nomPrd.Text != "" && txt_prxA.Text != "" && txt_prxB.Text != "" && txt_prxC.Text != "")
             {
-                if (float.TryParse(txt_prxA.Text, out pa) && float.TryParse(txt_prxB.Text, out pb) && float.TryParse(txt_prxB.Text, out pc))
+                if (nud_qtt.Value != 0)
                 {
-                    if (nud_qtt.Value != 0)
+                    if (float.TryParse(txt_prxA.Text, out pa) && float.TryParse(txt_prxB.Text, out pb) && float.TryParse(txt_prxB.Text, out pc))
                     {
                         DataRow ligneP = ds.Tables["Produits"].NewRow();
                         DataRow ligneS = ds.Tables["Stocks"].NewRow();
@@ -88,11 +88,11 @@ namespace Gestion_des_factures
                         lbl_prdAjt.Text = dtnp.Rows.Count.ToString();
                         dgr_nvProd.ClearSelection();
 
-                    }
-                    else MessageBox.Show("عدد السلعة يساوي 0, المرجوا إدخال عدد السلعة", "عدد السلعة فارغ", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     
-                }else MessageBox.Show("أحد الأثمنة غير مقبولة", "خطأ في إدخال الأثمنة", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }else MessageBox.Show("أحد الأثمنة غير مقبولة", "خطأ في إدخال الأثمنة", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 
+                }else MessageBox.Show("عدد السلعة يساوي 0, المرجوا إدخال عدد السلعة", "عدد السلعة فارغ", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    
             }else MessageBox.Show("المرجو ملأ الحقول الفارغة", "أحد الحقول فارغة", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
@@ -169,9 +169,7 @@ namespace Gestion_des_factures
                 var rep = MessageBox.Show("لم تقم بحفض المعلومات, سيتم إلغاء الإضافات الجديدة !, هل تريد الإستمرار في الخروج ؟ ","إلغاء العملية", MessageBoxButtons.YesNo, MessageBoxIcon.Question,MessageBoxDefaultButton.Button1, MessageBoxOptions.RightAlign);
                 if (rep == DialogResult.Yes) {
                     Close();
-                }
-            
-                    
+                }      
             }
             
         }
@@ -265,5 +263,19 @@ namespace Gestion_des_factures
             MessageBox.Show("تم تعديل المعلومات بنجاح", " تعديل المعلومات", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button2, MessageBoxOptions.RightAlign);
 
           }
+
+        private void AjtProduits_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (saved)
+            {
+                FrmAcc.RefreshAccui();
+                Close();
+            }
+            else
+            {
+                var rep = MessageBox.Show("لم تقم بحفض المعلومات, سيتم إلغاء الإضافات الجديدة !, هل تريد الإستمرار في الخروج ؟ ", "إلغاء العملية", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1, MessageBoxOptions.RightAlign);
+                e.Cancel = (rep == DialogResult.No);
+            }
+        }
     }
 }
