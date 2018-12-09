@@ -30,8 +30,12 @@
         {
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.cb_nvType = new System.Windows.Forms.ComboBox();
+            this.button11 = new System.Windows.Forms.Button();
+            this.button10 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
+            this.label3 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.txt_nomTp = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
@@ -58,6 +62,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.button7 = new System.Windows.Forms.Button();
             this.lbl_prdAjt = new System.Windows.Forms.Label();
+            this.button9 = new System.Windows.Forms.Button();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nud_qttMn)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nud_qtt)).BeginInit();
@@ -79,20 +84,54 @@
             // groupBox2
             // 
             this.groupBox2.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.groupBox2.Controls.Add(this.cb_nvType);
+            this.groupBox2.Controls.Add(this.button11);
+            this.groupBox2.Controls.Add(this.button10);
             this.groupBox2.Controls.Add(this.button3);
             this.groupBox2.Controls.Add(this.button4);
+            this.groupBox2.Controls.Add(this.label3);
             this.groupBox2.Controls.Add(this.label5);
             this.groupBox2.Controls.Add(this.txt_nomTp);
             this.groupBox2.Location = new System.Drawing.Point(6, 25);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(288, 84);
+            this.groupBox2.Size = new System.Drawing.Size(335, 117);
             this.groupBox2.TabIndex = 4;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "إضافة نوع السلعة";
             // 
+            // cb_nvType
+            // 
+            this.cb_nvType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cb_nvType.FormattingEnabled = true;
+            this.cb_nvType.Location = new System.Drawing.Point(119, 51);
+            this.cb_nvType.Name = "cb_nvType";
+            this.cb_nvType.Size = new System.Drawing.Size(126, 21);
+            this.cb_nvType.TabIndex = 13;
+            this.cb_nvType.SelectionChangeCommitted += new System.EventHandler(this.cb_nvType_SelectionChangeCommitted);
+            // 
+            // button11
+            // 
+            this.button11.Location = new System.Drawing.Point(20, 82);
+            this.button11.Name = "button11";
+            this.button11.Size = new System.Drawing.Size(75, 23);
+            this.button11.TabIndex = 12;
+            this.button11.Text = "مسح";
+            this.button11.UseVisualStyleBackColor = true;
+            this.button11.Click += new System.EventHandler(this.button11_Click);
+            // 
+            // button10
+            // 
+            this.button10.Location = new System.Drawing.Point(241, 82);
+            this.button10.Name = "button10";
+            this.button10.Size = new System.Drawing.Size(75, 23);
+            this.button10.TabIndex = 12;
+            this.button10.Text = "تعديل";
+            this.button10.UseVisualStyleBackColor = true;
+            this.button10.Click += new System.EventHandler(this.button10_Click);
+            // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(14, 51);
+            this.button3.Location = new System.Drawing.Point(130, 82);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(75, 23);
             this.button3.TabIndex = 11;
@@ -102,7 +141,7 @@
             // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(105, 51);
+            this.button4.Location = new System.Drawing.Point(20, 20);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(75, 23);
             this.button4.TabIndex = 9;
@@ -110,10 +149,19 @@
             this.button4.UseVisualStyleBackColor = true;
             this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(274, 55);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(45, 13);
+            this.label3.TabIndex = 7;
+            this.label3.Text = "الأنواع : ";
+            // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(212, 25);
+            this.label5.Location = new System.Drawing.Point(259, 25);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(60, 13);
             this.label5.TabIndex = 7;
@@ -121,10 +169,10 @@
             // 
             // txt_nomTp
             // 
-            this.txt_nomTp.Location = new System.Drawing.Point(14, 22);
+            this.txt_nomTp.Location = new System.Drawing.Point(119, 22);
             this.txt_nomTp.Name = "txt_nomTp";
-            this.txt_nomTp.Size = new System.Drawing.Size(166, 20);
-            this.txt_nomTp.TabIndex = 8;
+            this.txt_nomTp.Size = new System.Drawing.Size(126, 20);
+            this.txt_nomTp.TabIndex = 9;
             // 
             // label6
             // 
@@ -212,7 +260,7 @@
             this.nud_qttMn.Location = new System.Drawing.Point(608, 107);
             this.nud_qttMn.Name = "nud_qttMn";
             this.nud_qttMn.Size = new System.Drawing.Size(105, 20);
-            this.nud_qttMn.TabIndex = 3;
+            this.nud_qttMn.TabIndex = 4;
             this.nud_qttMn.ValueChanged += new System.EventHandler(this.nud_qttMn_ValueChanged);
             // 
             // nud_qtt
@@ -226,7 +274,7 @@
             0});
             this.nud_qtt.Name = "nud_qtt";
             this.nud_qtt.Size = new System.Drawing.Size(104, 20);
-            this.nud_qtt.TabIndex = 2;
+            this.nud_qtt.TabIndex = 3;
             this.nud_qtt.ValueChanged += new System.EventHandler(this.nud_qtt_ValueChanged);
             // 
             // label13
@@ -255,7 +303,6 @@
             this.dgr_nvProd.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgr_nvProd.Size = new System.Drawing.Size(827, 260);
             this.dgr_nvProd.TabIndex = 27;
-            this.dgr_nvProd.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgr_nvProd_CellContentClick);
             this.dgr_nvProd.SelectionChanged += new System.EventHandler(this.dgr_nvProd_SelectionChanged);
             // 
             // button5
@@ -308,6 +355,7 @@
             this.groubbox1.TabIndex = 30;
             this.groubbox1.TabStop = false;
             this.groubbox1.Text = "معلومات السلعة";
+            this.groubbox1.Enter += new System.EventHandler(this.groubbox1_Enter);
             // 
             // txt_prxB
             // 
@@ -315,7 +363,7 @@
             this.txt_prxB.Location = new System.Drawing.Point(347, 51);
             this.txt_prxB.Name = "txt_prxB";
             this.txt_prxB.Size = new System.Drawing.Size(82, 20);
-            this.txt_prxB.TabIndex = 5;
+            this.txt_prxB.TabIndex = 6;
             // 
             // txt_prxC
             // 
@@ -323,7 +371,7 @@
             this.txt_prxC.Location = new System.Drawing.Point(347, 76);
             this.txt_prxC.Name = "txt_prxC";
             this.txt_prxC.Size = new System.Drawing.Size(82, 20);
-            this.txt_prxC.TabIndex = 6;
+            this.txt_prxC.TabIndex = 7;
             // 
             // txt_prxA
             // 
@@ -331,12 +379,12 @@
             this.txt_prxA.Location = new System.Drawing.Point(347, 25);
             this.txt_prxA.Name = "txt_prxA";
             this.txt_prxA.Size = new System.Drawing.Size(82, 20);
-            this.txt_prxA.TabIndex = 4;
+            this.txt_prxA.TabIndex = 5;
             // 
             // button1
             // 
             this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button1.Location = new System.Drawing.Point(311, 134);
+            this.button1.Location = new System.Drawing.Point(360, 134);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(85, 32);
             this.button1.TabIndex = 13;
@@ -347,7 +395,7 @@
             // button8
             // 
             this.button8.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button8.Location = new System.Drawing.Point(405, 134);
+            this.button8.Location = new System.Drawing.Point(454, 134);
             this.button8.Name = "button8";
             this.button8.Size = new System.Drawing.Size(91, 32);
             this.button8.TabIndex = 7;
@@ -359,10 +407,10 @@
             // button2
             // 
             this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button2.Location = new System.Drawing.Point(405, 134);
+            this.button2.Location = new System.Drawing.Point(454, 134);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(91, 32);
-            this.button2.TabIndex = 7;
+            this.button2.TabIndex = 8;
             this.button2.Text = "إضافة";
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
@@ -371,7 +419,7 @@
             // 
             this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(245, 531);
+            this.label2.Location = new System.Drawing.Point(316, 531);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(99, 13);
             this.label2.TabIndex = 5;
@@ -381,7 +429,7 @@
             // 
             this.button7.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.button7.Enabled = false;
-            this.button7.Location = new System.Drawing.Point(126, 519);
+            this.button7.Location = new System.Drawing.Point(117, 519);
             this.button7.Name = "button7";
             this.button7.Size = new System.Drawing.Size(88, 36);
             this.button7.TabIndex = 28;
@@ -393,11 +441,23 @@
             // 
             this.lbl_prdAjt.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lbl_prdAjt.AutoSize = true;
-            this.lbl_prdAjt.Location = new System.Drawing.Point(352, 531);
+            this.lbl_prdAjt.Location = new System.Drawing.Point(428, 531);
             this.lbl_prdAjt.Name = "lbl_prdAjt";
             this.lbl_prdAjt.Size = new System.Drawing.Size(13, 13);
             this.lbl_prdAjt.TabIndex = 5;
             this.lbl_prdAjt.Text = "0";
+            // 
+            // button9
+            // 
+            this.button9.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.button9.Enabled = false;
+            this.button9.Location = new System.Drawing.Point(220, 519);
+            this.button9.Name = "button9";
+            this.button9.Size = new System.Drawing.Size(88, 36);
+            this.button9.TabIndex = 28;
+            this.button9.Text = "مسح";
+            this.button9.UseVisualStyleBackColor = true;
+            this.button9.Click += new System.EventHandler(this.button9_Click);
             // 
             // AjtProduits
             // 
@@ -406,6 +466,7 @@
             this.ClientSize = new System.Drawing.Size(851, 567);
             this.Controls.Add(this.groubbox1);
             this.Controls.Add(this.button6);
+            this.Controls.Add(this.button9);
             this.Controls.Add(this.button7);
             this.Controls.Add(this.button5);
             this.Controls.Add(this.dgr_nvProd);
@@ -462,5 +523,10 @@
         private System.Windows.Forms.Button button7;
         private System.Windows.Forms.Label lbl_prdAjt;
         private System.Windows.Forms.Button button8;
+        private System.Windows.Forms.Button button9;
+        private System.Windows.Forms.ComboBox cb_nvType;
+        private System.Windows.Forms.Button button11;
+        private System.Windows.Forms.Button button10;
+        private System.Windows.Forms.Label label3;
     }
 }

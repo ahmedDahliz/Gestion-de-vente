@@ -80,6 +80,7 @@
             this.dgv_AfficheProd.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgv_AfficheProd.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgv_AfficheProd.Location = new System.Drawing.Point(9, 236);
+            this.dgv_AfficheProd.MultiSelect = false;
             this.dgv_AfficheProd.Name = "dgv_AfficheProd";
             this.dgv_AfficheProd.ReadOnly = true;
             this.dgv_AfficheProd.RowHeadersVisible = false;
@@ -345,7 +346,7 @@
             // 
             this.label5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(6, 548);
+            this.label5.Location = new System.Drawing.Point(116, 555);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(61, 13);
             this.label5.TabIndex = 35;
@@ -355,7 +356,7 @@
             // 
             this.lbl_nmProd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lbl_nmProd.AutoSize = true;
-            this.lbl_nmProd.Location = new System.Drawing.Point(84, 548);
+            this.lbl_nmProd.Location = new System.Drawing.Point(194, 555);
             this.lbl_nmProd.Name = "lbl_nmProd";
             this.lbl_nmProd.Size = new System.Drawing.Size(13, 13);
             this.lbl_nmProd.TabIndex = 35;
@@ -376,7 +377,7 @@
             // button5
             // 
             this.button5.Enabled = false;
-            this.button5.Location = new System.Drawing.Point(127, 543);
+            this.button5.Location = new System.Drawing.Point(9, 543);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(85, 36);
             this.button5.TabIndex = 36;

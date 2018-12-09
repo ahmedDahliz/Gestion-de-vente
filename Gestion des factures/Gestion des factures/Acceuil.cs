@@ -18,6 +18,12 @@ namespace Gestion_des_factures
         {
             InitializeComponent();
         }
+        private readonly Connexion FrmConnex;
+        public Acceuil(Connexion frm)
+        {
+            InitializeComponent();
+            FrmConnex = frm;
+        }
         public static SQLiteConnection cnx = new SQLiteConnection(@"Data Source=C:\Users\Ahmed\AppData\Roaming\GestionFactures\db\GestionStckFct.db;Version=3;");
         public static DataSet ds = new DataSet();
       
@@ -128,8 +134,14 @@ namespace Gestion_des_factures
 
         private void button3_Click(object sender, EventArgs e)
         {
+
             this.Hide();
-            OpenForm(new Connexion());
+            FrmConnex.ConnexionShow(this);
+        }
+
+        private void Acceuil_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Application.Exit();
         }
 
         

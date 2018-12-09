@@ -27,6 +27,7 @@ namespace Gestion_des_factures
         SQLiteDataAdapter dtaPxC = new SQLiteDataAdapter("Select * from TypePrixC", Acceuil.cnx);
         DataSet ds = new DataSet();
         DataTable dtnp = new DataTable();
+        DataTable dtnt = new DataTable();
         int idT,idP;
         Boolean saved = true;
         private void nud_qttMn_ValueChanged(object sender, EventArgs e)
@@ -39,76 +40,93 @@ namespace Gestion_des_factures
             nud_qttMn.Maximum = nud_qtt.Value;
             nud_qttMn.Enabled = (nud_qtt.Value > 0)? true : false;
         }
+        bool CheckInDt(DataTable dt, string val, string Column)
+        {
+            DataRow[] found = dt.Select(Column + " = " + val);
+            if (found.Length != 0)
+            {
+                return true;
+            }
+            return false;
 
+        }
         private void button2_Click(object sender, EventArgs e)
         {
             float pa, pb, pc;
             if (txt_nomPrd.Text != "" && txt_prxA.Text != "" && txt_prxB.Text != "" && txt_prxC.Text != "")
             {
-                if (nud_qtt.Value != 0)
+                if (!CheckInDt(ds.Tables["Produits"], "'" + txt_nomPrd.Text + "'", "Desingation"))
                 {
-                    if (float.TryParse(txt_prxA.Text, out pa) && float.TryParse(txt_prxB.Text, out pb) && float.TryParse(txt_prxB.Text, out pc))
+                    if (nud_qtt.Value != 0)
                     {
-                        DataRow ligneP = ds.Tables["Produits"].NewRow();
-                        DataRow ligneS = ds.Tables["Stocks"].NewRow();
-                        DataRow lignePrA = ds.Tables["TypPA"].NewRow();
-                        DataRow lignePrB = ds.Tables["TypPB"].NewRow();
-                        DataRow lignePrC = ds.Tables["TypPC"].NewRow();
-                        DataRow ligneDgv = dtnp.NewRow();
-                        ligneP[1] = txt_nomPrd.Text;
-                        ligneP[2] = cb_tpPrd.SelectedValue.ToString();
-                        ds.Tables["Produits"].Rows.Add(ligneP);
-                        idP++;
-                        lignePrA[1] = txt_prxA.Text;
-                        lignePrA[2] = idP;
-                        ds.Tables["TypPA"].Rows.Add(lignePrA);
-                        lignePrB[1] = txt_prxA.Text;
-                        lignePrB[2] = idP;
-                        ds.Tables["TypPB"].Rows.Add(lignePrB);
-                        lignePrC[1] = txt_prxA.Text;
-                        lignePrC[2] = idP;
-                        ds.Tables["TypPC"].Rows.Add(lignePrC);
-                        ligneS[1] = nud_qtt.Value;
-                        ligneS[2] = nud_qttMn.Value;
-                        ligneS[3] = DateTime.Now.ToShortDateString();
-                        ligneS[4] = idP;
-                        ds.Tables["Stocks"].Rows.Add(ligneS);
-                        ligneDgv[0] = idP;
-                        ligneDgv[1] = txt_nomPrd.Text;
-                        ligneDgv[2] = nud_qtt.Value;
-                        ligneDgv[3] = nud_qttMn.Value;
-                        ligneDgv[4] = txt_prxA.Text;
-                        ligneDgv[5] = txt_prxB.Text;
-                        ligneDgv[6] = txt_prxC.Text;
-                        ligneDgv[7] = cb_tpPrd.Text;
-                        ligneDgv[8] = DateTime.Now.ToShortDateString();
-                        dtnp.Rows.Add(ligneDgv);
-                        saved = false;
-                        button1.PerformClick();
-                        lbl_prdAjt.Text = dtnp.Rows.Count.ToString();
-                        dgr_nvProd.ClearSelection();
+                        if (float.TryParse(txt_prxA.Text, out pa) && float.TryParse(txt_prxB.Text, out pb) && float.TryParse(txt_prxB.Text, out pc))
+                        {
+                            DataRow ligneP = ds.Tables["Produits"].NewRow();
+                            DataRow ligneS = ds.Tables["Stocks"].NewRow();
+                            DataRow lignePrA = ds.Tables["TypPA"].NewRow();
+                            DataRow lignePrB = ds.Tables["TypPB"].NewRow();
+                            DataRow lignePrC = ds.Tables["TypPC"].NewRow();
+                            DataRow ligneDgv = dtnp.NewRow();
+                            ligneP[1] = txt_nomPrd.Text;
+                            ligneP[2] = cb_tpPrd.SelectedValue.ToString();
+                            ds.Tables["Produits"].Rows.Add(ligneP);
+                            idP++;
+                            lignePrA[1] = txt_prxA.Text;
+                            lignePrA[2] = idP;
+                            ds.Tables["TypPA"].Rows.Add(lignePrA);
+                            lignePrB[1] = txt_prxB.Text;
+                            lignePrB[2] = idP;
+                            ds.Tables["TypPB"].Rows.Add(lignePrB);
+                            lignePrC[1] = txt_prxC.Text;
+                            lignePrC[2] = idP;
+                            ds.Tables["TypPC"].Rows.Add(lignePrC);
+                            ligneS[1] = nud_qtt.Value;
+                            ligneS[2] = nud_qttMn.Value;
+                            ligneS[3] = DateTime.Now.ToShortDateString();
+                            ligneS[4] = idP;
+                            ds.Tables["Stocks"].Rows.Add(ligneS);
+                            ligneDgv[0] = idP;
+                            ligneDgv[1] = txt_nomPrd.Text;
+                            ligneDgv[2] = nud_qtt.Value;
+                            ligneDgv[3] = nud_qttMn.Value;
+                            ligneDgv[4] = txt_prxA.Text;
+                            ligneDgv[5] = txt_prxB.Text;
+                            ligneDgv[6] = txt_prxC.Text;
+                            ligneDgv[7] = cb_tpPrd.Text;
+                            ligneDgv[8] = DateTime.Now.ToShortDateString();
+                            dtnp.Rows.Add(ligneDgv);
+                            saved = false;
+                            button1.PerformClick();
+                            lbl_prdAjt.Text = dtnp.Rows.Count.ToString();
+                            dgr_nvProd.ClearSelection();
 
                     
-                    }else MessageBox.Show("أحد الأثمنة غير مقبولة", "خطأ في إدخال الأثمنة", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }else MessageBox.Show("أحد الأثمنة غير مقبولة", "خطأ في إدخال الأثمنة", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 
-                }else MessageBox.Show("عدد السلعة يساوي 0, المرجوا إدخال عدد السلعة", "عدد السلعة فارغ", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    
+                    }else MessageBox.Show("عدد السلعة يساوي 0, المرجوا إدخال عدد السلعة", "عدد السلعة فارغ", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                else MessageBox.Show("إسم الزبون الذي أذخلته موجود سابقا ", "إسم الزبون مكرر", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button2, MessageBoxOptions.RightAlign);
+            
             }else MessageBox.Show("المرجو ملأ الحقول الفارغة", "أحد الحقول فارغة", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
         private void AjtProduits_Load(object sender, EventArgs e)
         {
+            SQLiteDataAdapter dtaIdP = new SQLiteDataAdapter("Select * from sqlite_sequence where name='Produits'", Acceuil.cnx);
+            SQLiteDataAdapter dtaIdT = new SQLiteDataAdapter("Select * from sqlite_sequence where name='Types'", Acceuil.cnx);
             dtaType.Fill(ds, "Types");
             dtaProduit.Fill(ds, "Produits");
             dtaStocke.Fill(ds, "Stocks");
             dtaPxA.Fill(ds, "TypPA");
-            dtaPxA.Fill(ds, "TypPB");
-            dtaPxA.Fill(ds, "TypPC");
+            dtaPxB.Fill(ds, "TypPB");
+            dtaPxC.Fill(ds, "TypPC");
+            dtaIdP.Fill(ds, "idP");
+            dtaIdT.Fill(ds, "idT");
             cb_tpPrd.ValueMember = "NumType";
             cb_tpPrd.DisplayMember = "NomType";
             cb_tpPrd.DataSource = ds.Tables["Types"];
-            idT = int.Parse(ds.Tables["Types"].Rows[ds.Tables["Types"].Rows.Count - 1]["NumType"].ToString());
-            idP = int.Parse(ds.Tables["Produits"].Rows[ds.Tables["Produits"].Rows.Count - 1]["NumPrd"].ToString());
+            idT = int.Parse(ds.Tables["IdT"].Rows[0]["seq"].ToString());
+            idP = int.Parse(ds.Tables["IdP"].Rows[0]["seq"].ToString());
             dtnp.Columns.Add("الرقم");
             dtnp.Columns.Add("الإسم");
             dtnp.Columns.Add("الكمية");
@@ -118,22 +136,30 @@ namespace Gestion_des_factures
             dtnp.Columns.Add("ثمن C");
             dtnp.Columns.Add("النوع");
             dtnp.Columns.Add("تاريخ اللإضافة");
+            dtnt.Columns.Add("NumType");
+            dtnt.Columns.Add("NomType");
+            cb_nvType.ValueMember = "NumType";
+            cb_nvType.DisplayMember = "NomType";
+            cb_nvType.DataSource = dtnt;
             dgr_nvProd.DataSource = dtnp;
         }
-
         private void button4_Click(object sender, EventArgs e)
         {
             if (txt_nomTp.Text != "")
             {
                 idT++;
-                DataRow ligne = ds.Tables["Types"].NewRow();
+                DataRow ligne = dtnt.NewRow();
+                ligne[0] = idT;
+                ligne[1] = txt_nomTp.Text;
+                dtnt.Rows.Add(ligne);
+                ligne = ds.Tables["Types"].NewRow();
                 ligne[0] = idT;
                 ligne[1] = txt_nomTp.Text;
                 ds.Tables["Types"].Rows.Add(ligne);
                 saved = false;
                 button3.PerformClick();
             }
-            else MessageBox.Show("المرجو ملأ حقل الخاص بنوع السلع", "الحقل الخاص بنوع السلع فارغ", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            else MessageBox.Show("المرجو ملأ حقل الخاص بنوع السلع", "الحقل الخاص بنوع السلع فارغ", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button2, MessageBoxOptions.RightAlign);
         }
 
         private void cb_tpPrd_SelectedIndexChanged(object sender, EventArgs e)
@@ -159,7 +185,7 @@ namespace Gestion_des_factures
             Acceuil.cnx.Close();
             MessageBox.Show("تم حفض المعلومات بنجاح", " حفض المعلومات", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button2, MessageBoxOptions.RightAlign);
         }
-
+        bool ex = true;
         private void button6_Click(object sender, EventArgs e)
         {
             if(saved){
@@ -168,6 +194,7 @@ namespace Gestion_des_factures
             }else {
                 var rep = MessageBox.Show("لم تقم بحفض المعلومات, سيتم إلغاء الإضافات الجديدة !, هل تريد الإستمرار في الخروج ؟ ","إلغاء العملية", MessageBoxButtons.YesNo, MessageBoxIcon.Question,MessageBoxDefaultButton.Button1, MessageBoxOptions.RightAlign);
                 if (rep == DialogResult.Yes) {
+                    ex = false;
                     Close();
                 }      
             }
@@ -196,7 +223,8 @@ namespace Gestion_des_factures
 
         private void dgr_nvProd_SelectionChanged(object sender, EventArgs e)
         {
-            button7.Enabled = (dgr_nvProd.SelectedRows.Count == 1)? true : false;
+            button7.Enabled = (dgr_nvProd.SelectedRows.Count == 1);
+            button9.Enabled = (dgr_nvProd.SelectedRows.Count == 1);
         }
         public string DesP,idPr;
         private void button7_Click(object sender, EventArgs e)
@@ -269,13 +297,66 @@ namespace Gestion_des_factures
             if (saved)
             {
                 FrmAcc.RefreshAccui();
-                Close();
             }
             else
             {
-                var rep = MessageBox.Show("لم تقم بحفض المعلومات, سيتم إلغاء الإضافات الجديدة !, هل تريد الإستمرار في الخروج ؟ ", "إلغاء العملية", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1, MessageBoxOptions.RightAlign);
-                e.Cancel = (rep == DialogResult.No);
+                if (ex)
+                {
+                    var rep = MessageBox.Show("لم تقم بحفض المعلومات, سيتم إلغاء الإضافات الجديدة !, هل تريد الإستمرار في الخروج ؟ ", "إلغاء العملية", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1, MessageBoxOptions.RightAlign);
+                    e.Cancel = (rep == DialogResult.No);
+                }
+               
             }
+        }
+
+        private void groubbox1_Enter(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button9_Click(object sender, EventArgs e)
+        {
+            if (dgr_nvProd.SelectedRows.Count == 1)
+            {
+                var rep = MessageBox.Show("هل تريد حذف المعلومات المختارة ", "حذف المعلومات", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1, MessageBoxOptions.RightAlign);
+                if (rep == DialogResult.Yes)
+                {
+                    DesP = dtnp.Rows[dgr_nvProd.CurrentRow.Index][1].ToString();
+                    idPr = dtnp.Rows[dgr_nvProd.CurrentRow.Index][0].ToString();
+                    ds.Tables["Produits"].Rows.Remove((ds.Tables["Produits"].Select("Desingation = '" + DesP + "'")[0]));
+                    ds.Tables["Stocks"].Rows.Remove((ds.Tables["Stocks"].Select("NuPrd = '" + idPr + "'")[0]));
+                    ds.Tables["TypPA"].Rows.Remove((ds.Tables["TypPA"].Select("NuPrd = '" + idPr + "'")[0]));
+                    ds.Tables["TypPB"].Rows.Remove((ds.Tables["TypPB"].Select("NuPrd = '" + idPr + "'")[0]));
+                    ds.Tables["TypPC"].Rows.Remove((ds.Tables["TypPC"].Select("NuPrd = '" + idPr + "'")[0]));
+                    dtnp.Rows.RemoveAt(dgr_nvProd.CurrentRow.Index);
+                    dgr_nvProd.Text = dtnp.Rows.Count.ToString();
+                }
+            }
+        }
+        int iT,inT;
+        private void cb_nvType_SelectionChangeCommitted(object sender, EventArgs e)
+        {
+            txt_nomTp.Text = cb_nvType.Text;
+            iT = ds.Tables["Types"].Rows.IndexOf(ds.Tables["Types"].Select("NumType = " + cb_nvType.SelectedValue.ToString())[0]);
+            inT = int.Parse(cb_nvType.SelectedIndex.ToString());
+        }
+
+        private void button11_Click(object sender, EventArgs e)
+        {
+            ds.Tables["Types"].Rows.Remove(ds.Tables["Types"].Select("NumType = " + cb_nvType.SelectedValue.ToString())[0]);
+            dtnt.Rows.RemoveAt(int.Parse(cb_nvType.SelectedIndex.ToString()));
+            button3.PerformClick();
+        }
+
+        private void button10_Click(object sender, EventArgs e)
+        {
+            ds.Tables["types"].Rows[iT].BeginEdit();
+            ds.Tables["types"].Rows[iT][1] = txt_nomTp.Text;
+            ds.Tables["types"].Rows[iT].EndEdit();
+
+            dtnt.Rows[inT].BeginEdit();
+            dtnt.Rows[inT][1] = txt_nomTp.Text;
+            dtnt.Rows[inT].EndEdit();
         }
     }
 }

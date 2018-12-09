@@ -20,6 +20,26 @@ namespace Gestion_des_factures
         SQLiteDataAdapter dta = new SQLiteDataAdapter("select p.NumPrd as 'رقم السلعة', p.Desingation as 'الإسم', s.QttProd as 'الكمية', s.QttPrsFini as 'الكمية الأدنى', pa.Prix as 'ثمن A', pb.Prix as 'ثمن B', pc.prix as 'ثمن C', tp.NomType as 'النوع', s.DateAjout as 'تاريخ اللإضافة' from Stocks s, Produits p, TypePrixA pa, TypePrixB pb, TypePrixC pc, Types tp where tp.NumType = p.NuType AND s.NuPrd = p.NumPrd AND p.NumPrd = pa.NuPrd AND p.NumPrd =  pb.NuPrd AND p.NumPrd =  pc.NuPrd", Acceuil.cnx);
         SQLiteDataAdapter dta2 = new SQLiteDataAdapter("select NumType, NomType from Types", Acceuil.cnx);
         public string tpPrix = "";
+        public void RefreshAffPrd()
+        {
+            SQLiteDataAdapter dap = new SQLiteDataAdapter("select p.NumPrd as 'رقم السلعة', p.Desingation as 'الإسم', s.QttProd as 'الكمية', s.QttPrsFini as 'الكمية الأدنى', pa.Prix as 'ثمن A', pb.Prix as 'ثمن B', pc.prix as 'ثمن C', tp.NomType as 'النوع', s.DateAjout as 'تاريخ اللإضافة' from Stocks s, Produits p, TypePrixA pa, TypePrixB pb, TypePrixC pc, Types tp where tp.NumType = p.NuType AND s.NuPrd = p.NumPrd AND p.NumPrd = pa.NuPrd AND p.NumPrd =  pb.NuPrd AND p.NumPrd =  pc.NuPrd", Acceuil.cnx);
+            SQLiteDataAdapter dap2 = new SQLiteDataAdapter("select NumType, NomType from Types", Acceuil.cnx);
+            DataSet nds = new DataSet();
+            dap.Fill(nds, "MddfAjt");
+            dap2.Fill(nds, "Types");
+            dgv_AfficheProd.DataSource = nds.Tables["MddfAjt"];
+            DataRow rw = nds.Tables["Types"].NewRow();
+            rw["NomType"] = "جميع الأنواع";
+            rw["NumType"] = 0;
+            nds.Tables["Types"].Rows.InsertAt(rw, 0);
+            cb_type.ValueMember = "NumType";
+            cb_type.DisplayMember = "NomType";
+            cb_type.DataSource = nds.Tables["Types"];
+            lbl_nmProd.Text = nds.Tables["MddfAjt"].Rows.Count.ToString();
+            dgv_AfficheProd.ClearSelection();
+            ColorEmp();
+
+        }
         public void GetAllProduct()
         {
             dta.Fill(ds, "ProduitsAjt");

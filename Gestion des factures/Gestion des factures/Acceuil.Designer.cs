@@ -35,7 +35,6 @@
             this.تعديلToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.AffProdToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.AjtProdToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.MdfProdToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.القروضToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.AffDtToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.AjtDtToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -102,8 +101,7 @@
             // 
             this.تعديلToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.AffProdToolStripMenuItem,
-            this.AjtProdToolStripMenuItem,
-            this.MdfProdToolStripMenuItem});
+            this.AjtProdToolStripMenuItem});
             this.تعديلToolStripMenuItem.Name = "تعديلToolStripMenuItem";
             this.تعديلToolStripMenuItem.Size = new System.Drawing.Size(50, 20);
             this.تعديلToolStripMenuItem.Text = "المخزن";
@@ -111,23 +109,16 @@
             // AffProdToolStripMenuItem
             // 
             this.AffProdToolStripMenuItem.Name = "AffProdToolStripMenuItem";
-            this.AffProdToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.AffProdToolStripMenuItem.Size = new System.Drawing.Size(129, 22);
             this.AffProdToolStripMenuItem.Text = "إظهار السلع";
             this.AffProdToolStripMenuItem.Click += new System.EventHandler(this.AffProdToolStripMenuItem_Click);
             // 
             // AjtProdToolStripMenuItem
             // 
             this.AjtProdToolStripMenuItem.Name = "AjtProdToolStripMenuItem";
-            this.AjtProdToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.AjtProdToolStripMenuItem.Size = new System.Drawing.Size(129, 22);
             this.AjtProdToolStripMenuItem.Text = "إضافة السلع";
             this.AjtProdToolStripMenuItem.Click += new System.EventHandler(this.AjtProdToolStripMenuItem_Click);
-            // 
-            // MdfProdToolStripMenuItem
-            // 
-            this.MdfProdToolStripMenuItem.Name = "MdfProdToolStripMenuItem";
-            this.MdfProdToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.MdfProdToolStripMenuItem.Text = "تعديل السلع";
-            this.MdfProdToolStripMenuItem.Click += new System.EventHandler(this.MdfProdToolStripMenuItem_Click);
             // 
             // القروضToolStripMenuItem
             // 
@@ -142,21 +133,21 @@
             // AffDtToolStripMenuItem
             // 
             this.AffDtToolStripMenuItem.Name = "AffDtToolStripMenuItem";
-            this.AffDtToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.AffDtToolStripMenuItem.Size = new System.Drawing.Size(137, 22);
             this.AffDtToolStripMenuItem.Text = "إظهار القروض";
             this.AffDtToolStripMenuItem.Click += new System.EventHandler(this.AffDtToolStripMenuItem_Click);
             // 
             // AjtDtToolStripMenuItem
             // 
             this.AjtDtToolStripMenuItem.Name = "AjtDtToolStripMenuItem";
-            this.AjtDtToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.AjtDtToolStripMenuItem.Size = new System.Drawing.Size(137, 22);
             this.AjtDtToolStripMenuItem.Text = "إضافة قرض";
             this.AjtDtToolStripMenuItem.Click += new System.EventHandler(this.AjtDtToolStripMenuItem_Click);
             // 
             // MdfDtToolStripMenuItem
             // 
             this.MdfDtToolStripMenuItem.Name = "MdfDtToolStripMenuItem";
-            this.MdfDtToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.MdfDtToolStripMenuItem.Size = new System.Drawing.Size(137, 22);
             this.MdfDtToolStripMenuItem.Text = "تعديل قرض";
             this.MdfDtToolStripMenuItem.Click += new System.EventHandler(this.MdfDtToolStripMenuItem_Click);
             // 
@@ -351,6 +342,7 @@
             this.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.RightToLeftLayout = true;
             this.Text = "إدارة المبيعات";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Acceuil_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
@@ -379,7 +371,6 @@
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.ToolStripMenuItem AjtProdToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem MdfProdToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem AffProdToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem القروضToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem AjtDtToolStripMenuItem;

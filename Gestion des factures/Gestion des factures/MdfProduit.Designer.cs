@@ -30,6 +30,11 @@
         {
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.button2 = new System.Windows.Forms.Button();
+            this.txt_pb = new System.Windows.Forms.TextBox();
+            this.txt_pc = new System.Windows.Forms.TextBox();
+            this.txt_pa = new System.Windows.Forms.TextBox();
             this.nud_qttMn = new System.Windows.Forms.NumericUpDown();
             this.label13 = new System.Windows.Forms.Label();
             this.nud_qtt = new System.Windows.Forms.NumericUpDown();
@@ -43,16 +48,12 @@
             this.cb_tpPrd = new System.Windows.Forms.ComboBox();
             this.button3 = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
-            this.txt_pa = new System.Windows.Forms.TextBox();
-            this.txt_pc = new System.Windows.Forms.TextBox();
-            this.txt_pb = new System.Windows.Forms.TextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.button1 = new System.Windows.Forms.Button();
             this.txt_nmType = new System.Windows.Forms.TextBox();
             this.label14 = new System.Windows.Forms.Label();
             this.label15 = new System.Windows.Forms.Label();
             this.cb_chngType = new System.Windows.Forms.ComboBox();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nud_qttMn)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nud_qtt)).BeginInit();
@@ -75,6 +76,7 @@
             this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox2.Controls.Add(this.label3);
             this.groupBox2.Controls.Add(this.button2);
             this.groupBox2.Controls.Add(this.txt_pb);
             this.groupBox2.Controls.Add(this.txt_pc);
@@ -96,6 +98,52 @@
             this.groupBox2.TabIndex = 35;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "تعديل السلع";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.ForeColor = System.Drawing.Color.Green;
+            this.label3.Location = new System.Drawing.Point(326, 89);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(145, 13);
+            this.label3.TabIndex = 35;
+            this.label3.Text = "تم تعديل المعلومات بنجاح";
+            this.label3.Visible = false;
+            // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(500, 84);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(75, 23);
+            this.button2.TabIndex = 34;
+            this.button2.Text = "تعديل سلعة";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
+            // txt_pb
+            // 
+            this.txt_pb.Location = new System.Drawing.Point(353, 52);
+            this.txt_pb.Name = "txt_pb";
+            this.txt_pb.Size = new System.Drawing.Size(67, 20);
+            this.txt_pb.TabIndex = 33;
+            this.txt_pb.TextChanged += new System.EventHandler(this.saved);
+            // 
+            // txt_pc
+            // 
+            this.txt_pc.Location = new System.Drawing.Point(216, 49);
+            this.txt_pc.Name = "txt_pc";
+            this.txt_pc.Size = new System.Drawing.Size(67, 20);
+            this.txt_pc.TabIndex = 33;
+            this.txt_pc.TextChanged += new System.EventHandler(this.saved);
+            // 
+            // txt_pa
+            // 
+            this.txt_pa.Location = new System.Drawing.Point(508, 52);
+            this.txt_pa.Name = "txt_pa";
+            this.txt_pa.Size = new System.Drawing.Size(67, 20);
+            this.txt_pa.TabIndex = 33;
+            this.txt_pa.TextChanged += new System.EventHandler(this.saved);
             // 
             // nud_qttMn
             // 
@@ -197,7 +245,8 @@
             this.cb_tpPrd.Name = "cb_tpPrd";
             this.cb_tpPrd.Size = new System.Drawing.Size(138, 21);
             this.cb_tpPrd.TabIndex = 12;
-            this.cb_tpPrd.SelectedIndexChanged += new System.EventHandler(this.saved);
+            this.cb_tpPrd.SelectedIndexChanged += new System.EventHandler(this.cb_tpPrd_SelectedIndexChanged);
+            this.cb_tpPrd.SelectedValueChanged += new System.EventHandler(this.saved);
             // 
             // button3
             // 
@@ -205,7 +254,7 @@
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(75, 23);
             this.button3.TabIndex = 11;
-            this.button3.Text = "إلغاء";
+            this.button3.Text = "إغلاق";
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
@@ -219,30 +268,6 @@
             this.button4.UseVisualStyleBackColor = true;
             this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
-            // txt_pa
-            // 
-            this.txt_pa.Location = new System.Drawing.Point(508, 52);
-            this.txt_pa.Name = "txt_pa";
-            this.txt_pa.Size = new System.Drawing.Size(67, 20);
-            this.txt_pa.TabIndex = 33;
-            this.txt_pa.TextChanged += new System.EventHandler(this.saved);
-            // 
-            // txt_pc
-            // 
-            this.txt_pc.Location = new System.Drawing.Point(216, 49);
-            this.txt_pc.Name = "txt_pc";
-            this.txt_pc.Size = new System.Drawing.Size(67, 20);
-            this.txt_pc.TabIndex = 33;
-            this.txt_pc.TextChanged += new System.EventHandler(this.saved);
-            // 
-            // txt_pb
-            // 
-            this.txt_pb.Location = new System.Drawing.Point(353, 52);
-            this.txt_pb.Name = "txt_pb";
-            this.txt_pb.Size = new System.Drawing.Size(67, 20);
-            this.txt_pb.TabIndex = 33;
-            this.txt_pb.TextChanged += new System.EventHandler(this.saved);
-            // 
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.button1);
@@ -255,7 +280,17 @@
             this.groupBox1.Size = new System.Drawing.Size(657, 51);
             this.groupBox1.TabIndex = 36;
             this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "تعديل السلع";
+            this.groupBox1.Text = "تعديل النوع";
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(86, 15);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(99, 22);
+            this.button1.TabIndex = 16;
+            this.button1.Text = "تعديل";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // txt_nmType
             // 
@@ -292,26 +327,6 @@
             this.cb_chngType.TabIndex = 12;
             this.cb_chngType.SelectedIndexChanged += new System.EventHandler(this.cb_chngType_SelectedIndexChanged);
             // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(86, 15);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(99, 22);
-            this.button1.TabIndex = 16;
-            this.button1.Text = "تعديل";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
-            // button2
-            // 
-            this.button2.Location = new System.Drawing.Point(500, 84);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 23);
-            this.button2.TabIndex = 34;
-            this.button2.Text = "تعديل سلعة";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
-            // 
             // MdfProduit
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -323,6 +338,7 @@
             this.Controls.Add(this.button4);
             this.Controls.Add(this.button3);
             this.MaximizeBox = false;
+            this.MinimumSize = new System.Drawing.Size(692, 330);
             this.Name = "MdfProduit";
             this.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.RightToLeftLayout = true;
@@ -367,5 +383,6 @@
         private System.Windows.Forms.ComboBox cb_chngType;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Label label3;
     }
 }

@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Data.SQLite;
 
 namespace Gestion_des_factures
 {
@@ -16,6 +17,12 @@ namespace Gestion_des_factures
         {
             InitializeComponent();
         }
+        private Acceuil FrmAcc;
+        public void ConnexionShow(Acceuil Acc)
+        {
+            this.Show();
+            FrmAcc = Acc;
+        }
 
         private void button2_Click(object sender, EventArgs e)
         {
@@ -24,7 +31,43 @@ namespace Gestion_des_factures
 
         private void Connexion_FormClosed(object sender, FormClosedEventArgs e)
         {
+        }
+
+        private void Connexion_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            SQLiteCommand cmd = new SQLiteCommand("select * from Users where username = '"+txt_username.Text+"' and password = '"+txt_password.Text+"'", Acceuil.cnx);
+            Acceuil.cnx.Open();
+            SQLiteDataReader dr = cmd.ExecuteReader();
+            if (dr.HasRows)
+            {
+                if (FrmAcc == null)
+                {
+                    Acceuil ac = new Acceuil(this);
+                    ac.Show();
+
+                }
+                else FrmAcc.Show();
+
+                Hide();
+                
+            }
+            else MessageBox.Show("إسم الدخول أو كلمة المرور خاطئة", "المعلومات خاطئة", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button2, MessageBoxOptions.RightAlign);
+            Acceuil.cnx.Close();
+        }
+
+        private void Connexion_FormClosing(object sender, FormClosingEventArgs e)
+        {   
             Application.Exit();
+        }
+
+        private void txt_password_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyData == Keys.Enter) button1.PerformClick();
         }
     }
 }

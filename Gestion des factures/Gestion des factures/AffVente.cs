@@ -27,5 +27,10 @@ namespace Gestion_des_factures
         {
             label8.Text = (i++).ToString();
         }
+
+        private void AffVente_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }
