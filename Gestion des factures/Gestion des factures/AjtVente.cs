@@ -33,7 +33,7 @@ namespace Gestion_des_factures
         DataTable dtnv = new DataTable();
         int idCmd, idLCmd;
         string pa = "0", pb = "0", pc = "0";
-        bool saved;
+        bool saved = true;
         private void GetProduct(object sender, EventArgs e)
         {
             DataView dv = null;
@@ -333,9 +333,10 @@ namespace Gestion_des_factures
             {
                 DataRow dr = ds.Tables["Cmd"].NewRow();
                 dr[1] = idLCmd;
-                dr[2] = lbl_prxQtt.Text;
-                dr[3] = nud_qtt.Value;
-                dr[4] = cb_Prod.SelectedValue.ToString();
+                dr[2] = lbl_prix.Text;
+                dr[3] = lbl_prxQtt.Text;
+                dr[4] = nud_qtt.Value;
+                dr[5] = cb_Prod.SelectedValue.ToString();
                 ds.Tables["Cmd"].Rows.Add(dr);
                 //
                 dr = dtnv.NewRow();
@@ -349,7 +350,7 @@ namespace Gestion_des_factures
                 pxTTl += float.Parse(lbl_prxQtt.Text);
                 lbl_prixTotal.Text = pxTTl.ToString();
                 button8.Enabled = true;
-                button8.Enabled = true;
+                button9.Enabled = true;
                 button2.Enabled = true;
             }
             else MessageBox.Show("قم بتحديد إسم الزبون أولا", " إسم الزبون غير محدد", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button2, MessageBoxOptions.RightAlign);
@@ -520,10 +521,10 @@ namespace Gestion_des_factures
                 txt_numP.Text = "";
                 cb_typePrd.SelectedIndex = 0;
                 button8.Enabled = false;
-                button8.Enabled = false;
+                button9.Enabled = false;
                 button2.Enabled = false;
             }
-            
+
         }
        
         
