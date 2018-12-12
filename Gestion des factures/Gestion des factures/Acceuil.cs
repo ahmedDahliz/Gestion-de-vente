@@ -146,7 +146,7 @@ namespace Gestion_des_factures
 
         private void button2_Click(object sender, EventArgs e)
         {
-            String path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\Factures";
+            String path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\Factures    ";
             System.IO.DirectoryInfo di = System.IO.Directory.CreateDirectory(path);
             if (System.IO.Directory.Exists(path)) 
              System.Diagnostics.Process.Start((path));

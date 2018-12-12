@@ -69,5 +69,10 @@ namespace Gestion_des_factures
         {
             if (e.KeyData == Keys.Enter) button1.PerformClick();
         }
+
+        private void pictureBox1_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

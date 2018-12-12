@@ -63,11 +63,13 @@
             this.button7 = new System.Windows.Forms.Button();
             this.lbl_prdAjt = new System.Windows.Forms.Label();
             this.button9 = new System.Windows.Forms.Button();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nud_qttMn)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nud_qtt)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgr_nvProd)).BeginInit();
             this.groubbox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
@@ -75,7 +77,7 @@
             this.label1.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Mistral", 27.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(335, 19);
+            this.label1.Location = new System.Drawing.Point(386, 18);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(166, 44);
             this.label1.TabIndex = 2;
@@ -459,11 +461,21 @@
             this.button9.UseVisualStyleBackColor = true;
             this.button9.Click += new System.EventHandler(this.button9_Click);
             // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Location = new System.Drawing.Point(326, 12);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(59, 50);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox1.TabIndex = 54;
+            this.pictureBox1.TabStop = false;
+            // 
             // AjtProduits
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(851, 567);
+            this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.groubbox1);
             this.Controls.Add(this.button6);
             this.Controls.Add(this.button9);
@@ -486,6 +498,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgr_nvProd)).EndInit();
             this.groubbox1.ResumeLayout(false);
             this.groubbox1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -528,5 +541,6 @@
         private System.Windows.Forms.Button button11;
         private System.Windows.Forms.Button button10;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.PictureBox pictureBox1;
     }
 }

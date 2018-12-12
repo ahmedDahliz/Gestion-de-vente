@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Acceuil));
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.إضافةToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.AjtVentToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -85,15 +86,17 @@
             // 
             // AjtVentToolStripMenuItem
             // 
+            this.AjtVentToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("AjtVentToolStripMenuItem.Image")));
             this.AjtVentToolStripMenuItem.Name = "AjtVentToolStripMenuItem";
-            this.AjtVentToolStripMenuItem.Size = new System.Drawing.Size(136, 22);
+            this.AjtVentToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.AjtVentToolStripMenuItem.Text = "إضافة بيع";
             this.AjtVentToolStripMenuItem.Click += new System.EventHandler(this.AjtVentToolStripMenuItem_Click);
             // 
             // ttVentToolStripMenuItem
             // 
+            this.ttVentToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("ttVentToolStripMenuItem.Image")));
             this.ttVentToolStripMenuItem.Name = "ttVentToolStripMenuItem";
-            this.ttVentToolStripMenuItem.Size = new System.Drawing.Size(136, 22);
+            this.ttVentToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.ttVentToolStripMenuItem.Text = "جميع المبيعات";
             this.ttVentToolStripMenuItem.Click += new System.EventHandler(this.ttVentToolStripMenuItem_Click);
             // 
@@ -108,15 +111,17 @@
             // 
             // AffProdToolStripMenuItem
             // 
+            this.AffProdToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("AffProdToolStripMenuItem.Image")));
             this.AffProdToolStripMenuItem.Name = "AffProdToolStripMenuItem";
-            this.AffProdToolStripMenuItem.Size = new System.Drawing.Size(129, 22);
+            this.AffProdToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.AffProdToolStripMenuItem.Text = "إظهار السلع";
             this.AffProdToolStripMenuItem.Click += new System.EventHandler(this.AffProdToolStripMenuItem_Click);
             // 
             // AjtProdToolStripMenuItem
             // 
+            this.AjtProdToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("AjtProdToolStripMenuItem.Image")));
             this.AjtProdToolStripMenuItem.Name = "AjtProdToolStripMenuItem";
-            this.AjtProdToolStripMenuItem.Size = new System.Drawing.Size(129, 22);
+            this.AjtProdToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.AjtProdToolStripMenuItem.Text = "إضافة السلع";
             this.AjtProdToolStripMenuItem.Click += new System.EventHandler(this.AjtProdToolStripMenuItem_Click);
             // 
@@ -132,22 +137,25 @@
             // 
             // AffDtToolStripMenuItem
             // 
+            this.AffDtToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("AffDtToolStripMenuItem.Image")));
             this.AffDtToolStripMenuItem.Name = "AffDtToolStripMenuItem";
-            this.AffDtToolStripMenuItem.Size = new System.Drawing.Size(137, 22);
+            this.AffDtToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.AffDtToolStripMenuItem.Text = "إظهار القروض";
             this.AffDtToolStripMenuItem.Click += new System.EventHandler(this.AffDtToolStripMenuItem_Click);
             // 
             // AjtDtToolStripMenuItem
             // 
+            this.AjtDtToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("AjtDtToolStripMenuItem.Image")));
             this.AjtDtToolStripMenuItem.Name = "AjtDtToolStripMenuItem";
-            this.AjtDtToolStripMenuItem.Size = new System.Drawing.Size(137, 22);
+            this.AjtDtToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.AjtDtToolStripMenuItem.Text = "إضافة قرض";
             this.AjtDtToolStripMenuItem.Click += new System.EventHandler(this.AjtDtToolStripMenuItem_Click);
             // 
             // MdfDtToolStripMenuItem
             // 
+            this.MdfDtToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("MdfDtToolStripMenuItem.Image")));
             this.MdfDtToolStripMenuItem.Name = "MdfDtToolStripMenuItem";
-            this.MdfDtToolStripMenuItem.Size = new System.Drawing.Size(137, 22);
+            this.MdfDtToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.MdfDtToolStripMenuItem.Text = "تعديل قرض";
             this.MdfDtToolStripMenuItem.Click += new System.EventHandler(this.MdfDtToolStripMenuItem_Click);
             // 

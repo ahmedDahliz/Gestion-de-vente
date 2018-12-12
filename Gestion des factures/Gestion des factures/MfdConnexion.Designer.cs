@@ -58,6 +58,7 @@
             this.button1.TabIndex = 47;
             this.button1.Text = "حفض التغيير";
             this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // label10
             // 

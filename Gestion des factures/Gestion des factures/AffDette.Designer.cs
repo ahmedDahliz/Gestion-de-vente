@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AffDette));
             this.label10 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.ch_ShDt = new System.Windows.Forms.CheckBox();
@@ -46,8 +47,10 @@
             this.button6 = new System.Windows.Forms.Button();
             this.lbl_nmDett = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_affDette)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // label10
@@ -55,7 +58,7 @@
             this.label10.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.label10.AutoSize = true;
             this.label10.Font = new System.Drawing.Font("Mistral", 27.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label10.Location = new System.Drawing.Point(247, 8);
+            this.label10.Location = new System.Drawing.Point(277, 8);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(190, 44);
             this.label10.TabIndex = 37;
@@ -266,11 +269,23 @@
             this.label5.TabIndex = 42;
             this.label5.Text = "عدد االديون : ";
             // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
+            this.pictureBox1.Location = new System.Drawing.Point(206, 8);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(65, 44);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox1.TabIndex = 43;
+            this.pictureBox1.TabStop = false;
+            // 
             // AffDette
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(686, 458);
+            this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.lbl_nmDett);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.button6);
@@ -285,6 +300,7 @@
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_affDette)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -310,5 +326,6 @@
         private System.Windows.Forms.CheckBox ch_ShDt;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.DateTimePicker dtp_datAjout;
+        private System.Windows.Forms.PictureBox pictureBox1;
     }
 }

@@ -40,7 +40,6 @@
             this.label11 = new System.Windows.Forms.Label();
             this.txt_prx = new System.Windows.Forms.TextBox();
             this.button3 = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
             this.ch_ventADette = new System.Windows.Forms.CheckBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.label3 = new System.Windows.Forms.Label();
@@ -83,12 +82,15 @@
             this.label2 = new System.Windows.Forms.Label();
             this.cb_typePrd = new System.Windows.Forms.ComboBox();
             this.button9 = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nud_qtt)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_ProdV)).BeginInit();
             this.groupBox3.SuspendLayout();
             this.groupBox4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
@@ -96,7 +98,7 @@
             this.label1.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Mistral", 27.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(301, 12);
+            this.label1.Location = new System.Drawing.Point(362, 12);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(137, 44);
             this.label1.TabIndex = 2;
@@ -139,11 +141,13 @@
             // button6
             // 
             this.button6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.button6.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.button6.Location = new System.Drawing.Point(619, 123);
             this.button6.Name = "button6";
             this.button6.Size = new System.Drawing.Size(133, 29);
             this.button6.TabIndex = 52;
             this.button6.Text = "تعديل";
+            this.button6.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.button6.UseVisualStyleBackColor = true;
             this.button6.Visible = false;
             this.button6.Click += new System.EventHandler(this.button6_Click);
@@ -235,23 +239,12 @@
             // button3
             // 
             this.button3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button3.Location = new System.Drawing.Point(528, 123);
+            this.button3.Location = new System.Drawing.Point(527, 123);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(85, 29);
             this.button3.TabIndex = 44;
             this.button3.Text = "إفراغ الحقول";
             this.button3.UseVisualStyleBackColor = true;
-            // 
-            // button1
-            // 
-            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button1.Location = new System.Drawing.Point(619, 123);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(133, 29);
-            this.button1.TabIndex = 43;
-            this.button1.Text = "إضافة إلى الفاتورة";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // ch_ventADette
             // 
@@ -363,7 +356,7 @@
             // 
             this.lbl_ttrprxav.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lbl_ttrprxav.AutoSize = true;
-            this.lbl_ttrprxav.Location = new System.Drawing.Point(391, 131);
+            this.lbl_ttrprxav.Location = new System.Drawing.Point(390, 131);
             this.lbl_ttrprxav.Name = "lbl_ttrprxav";
             this.lbl_ttrprxav.Size = new System.Drawing.Size(131, 13);
             this.lbl_ttrprxav.TabIndex = 38;
@@ -735,11 +728,34 @@
             this.button9.UseVisualStyleBackColor = true;
             this.button9.Click += new System.EventHandler(this.button9_Click);
             // 
+            // button1
+            // 
+            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.button1.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.button1.Location = new System.Drawing.Point(619, 123);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(133, 29);
+            this.button1.TabIndex = 43;
+            this.button1.Text = "إضافة إلى الفاتورة";
+            this.button1.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Location = new System.Drawing.Point(297, 6);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(59, 50);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox1.TabIndex = 53;
+            this.pictureBox1.TabStop = false;
+            // 
             // AjtVente
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(780, 808);
+            this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.button9);
             this.Controls.Add(this.button8);
@@ -765,6 +781,7 @@
             this.groupBox3.PerformLayout();
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -827,6 +844,7 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.ComboBox cb_typePrd;
         private System.Windows.Forms.Button button9;
+        private System.Windows.Forms.PictureBox pictureBox1;
 
     }
 }
