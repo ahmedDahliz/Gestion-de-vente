@@ -105,7 +105,7 @@ namespace Gestion_des_factures
                 
                     }else MessageBox.Show("عدد السلعة يساوي 0, المرجوا إدخال عدد السلعة", "عدد السلعة فارغ", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
-                else MessageBox.Show("إسم الزبون الذي أذخلته موجود سابقا ", "إسم الزبون مكرر", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button2, MessageBoxOptions.RightAlign);
+                else MessageBox.Show("إسم المنتوج الذي أذخلته موجود سابقا ", "إسم المنتوج مكرر", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button2, MessageBoxOptions.RightAlign);
             
             }else MessageBox.Show("المرجو ملأ الحقول الفارغة", "أحد الحقول فارغة", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
@@ -247,49 +247,55 @@ namespace Gestion_des_factures
 
         private void button8_Click(object sender, EventArgs e)
         {
-            int iP = ds.Tables["Produits"].Rows.IndexOf(ds.Tables["Produits"].Select("Desingation = '" + DesP + "'")[0]);
-            int iPA = ds.Tables["TypPA"].Rows.IndexOf(ds.Tables["TypPA"].Select("NuPrd = " + idPr)[0]);
-            int iPB = ds.Tables["TypPB"].Rows.IndexOf(ds.Tables["TypPB"].Select("NuPrd = " + idPr)[0]);
-            int iPC = ds.Tables["TypPC"].Rows.IndexOf(ds.Tables["TypPC"].Select("NuPrd = " + idPr)[0]);
-            int iS = ds.Tables["Stocks"].Rows.IndexOf(ds.Tables["Stocks"].Select("NuPrd = " + idPr)[0]);
-            int idg = dtnp.Rows.IndexOf(dtnp.Select("الرقم = " + idPr)[0]);
-            //Update DataTable Product
-            ds.Tables["Produits"].Rows[iP].BeginEdit();
-            ds.Tables["Produits"].Rows[iP]["Desingation"] = txt_nomPrd.Text;
-            ds.Tables["Produits"].Rows[iP]["NuType"] = cb_tpPrd.SelectedValue;
-            ds.Tables["Produits"].Rows[iP].EndEdit();
-            //Update DataTable TypPA
-            ds.Tables["TypPA"].Rows[iPA].BeginEdit();
-            ds.Tables["TypPA"].Rows[iPA]["Prix"] = txt_prxA.Text;
-            ds.Tables["TypPA"].Rows[iPA].EndEdit();
-            //Update DatTable TypPB
-            ds.Tables["TypPB"].Rows[iPB].BeginEdit();
-            ds.Tables["TypPB"].Rows[iPB]["Prix"] = txt_prxB.Text;
-            ds.Tables["TypPB"].Rows[iPB].EndEdit();
-            //Update DataTable TypPC
-            ds.Tables["TypPC"].Rows[iPC].BeginEdit();
-            ds.Tables["TypPC"].Rows[iPC]["Prix"] = txt_prxC.Text;
-            ds.Tables["TypPC"].Rows[iPC].EndEdit();
-            //Update DataTable Stock
-            ds.Tables["Stocks"].Rows[iS].BeginEdit();
-            ds.Tables["Stocks"].Rows[iS]["QttPrsFini"] = nud_qttMn.Value;
-            ds.Tables["Stocks"].Rows[iS]["QttProd"] = nud_qtt.Value;
-            ds.Tables["Stocks"].Rows[iS].EndEdit();
-            //Update DataTable DTNP of GridView
-            dtnp.Rows[idg].BeginEdit();
-            dtnp.Rows[idg]["الإسم"] = txt_nomPrd.Text;
-            dtnp.Rows[idg]["الكمية"] = nud_qtt.Value;
-            dtnp.Rows[idg]["الكمية الأدنى"] = nud_qttMn.Value;
-            dtnp.Rows[idg]["ثمن A"] = txt_prxA.Text;
-            dtnp.Rows[idg]["ثمن B"] = txt_prxB.Text;
-            dtnp.Rows[idg]["ثمن C"] = txt_prxB.Text;
-            dtnp.Rows[idg]["النوع"] = cb_tpPrd.Text;
-            dtnp.Rows[idg].EndEdit();
-            button8.Visible = false;
-            button2.Visible = true;
-            button1.PerformClick();
-            MessageBox.Show("تم تعديل المعلومات بنجاح", " تعديل المعلومات", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button2, MessageBoxOptions.RightAlign);
-
+            try
+            {
+                int iP = ds.Tables["Produits"].Rows.IndexOf(ds.Tables["Produits"].Select("Desingation = '" + DesP + "'")[0]);
+                int iPA = ds.Tables["TypPA"].Rows.IndexOf(ds.Tables["TypPA"].Select("NuPrd = " + idPr)[0]);
+                int iPB = ds.Tables["TypPB"].Rows.IndexOf(ds.Tables["TypPB"].Select("NuPrd = " + idPr)[0]);
+                int iPC = ds.Tables["TypPC"].Rows.IndexOf(ds.Tables["TypPC"].Select("NuPrd = " + idPr)[0]);
+                int iS = ds.Tables["Stocks"].Rows.IndexOf(ds.Tables["Stocks"].Select("NuPrd = " + idPr)[0]);
+                int idg = dtnp.Rows.IndexOf(dtnp.Select("الرقم = " + idPr)[0]);
+                //Update DataTable Product
+                ds.Tables["Produits"].Rows[iP].BeginEdit();
+                ds.Tables["Produits"].Rows[iP]["Desingation"] = txt_nomPrd.Text;
+                ds.Tables["Produits"].Rows[iP]["NuType"] = cb_tpPrd.SelectedValue;
+                ds.Tables["Produits"].Rows[iP].EndEdit();
+                //Update DataTable TypPA
+                ds.Tables["TypPA"].Rows[iPA].BeginEdit();
+                ds.Tables["TypPA"].Rows[iPA]["Prix"] = txt_prxA.Text;
+                ds.Tables["TypPA"].Rows[iPA].EndEdit();
+                //Update DatTable TypPB
+                ds.Tables["TypPB"].Rows[iPB].BeginEdit();
+                ds.Tables["TypPB"].Rows[iPB]["Prix"] = txt_prxB.Text;
+                ds.Tables["TypPB"].Rows[iPB].EndEdit();
+                //Update DataTable TypPC
+                ds.Tables["TypPC"].Rows[iPC].BeginEdit();
+                ds.Tables["TypPC"].Rows[iPC]["Prix"] = txt_prxC.Text;
+                ds.Tables["TypPC"].Rows[iPC].EndEdit();
+                //Update DataTable Stock
+                ds.Tables["Stocks"].Rows[iS].BeginEdit();
+                ds.Tables["Stocks"].Rows[iS]["QttPrsFini"] = nud_qttMn.Value;
+                ds.Tables["Stocks"].Rows[iS]["QttProd"] = nud_qtt.Value;
+                ds.Tables["Stocks"].Rows[iS].EndEdit();
+                //Update DataTable DTNP of GridView
+                dtnp.Rows[idg].BeginEdit();
+                dtnp.Rows[idg]["الإسم"] = txt_nomPrd.Text;
+                dtnp.Rows[idg]["الكمية"] = nud_qtt.Value;
+                dtnp.Rows[idg]["الكمية الأدنى"] = nud_qttMn.Value;
+                dtnp.Rows[idg]["ثمن A"] = txt_prxA.Text;
+                dtnp.Rows[idg]["ثمن B"] = txt_prxB.Text;
+                dtnp.Rows[idg]["ثمن C"] = txt_prxB.Text;
+                dtnp.Rows[idg]["النوع"] = cb_tpPrd.Text;
+                dtnp.Rows[idg].EndEdit();
+                button8.Visible = false;
+                button2.Visible = true;
+                button1.PerformClick();
+                MessageBox.Show("تم تعديل المعلومات بنجاح", " تعديل المعلومات", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button2, MessageBoxOptions.RightAlign);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
           }
 
         private void AjtProduits_FormClosing(object sender, FormClosingEventArgs e)

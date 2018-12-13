@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Data.SQLite;
+using System.IO;
 
 
 namespace Gestion_des_factures
@@ -24,7 +25,7 @@ namespace Gestion_des_factures
             InitializeComponent();
             FrmConnex = frm;
         }
-        public static SQLiteConnection cnx = new SQLiteConnection(@"Data Source=C:\Users\Ahmed\AppData\Roaming\GestionFactures\db\GestionStckFct.db;Version=3;");
+        public static SQLiteConnection cnx = new SQLiteConnection("Data Source="+Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)+@"\GestionFactures\db\GestionStckFct.db;Version=3;");
         public static DataSet ds = new DataSet();
       
         //fonction pour ouvrir les fenaitre depuis la bare menu

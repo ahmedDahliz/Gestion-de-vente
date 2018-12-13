@@ -168,31 +168,45 @@ namespace Gestion_des_factures
 
         private void button5_Click(object sender, EventArgs e)
         {
-            int iC = ds.Tables["Client"].Rows.IndexOf(ds.Tables["Client"].Select("NomClt = '" + nomC + "'")[0]);
-            int iD = ds.Tables["Dettes"].Rows.IndexOf(ds.Tables["Dettes"].Select("NuClt = " + numC)[0]);
-            int idg = dtnp.Rows.IndexOf(dtnp.Select("الرقم = " + numC)[0]);
-            //Update DataTable Client
-            ds.Tables["Client"].Rows[iC].BeginEdit();
-            ds.Tables["Client"].Rows[iC]["NomClt"] = txt_nmClt.Text;
-            ds.Tables["Client"].Rows[iC]["Tele"] = mst_teleClt.Text.Replace(" ", "");
-            ds.Tables["Client"].Rows[iC]["Adresse"] = txt_Adrss.Text;
-            ds.Tables["Client"].Rows[iC].EndEdit();
-            //Update DataTable Dettes
-            ds.Tables["Dettes"].Rows[iD].BeginEdit();
-            ds.Tables["Dettes"].Rows[iD]["PrixDette"] = txt_pxDtt.Text;
-            ds.Tables["Dettes"].Rows[iD].EndEdit();
-            //Update DataTable DTNP of GridView
-            dtnp.Rows[idg].BeginEdit();
-            dtnp.Rows[idg]["إسم الزبون"] = txt_nmClt.Text;
-            dtnp.Rows[idg]["الهاتف"] = mst_teleClt.Text.Replace(" ", "");
-            dtnp.Rows[idg]["العنوان"] = txt_Adrss.Text;
-            dtnp.Rows[idg]["مبلغ الدين"] = txt_pxDtt.Text;
-            dtnp.Rows[idg].EndEdit();
-            button5.Visible = false;
-            button4.Visible = true;
-            button3.PerformClick();
-            MessageBox.Show("تم تعديل المعلومات بنجاح", " تعديل المعلومات", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button2, MessageBoxOptions.RightAlign);
+             float pd;
+            if (txt_nmClt.Text != "" && txt_pxDtt.Text != "")
+            {
+                if (!CheckInDt(ds.Tables["Client"], "'"+txt_nmClt.Text+"'", "NomClt"))
+                {
+                    if (float.TryParse(txt_pxDtt.Text, out pd))
+                    {
+                        int iC = ds.Tables["Client"].Rows.IndexOf(ds.Tables["Client"].Select("NomClt = '" + nomC + "'")[0]);
+                        int iD = ds.Tables["Dettes"].Rows.IndexOf(ds.Tables["Dettes"].Select("NuClt = " + numC)[0]);
+                        int idg = dtnp.Rows.IndexOf(dtnp.Select("الرقم = " + numC)[0]);
+                        //Update DataTable Client
+                        ds.Tables["Client"].Rows[iC].BeginEdit();
+                        ds.Tables["Client"].Rows[iC]["NomClt"] = txt_nmClt.Text;
+                        ds.Tables["Client"].Rows[iC]["Tele"] = mst_teleClt.Text.Replace(" ", "");
+                        ds.Tables["Client"].Rows[iC]["Adresse"] = txt_Adrss.Text;
+                        ds.Tables["Client"].Rows[iC].EndEdit();
+                        //Update DataTable Dettes
+                        ds.Tables["Dettes"].Rows[iD].BeginEdit();
+                        ds.Tables["Dettes"].Rows[iD]["PrixDette"] = txt_pxDtt.Text;
+                        ds.Tables["Dettes"].Rows[iD].EndEdit();
+                        //Update DataTable DTNP of GridView
+                        dtnp.Rows[idg].BeginEdit();
+                        dtnp.Rows[idg]["إسم الزبون"] = txt_nmClt.Text;
+                        dtnp.Rows[idg]["الهاتف"] = mst_teleClt.Text.Replace(" ", "");
+                        dtnp.Rows[idg]["العنوان"] = txt_Adrss.Text;
+                        dtnp.Rows[idg]["مبلغ الدين"] = txt_pxDtt.Text;
+                        dtnp.Rows[idg].EndEdit();
+                        button5.Visible = false;
+                        button4.Visible = true;
+                        button3.PerformClick();
+                        MessageBox.Show("تم تعديل المعلومات بنجاح", " تعديل المعلومات", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button2, MessageBoxOptions.RightAlign);
 
+                    }
+                    else MessageBox.Show("أحد الأثمنة غير مقبولة", "خطأ في إدخال الأثمنة", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button2, MessageBoxOptions.RightAlign);
+                }
+                else MessageBox.Show("إسم الزبون الذي أذخلته موجود سابقا ", "إسم الزبون مكرر", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button2, MessageBoxOptions.RightAlign);
+            }
+            else MessageBox.Show("الإسم الزبون و الثمن ضروريان  ", "أحد الحقول فارغة", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button2, MessageBoxOptions.RightAlign);
+        
         }
 
         private void button7_Click(object sender, EventArgs e)

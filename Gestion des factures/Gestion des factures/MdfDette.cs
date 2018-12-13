@@ -21,6 +21,15 @@ namespace Gestion_des_factures
         DataSet ds = new DataSet();
         int idC;
         bool saved = true;
+        bool CheckInDt(DataTable dt, string val, string Column)
+        {
+            DataRow[] found = dt.Select(Column + " = '" + val +"'");
+            if (found.Length != 0)
+            {
+                return true;
+            }
+            return false;
+        }
         private void MdfDette_Load(object sender, EventArgs e)
         {
             dtaDette.Fill(ds, "Dettes");
@@ -49,7 +58,7 @@ namespace Gestion_des_factures
             msk_teleC.Clear();
             cb_nmC.SelectedIndex = 0;
         }
-
+        string nameClt;
         private void cb_nmC_SelectionChangeCommitted(object sender, EventArgs e)
         {
             DataRow[] drC = ds.Tables["Client"].Select("NumClt = "+cb_nmC.SelectedValue.ToString());
@@ -58,6 +67,7 @@ namespace Gestion_des_factures
             {
                 txt_numD.Text = drD[0]["NumDette"].ToString();
                 txt_nmC.Text = drC[0]["NomClt"].ToString();
+                nameClt = drC[0]["NomClt"].ToString();
                 msk_teleC.Text = drC[0]["tele"].ToString();
                 txt_adress.Text = drC[0]["Adresse"].ToString();
                 txt_pxD.Text = drD[0]["PrixDette"].ToString();
@@ -94,22 +104,25 @@ namespace Gestion_des_factures
             float pd;
             if (txt_nmC.Text != "" && txt_pxD.Text != "" && txt_adress.Text != "" && msk_teleC.Text != "")
             {
-                if (float.TryParse(txt_pxD.Text, out pd))
-                {
-                   
-                    DataView dv = new DataView(ds.Tables["Client"], "NumClt= " + cb_nmC.SelectedValue.ToString(), "", DataViewRowState.CurrentRows);
-                    dv[0].BeginEdit();
-                    dv[0][1] = txt_nmC.Text;
-                    dv[0][2] = msk_teleC.Text;
-                    dv[0][3] = txt_adress.Text;
-                    dv[0].EndEdit();
-                    dv = new DataView(ds.Tables["Dettes"], "NuClt = " + cb_nmC.SelectedValue.ToString(), "", DataViewRowState.CurrentRows);
-                    dv[0].BeginEdit();
-                    dv[0][1] = pd;
-                    dv[0].EndEdit();
-                    label5.Visible = true;
-                }
-                else MessageBox.Show("أحد الأثمنة غير مقبولة", "خطأ في إدخال الأثمنة", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                //if (!nameClt.Equals(txt_nmC.Text) && CheckInDt(ds.Tables["Client"], txt_nmC.Text, "NomClt"))
+                //{
+                    if (float.TryParse(txt_pxD.Text, out pd))
+                    {
+                        DataView dv = new DataView(ds.Tables["Client"], "NumClt= " + cb_nmC.SelectedValue.ToString(), "", DataViewRowState.CurrentRows);
+                        dv[0].BeginEdit();
+                        dv[0][1] = txt_nmC.Text;
+                        dv[0][2] = msk_teleC.Text;
+                        dv[0][3] = txt_adress.Text;
+                        dv[0].EndEdit();
+                        dv = new DataView(ds.Tables["Dettes"], "NuClt = " + cb_nmC.SelectedValue.ToString(), "", DataViewRowState.CurrentRows);
+                        dv[0].BeginEdit();
+                        dv[0][1] = pd;
+                        dv[0].EndEdit();
+                        label5.Visible = true;
+                    }else MessageBox.Show("أحد الأثمنة غير مقبولة", "خطأ في إدخال الأثمنة", MessageBoxButtons.OK, MessageBoxIcon.Error);
+               
+               // }else MessageBox.Show("إسم الزبون الذي أذخلته موجود سابقا ", "إسم الزبون مكرر", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button2, MessageBoxOptions.RightAlign);
+               
             }
             else MessageBox.Show("المرجو ملأ الحقول الفارغة", "أحد الحقول فارغة", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }

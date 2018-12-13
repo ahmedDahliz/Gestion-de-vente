@@ -31,14 +31,14 @@
             this.button2 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.label10 = new System.Windows.Forms.Label();
-            this.textBox2 = new System.Windows.Forms.TextBox();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.txt_pwN = new System.Windows.Forms.TextBox();
+            this.txt_nomU = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.textBox3 = new System.Windows.Forms.TextBox();
+            this.txt_psCN = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
-            this.textBox4 = new System.Windows.Forms.TextBox();
+            this.txt_psO = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // button2
@@ -46,16 +46,17 @@
             this.button2.Location = new System.Drawing.Point(200, 222);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(107, 35);
-            this.button2.TabIndex = 46;
+            this.button2.TabIndex = 6;
             this.button2.Text = "إغلاق";
             this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // button1
             // 
             this.button1.Location = new System.Drawing.Point(15, 222);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(107, 35);
-            this.button1.TabIndex = 47;
+            this.button1.TabIndex = 5;
             this.button1.Text = "حفض التغيير";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
@@ -70,20 +71,20 @@
             this.label10.TabIndex = 45;
             this.label10.Text = "تعديل الدخول";
             // 
-            // textBox2
+            // txt_pwN
             // 
-            this.textBox2.Location = new System.Drawing.Point(151, 110);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.PasswordChar = '*';
-            this.textBox2.Size = new System.Drawing.Size(156, 20);
-            this.textBox2.TabIndex = 43;
+            this.txt_pwN.Location = new System.Drawing.Point(151, 110);
+            this.txt_pwN.Name = "txt_pwN";
+            this.txt_pwN.PasswordChar = '*';
+            this.txt_pwN.Size = new System.Drawing.Size(156, 20);
+            this.txt_pwN.TabIndex = 2;
             // 
-            // textBox1
+            // txt_nomU
             // 
-            this.textBox1.Location = new System.Drawing.Point(151, 77);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(156, 20);
-            this.textBox1.TabIndex = 44;
+            this.txt_nomU.Location = new System.Drawing.Point(151, 77);
+            this.txt_nomU.Name = "txt_nomU";
+            this.txt_nomU.Size = new System.Drawing.Size(156, 20);
+            this.txt_nomU.TabIndex = 1;
             // 
             // label2
             // 
@@ -107,13 +108,13 @@
             this.label1.Text = "إسم الدخول : ";
             this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
-            // textBox3
+            // txt_psCN
             // 
-            this.textBox3.Location = new System.Drawing.Point(151, 141);
-            this.textBox3.Name = "textBox3";
-            this.textBox3.PasswordChar = '*';
-            this.textBox3.Size = new System.Drawing.Size(156, 20);
-            this.textBox3.TabIndex = 49;
+            this.txt_psCN.Location = new System.Drawing.Point(151, 141);
+            this.txt_psCN.Name = "txt_psCN";
+            this.txt_psCN.PasswordChar = '*';
+            this.txt_psCN.Size = new System.Drawing.Size(156, 20);
+            this.txt_psCN.TabIndex = 3;
             // 
             // label3
             // 
@@ -135,28 +136,28 @@
             this.label4.TabIndex = 48;
             this.label4.Text = "كلمة المرور الحالية  : ";
             // 
-            // textBox4
+            // txt_psO
             // 
-            this.textBox4.Location = new System.Drawing.Point(151, 176);
-            this.textBox4.Name = "textBox4";
-            this.textBox4.PasswordChar = '*';
-            this.textBox4.Size = new System.Drawing.Size(156, 20);
-            this.textBox4.TabIndex = 49;
+            this.txt_psO.Location = new System.Drawing.Point(151, 176);
+            this.txt_psO.Name = "txt_psO";
+            this.txt_psO.PasswordChar = '*';
+            this.txt_psO.Size = new System.Drawing.Size(156, 20);
+            this.txt_psO.TabIndex = 4;
             // 
             // MfdConnexion
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(329, 288);
-            this.Controls.Add(this.textBox4);
+            this.Controls.Add(this.txt_psO);
             this.Controls.Add(this.label4);
-            this.Controls.Add(this.textBox3);
+            this.Controls.Add(this.txt_psCN);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.label10);
-            this.Controls.Add(this.textBox2);
-            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.txt_pwN);
+            this.Controls.Add(this.txt_nomU);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.MaximizeBox = false;
@@ -166,6 +167,7 @@
             this.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.RightToLeftLayout = true;
             this.Text = "تعديل الدخول";
+            this.Load += new System.EventHandler(this.MfdConnexion_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -176,13 +178,13 @@
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.TextBox textBox2;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox txt_pwN;
+        private System.Windows.Forms.TextBox txt_nomU;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox textBox3;
+        private System.Windows.Forms.TextBox txt_psCN;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.TextBox textBox4;
+        private System.Windows.Forms.TextBox txt_psO;
     }
 }
