@@ -69,6 +69,7 @@
             this.txt_username.Name = "txt_username";
             this.txt_username.Size = new System.Drawing.Size(156, 20);
             this.txt_username.TabIndex = 1;
+            this.txt_username.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txt_password_KeyDown);
             // 
             // txt_password
             // 
@@ -138,6 +139,7 @@
             this.Controls.Add(this.txt_username);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Connexion";
             this.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.RightToLeftLayout = true;

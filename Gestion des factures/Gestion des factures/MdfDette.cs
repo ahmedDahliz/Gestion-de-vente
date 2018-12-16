@@ -32,20 +32,29 @@ namespace Gestion_des_factures
         }
         private void MdfDette_Load(object sender, EventArgs e)
         {
-            dtaDette.Fill(ds, "Dettes");
-            dtaClt.Fill(ds, "Client");
-            if (ds.Tables["Client"].Rows.Count != 0)
+            try
             {
-                idC = int.Parse(ds.Tables["Client"].Rows[ds.Tables["Client"].Rows.Count - 1]["NumClt"].ToString());
+                dtaDette.Fill(ds, "Dettes");
+                dtaClt.Fill(ds, "Client");
+                if (ds.Tables["Client"].Rows.Count != 0)
+                {
+                    idC = int.Parse(ds.Tables["Client"].Rows[ds.Tables["Client"].Rows.Count - 1]["NumClt"].ToString());
+                }
+                else idC = 0;
+                DataRow rw = ds.Tables["Client"].NewRow();
+                rw["NomClt"] = "إختر إسم";
+                rw["NumClt"] = 0;
+                ds.Tables["Client"].Rows.InsertAt(rw, 0);
+                cb_nmC.ValueMember = "NumClt";
+                cb_nmC.DisplayMember = "NomClt";
+                cb_nmC.DataSource = ds.Tables["Client"];
             }
-            else idC = 0;
-            DataRow rw = ds.Tables["Client"].NewRow();
-            rw["NomClt"] = "إختر إسم";
-            rw["NumClt"] = 0;
-            ds.Tables["Client"].Rows.InsertAt(rw, 0);
-            cb_nmC.ValueMember = "NumClt";
-            cb_nmC.DisplayMember = "NomClt";
-            cb_nmC.DataSource = ds.Tables["Client"];
+            catch (Exception ex)
+            {
+                MessageBox.Show("هناك خطأ أثناء العملية المرجوا إعادة المحاولة");
+                string Err = "[" + DateTime.Now + "] [Exception] __ [Form :" + this.Name + " ; Button: " + sender.ToString() + " ; Event: " + e.ToString() + "] __ ExceptionMessage : " + ex.Message;
+                Acceuil.WriteLog(Err);
+            }
 
 
         }
@@ -61,51 +70,71 @@ namespace Gestion_des_factures
         string nameClt;
         private void cb_nmC_SelectionChangeCommitted(object sender, EventArgs e)
         {
-            DataRow[] drC = ds.Tables["Client"].Select("NumClt = "+cb_nmC.SelectedValue.ToString());
-            DataRow[] drD = ds.Tables["Dettes"].Select("NuClt = " + cb_nmC.SelectedValue.ToString());
-            if (drC.Length > 0 & drD.Length > 0)
+            try
             {
-                txt_numD.Text = drD[0]["NumDette"].ToString();
-                txt_nmC.Text = drC[0]["NomClt"].ToString();
-                nameClt = drC[0]["NomClt"].ToString();
-                msk_teleC.Text = drC[0]["tele"].ToString();
-                txt_adress.Text = drC[0]["Adresse"].ToString();
-                txt_pxD.Text = drD[0]["PrixDette"].ToString();
-                label5.Visible = false;
+                DataRow[] drC = ds.Tables["Client"].Select("NumClt = " + cb_nmC.SelectedValue.ToString());
+                DataRow[] drD = ds.Tables["Dettes"].Select("NuClt = " + cb_nmC.SelectedValue.ToString());
+                if (drC.Length > 0 & drD.Length > 0)
+                {
+                    txt_numD.Text = drD[0]["NumDette"].ToString();
+                    txt_nmC.Text = drC[0]["NomClt"].ToString();
+                    nameClt = drC[0]["NomClt"].ToString();
+                    msk_teleC.Text = drC[0]["tele"].ToString();
+                    txt_adress.Text = drC[0]["Adresse"].ToString();
+                    txt_pxD.Text = drD[0]["PrixDette"].ToString();
+                    label5.Visible = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("هناك خطأ أثناء العملية المرجوا إعادة المحاولة");
+                string Err = "[" + DateTime.Now + "] [Exception] __ [Form :" + this.Name + " ; Button: " + sender.ToString() + " ; Event: " + e.ToString() + "] __ ExceptionMessage : " + ex.Message;
+                Acceuil.WriteLog(Err);
             }
         }
 
         private void txt_numD_TextChanged(object sender, EventArgs e)
         {
-            int id;
-            if (int.TryParse(txt_numD.Text, out id) || txt_numD.Text == "")
+            try
             {
-                DataRow[] drD = ds.Tables["Dettes"].Select("NumDette = " + txt_numD.Text);
-                if (drD.Length > 0)
+                int id;
+                if (int.TryParse(txt_numD.Text, out id) || txt_numD.Text == "")
                 {
-                    DataRow[] drC = ds.Tables["Client"].Select("NumClt = " + drD[0]["NuClt"].ToString());
-                    if (drC.Length > 0)
+                    DataRow[] drD = ds.Tables["Dettes"].Select("NumDette = " + txt_numD.Text);
+                    if (drD.Length > 0)
                     {
-                        txt_nmC.Text = drC[0]["NomClt"].ToString();
-                        msk_teleC.Text = drC[0]["tele"].ToString();
-                        txt_adress.Text = drC[0]["Adresse"].ToString();
-                        txt_pxD.Text = drD[0]["PrixDette"].ToString();
-                        cb_nmC.SelectedValue = drC[0]["NumClt"].ToString();
-                        label5.Visible = false;
+                        DataRow[] drC = ds.Tables["Client"].Select("NumClt = " + drD[0]["NuClt"].ToString());
+                        if (drC.Length > 0)
+                        {
+                            txt_nmC.Text = drC[0]["NomClt"].ToString();
+                            msk_teleC.Text = drC[0]["tele"].ToString();
+                            txt_adress.Text = drC[0]["Adresse"].ToString();
+                            txt_pxD.Text = drD[0]["PrixDette"].ToString();
+                            cb_nmC.SelectedValue = drC[0]["NumClt"].ToString();
+                            label5.Visible = false;
+                        }
                     }
                 }
-            }else MessageBox.Show("رقم الدين الذي أدخلته غير مقبول", "خطأ في إدخال رقم الدين", MessageBoxButtons.OK, MessageBoxIcon.Error);
-             
+                else MessageBox.Show("رقم الدين الذي أدخلته غير مقبول", "خطأ في إدخال رقم الدين", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("هناك خطأ أثناء العملية المرجوا إعادة المحاولة");
+                string Err = "[" + DateTime.Now + "] [Exception] __ [Form :" + this.Name + " ; Button: " + sender.ToString() + " ; Event: " + e.ToString() + "] __ ExceptionMessage : " + ex.Message;
+                Acceuil.WriteLog(Err);
+            }
            
         }
 
         private void button4_Click(object sender, EventArgs e)
         {
-            float pd;
-            if (txt_nmC.Text != "" && txt_pxD.Text != "" && txt_adress.Text != "" && msk_teleC.Text != "")
+            try
             {
-                //if (!nameClt.Equals(txt_nmC.Text) && CheckInDt(ds.Tables["Client"], txt_nmC.Text, "NomClt"))
-                //{
+                float pd;
+                if (txt_nmC.Text != "" && txt_pxD.Text != "" && txt_adress.Text != "" && msk_teleC.Text != "")
+                {
+                    //if (!nameClt.Equals(txt_nmC.Text) && CheckInDt(ds.Tables["Client"], txt_nmC.Text, "NomClt"))
+                    //{
                     if (float.TryParse(txt_pxD.Text, out pd))
                     {
                         DataView dv = new DataView(ds.Tables["Client"], "NumClt= " + cb_nmC.SelectedValue.ToString(), "", DataViewRowState.CurrentRows);
@@ -119,26 +148,42 @@ namespace Gestion_des_factures
                         dv[0][1] = pd;
                         dv[0].EndEdit();
                         label5.Visible = true;
-                    }else MessageBox.Show("أحد الأثمنة غير مقبولة", "خطأ في إدخال الأثمنة", MessageBoxButtons.OK, MessageBoxIcon.Error);
-               
-               // }else MessageBox.Show("إسم الزبون الذي أذخلته موجود سابقا ", "إسم الزبون مكرر", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button2, MessageBoxOptions.RightAlign);
-               
+                    }
+                    else MessageBox.Show("أحد الأثمنة غير مقبولة", "خطأ في إدخال الأثمنة", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                    // }else MessageBox.Show("إسم الزبون الذي أذخلته موجود سابقا ", "إسم الزبون مكرر", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button2, MessageBoxOptions.RightAlign);
+
+                }
+                else MessageBox.Show("المرجو ملأ الحقول الفارغة", "أحد الحقول فارغة", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-            else MessageBox.Show("المرجو ملأ الحقول الفارغة", "أحد الحقول فارغة", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            catch (Exception ex)
+            {
+                MessageBox.Show("هناك خطأ أثناء العملية المرجوا إعادة المحاولة");
+                string Err = "[" + DateTime.Now + "] [Exception] __ [Form :" + this.Name + " ; Button: " + sender.ToString() + " ; Event: " + e.ToString() + "] __ ExceptionMessage : " + ex.Message;
+                Acceuil.WriteLog(Err);
+            }
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            Acceuil.cnx.Open();
-            ds.Tables["Client"].Rows.RemoveAt(0);
-            SQLiteCommandBuilder cmdb = new SQLiteCommandBuilder(dtaClt);
-            dtaClt.Update(ds, "Client");
-            cmdb = new SQLiteCommandBuilder(dtaDette);
-            dtaDette.Update(ds, "Dettes");
-            saved = true;
-            Acceuil.cnx.Close();
-            MessageBox.Show("تم حفض المعلومات بنجاح", " حفض المعلومات", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button2, MessageBoxOptions.RightAlign);
-
+            try
+            {
+                Acceuil.cnx.Open();
+                ds.Tables["Client"].Rows.RemoveAt(0);
+                SQLiteCommandBuilder cmdb = new SQLiteCommandBuilder(dtaClt);
+                dtaClt.Update(ds, "Client");
+                cmdb = new SQLiteCommandBuilder(dtaDette);
+                dtaDette.Update(ds, "Dettes");
+                saved = true;
+                Acceuil.cnx.Close();
+                MessageBox.Show("تم حفض المعلومات بنجاح", " حفض المعلومات", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button2, MessageBoxOptions.RightAlign);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("هناك خطأ أثناء العملية المرجوا إعادة المحاولة");
+                string Err = "[" + DateTime.Now + "] [Exception] __ [Form :" + this.Name + " ; Button: " + sender.ToString() + " ; Event: " + e.ToString() + "] __ ExceptionMessage : " + ex.Message;
+                Acceuil.WriteLog(Err);
+            }
         }
         bool ex = true;
         private void button6_Click(object sender, EventArgs e)

@@ -36,86 +36,106 @@ namespace Gestion_des_factures
         bool saved = true;
         private void GetProduct(object sender, EventArgs e)
         {
-            DataView dv = null;
-            if (txt_numP.Text == "")
+            try
             {
-                if (cb_typePrd.SelectedIndex == 0)
+                DataView dv = null;
+                if (txt_numP.Text == "")
                 {
-                    if (txt_nomPrd.Text != "")
+                    if (cb_typePrd.SelectedIndex == 0)
                     {
-                        dv = new DataView(ds.Tables["Produits"], "Desingation LIKE '%" + txt_nomPrd.Text + "%'", "", DataViewRowState.CurrentRows);
+                        if (txt_nomPrd.Text != "")
+                        {
+                            dv = new DataView(ds.Tables["Produits"], "Desingation LIKE '%" + txt_nomPrd.Text + "%'", "", DataViewRowState.CurrentRows);
+                        }
+                        else
+                        {
+                            lbl_prix.Text = "0";
+                            lbl_prxavi.Text = "0";
+                            cb_Prod.DataSource = ds.Tables["Produits"];
+                        }
                     }
                     else
                     {
-                        lbl_prix.Text = "0";
-                        lbl_prxavi.Text = "0";
-                        cb_Prod.DataSource = ds.Tables["Produits"];
-                    }
-                }
-                else
-                {
-                    if (txt_nomPrd.Text != "")
-                    {
-                        dv = new DataView(ds.Tables["Produits"], "Desingation LIKE '%" + txt_nomPrd.Text + "%' AND NuType = " + cb_typePrd.SelectedValue.ToString(), "", DataViewRowState.CurrentRows);
-                    }
-                    else
-                    {
-                        dv = new DataView(ds.Tables["Produits"], "NuType = " + cb_typePrd.SelectedValue.ToString(), "", DataViewRowState.CurrentRows);
+                        if (txt_nomPrd.Text != "")
+                        {
+                            dv = new DataView(ds.Tables["Produits"], "Desingation LIKE '%" + txt_nomPrd.Text + "%' AND NuType = " + cb_typePrd.SelectedValue.ToString(), "", DataViewRowState.CurrentRows);
+                        }
+                        else
+                        {
+                            dv = new DataView(ds.Tables["Produits"], "NuType = " + cb_typePrd.SelectedValue.ToString(), "", DataViewRowState.CurrentRows);
 
+                        }
                     }
                 }
+                else dv = new DataView(ds.Tables["Produits"], "NumPrd = " + txt_numP.Text + "", "", DataViewRowState.CurrentRows);
+                if (dv.ToTable().Rows.Count != 0)
+                {
+                    cb_Prod.DataSource = dv.ToTable();
+                }
             }
-            else dv = new DataView(ds.Tables["Produits"], "NumPrd = " + txt_numP.Text + "", "", DataViewRowState.CurrentRows);
-            if (dv.ToTable().Rows.Count != 0)
+            catch (Exception ex)
             {
-                cb_Prod.DataSource = dv.ToTable();
+                MessageBox.Show("هناك خطأ أثناء العملية المرجوا إعادة المحاولة");
+                string Err = "[" + DateTime.Now + "] [Exception] __ [Form :" + this.Name + " ; Button: " + sender.ToString() + " ; Event: " + e.ToString() + "] __ ExceptionMessage : " + ex.Message;
+                Acceuil.WriteLog(Err);
             }
-            
                 
         }
 
         private void AjtVente_Load(object sender, EventArgs e)
         {
-            SQLiteDataAdapter dtaIdCmd = new SQLiteDataAdapter("Select * from sqlite_sequence where name='Commande'", Acceuil.cnx);
-            SQLiteDataAdapter dtaIdLCmd = new SQLiteDataAdapter("Select * from sqlite_sequence where name='Ling_commande'", Acceuil.cnx);
-            dtaType.Fill(ds, "Types");
-            dtaProduit.Fill(ds, "Produits");
-            dtaStocke.Fill(ds, "Stocks");
-            dtaPxA.Fill(ds, "TypPA");
-            dtaPxB.Fill(ds, "TypPB");
-            dtaPxC.Fill(ds, "TypPC");
-            dtaClt.Fill(ds, "Client");
-            dtaLCmd.Fill(ds, "LignCmd");
-            dtaCmd.Fill(ds, "Cmd");
-            dtaIdLCmd.Fill(ds, "idLign");
-            dtaIdCmd.Fill(ds, "idCmd");
-            // load list of Types
-            DataRow rw = ds.Tables["Types"].NewRow();
-            rw["NomType"] = "جميع الأنواع";
-            rw["NumType"] = 0;
-            ds.Tables["Types"].Rows.InsertAt(rw, 0);
-            cb_typePrd.ValueMember = "NumType";
-            cb_typePrd.DisplayMember = "NomType";
-            cb_typePrd.DataSource = ds.Tables["Types"];
-            // load list of Products
-            cb_Prod.ValueMember = "NumPrd";
-            cb_Prod.DisplayMember = "Desingation";
-            cb_Prod.DataSource = ds.Tables["Produits"];
-            // load list of Clients
-            cb_nomC.ValueMember = "NumClt";
-            cb_nomC.DisplayMember = "Nomclt";
-            cb_nomC.DataSource = ds.Tables["Client"];
-            idCmd = int.Parse(ds.Tables["IdCmd"].Rows[0]["seq"].ToString());
-            idLCmd = int.Parse(ds.Tables["idLign"].Rows[0]["seq"].ToString());
-            idLCmd++;
-            dtnv.Columns.Add("الرقم");
-            dtnv.Columns.Add("السلعة");
-            dtnv.Columns.Add("الكمية");
-            dtnv.Columns.Add("ثمن الوحدة");
-            dtnv.Columns.Add("الواجب");
-            dgv_ProdV.DataSource = dtnv;
-            lbl_datAjr.Text = DateTime.Today.ToShortDateString();
-           
+            try
+            {
+                SQLiteDataAdapter dtaIdCmd = new SQLiteDataAdapter("Select * from sqlite_sequence where name='Commande'", Acceuil.cnx);
+                SQLiteDataAdapter dtaIdLCmd = new SQLiteDataAdapter("Select * from sqlite_sequence where name='Ling_commande'", Acceuil.cnx);
+                dtaType.Fill(ds, "Types");
+                dtaProduit.Fill(ds, "Produits");
+                dtaStocke.Fill(ds, "Stocks");
+                dtaPxA.Fill(ds, "TypPA");
+                dtaPxB.Fill(ds, "TypPB");
+                dtaPxC.Fill(ds, "TypPC");
+                dtaClt.Fill(ds, "Client");
+                dtaLCmd.Fill(ds, "LignCmd");
+                dtaCmd.Fill(ds, "Cmd");
+                dtaIdLCmd.Fill(ds, "idLign");
+                dtaIdCmd.Fill(ds, "idCmd");
+                // load list of Types
+                DataRow rw = ds.Tables["Types"].NewRow();
+                rw["NomType"] = "جميع الأنواع";
+                rw["NumType"] = 0;
+                ds.Tables["Types"].Rows.InsertAt(rw, 0);
+                cb_typePrd.ValueMember = "NumType";
+                cb_typePrd.DisplayMember = "NomType";
+                cb_typePrd.DataSource = ds.Tables["Types"];
+                // load list of Products
+                cb_Prod.ValueMember = "NumPrd";
+                cb_Prod.DisplayMember = "Desingation";
+                cb_Prod.DataSource = ds.Tables["Produits"];
+                // load list of Clients
+                rw = ds.Tables["Client"].NewRow();
+                rw["Nomclt"] = "إختر زبون";
+                rw["NumClt"] = 0;
+                ds.Tables["Client"].Rows.InsertAt(rw, 0);
+                cb_nomC.ValueMember = "NumClt";
+                cb_nomC.DisplayMember = "Nomclt";
+                cb_nomC.DataSource = ds.Tables["Client"];
+                idCmd = int.Parse(ds.Tables["IdCmd"].Rows[0]["seq"].ToString());
+                idLCmd = int.Parse(ds.Tables["idLign"].Rows[0]["seq"].ToString());
+                idLCmd++;
+                dtnv.Columns.Add("الرقم");
+                dtnv.Columns.Add("السلعة");
+                dtnv.Columns.Add("الكمية");
+                dtnv.Columns.Add("ثمن الوحدة");
+                dtnv.Columns.Add("الواجب");
+                dgv_ProdV.DataSource = dtnv;
+                lbl_datAjr.Text = DateTime.Today.ToShortDateString();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("هناك خطأ أثناء العملية المرجوا إعادة المحاولة");
+                string Err = "[" + DateTime.Now + "] [Exception] __ [Form :" + this.Name + " ; Button: " + sender.ToString() + " ; Event: " + e.ToString() + "] __ ExceptionMessage : " + ex.Message;
+                Acceuil.WriteLog(Err);
+            }  
         }
 
         private void rb_persn_CheckedChanged(object sender, EventArgs e)
@@ -172,19 +192,23 @@ namespace Gestion_des_factures
         {
             rb_CltnE.Enabled = !ch_ventADette.Checked;
             rb_CltE.Checked = ch_ventADette.Checked;
-            rb_CltnE.Checked = !ch_ventADette.Checked;  
+            rb_CltnE.Checked = !ch_ventADette.Checked;
+            txt_AnvcD.Enabled = ch_ventADette.Checked;
+            label16.Enabled = ch_ventADette.Checked; ;
+
         }
 
         private void cb_Prod_SelectedIndexChanged(object sender, EventArgs e)
         {
-          
+            try
+            {
                 DataView dv = new DataView(ds.Tables["Stocks"], "NuPrd = " + cb_Prod.SelectedValue.ToString(), "", DataViewRowState.CurrentRows);
                 if (int.Parse(dv[0]["QttProd"].ToString()) == 0)
                 {
                     lbl_ttrprxav.ForeColor = System.Drawing.Color.Red;
                     lbl_prxavi.ForeColor = System.Drawing.Color.Red;
                     button1.Enabled = false;
-                   
+
                 }
                 else
                 {
@@ -208,8 +232,14 @@ namespace Gestion_des_factures
                     lbl_prix.Text = "0";
                     lbl_prxavi.Text = "0";
                 }
-           
 
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("هناك خطأ أثناء العملية المرجوا إعادة المحاولة");
+                string Err = "[" + DateTime.Now + "] [Exception] __ [Form :" + this.Name + " ; Button: " + sender.ToString() + " ; Event: " + e.ToString() + "] __ ExceptionMessage : " + ex.Message;
+                Acceuil.WriteLog(Err);
+            }
         }
         private void getNamClient(string str) {
             lbl_nomC.Text = str;
@@ -270,6 +300,7 @@ namespace Gestion_des_factures
             addCell(e2, FootTable, "عدد السلع : " + lbl_qttV.Text);
             addCell(e2, FootTable, "الواجب أدائه  : " + lbl_prixTotal.Text + " درهم");
             document.Add(FootTable);
+            //add  
             if (ch_ventADette.Checked)
             {
                 SQLiteDataAdapter dtaDette = new SQLiteDataAdapter("Select * from Dettes", Acceuil.cnx);
@@ -277,7 +308,6 @@ namespace Gestion_des_factures
                 DataView dvD = new DataView(ds.Tables["Dettes"], "NuClt = " + cb_nomC.SelectedValue.ToString(), "", DataViewRowState.CurrentRows);
                 float dt = float.Parse(dvD[0]["PrixDette"].ToString());
                 DataView dvC = new DataView(ds.Tables["Client"], "NumClt = " + cb_nomC.SelectedValue.ToString(), "", DataViewRowState.CurrentRows);
-
                 //add separator
                 document.Add(p);
                 PdfPTable DetteTable = new PdfPTable(1);
@@ -286,8 +316,14 @@ namespace Gestion_des_factures
                 addCell(e2, DetteTable, "البيع بسلف ل : " + dvC[0]["NomClt"]);
                 addCell(e2, DetteTable, "الهاتف : " + dvC[0]["Tele"]);
                 addCell(e2, DetteTable, "العنوان : " + dvC[0]["Adresse"]);
-                addCell(e2, DetteTable, "الثمن المضاف إلى الدين   : " + lbl_prixTotal.Text + " درهم");
-                dt += float.Parse(lbl_prixTotal.Text);
+                float pxd = float.Parse(lbl_prixTotal.Text);
+                if (txt_AnvcD.Text != "")
+                {
+                    addCell(e2, DetteTable, "التسبيق   : " + txt_AnvcD.Text + " درهم");
+                    pxd -= float.Parse(txt_AnvcD.Text);
+                }
+                addCell(e2, DetteTable, "الثمن المضاف إلى الدين   : " + pxd + " درهم");
+               // dt += float.Parse(lbl_prixTotal.Text);
                 addCell(e2, DetteTable, "مجموع الدين الحالي  : " + dt + " درهم");
                 document.Add(DetteTable);
             }
@@ -319,7 +355,7 @@ namespace Gestion_des_factures
 
         private void cb_nomC_SelectionChangeCommitted(object sender, EventArgs e)
         {
-            getNamClient(cb_nomC.Text);
+            getNamClient((cb_nomC.SelectedIndex != 0)? cb_nomC.Text: "");  
         }
 
         private void txt_nomC_TextChanged(object sender, EventArgs e)
@@ -329,61 +365,85 @@ namespace Gestion_des_factures
         float pxTTl = 0;
         private void button1_Click(object sender, EventArgs e)
         {
-            if (lbl_nomC.Text != "")
+            try
             {
-                DataRow dr = ds.Tables["Cmd"].NewRow();
-                dr[1] = idLCmd;
-                dr[2] = lbl_prix.Text;
-                dr[3] = lbl_prxQtt.Text;
-                dr[4] = nud_qtt.Value;
-                dr[5] = cb_Prod.SelectedValue.ToString();
-                ds.Tables["Cmd"].Rows.Add(dr);
-                //
-                dr = dtnv.NewRow();
-                dr[0] = cb_Prod.SelectedValue.ToString();
-                dr[1] = cb_Prod.Text;
-                dr[2] = nud_qtt.Value;
-                dr[3] = lbl_prix.Text;
-                dr[4] = lbl_prxQtt.Text;
-                dtnv.Rows.Add(dr);
-                lbl_qttV.Text = dtnv.Rows.Count.ToString();
-                pxTTl += float.Parse(lbl_prxQtt.Text);
-                lbl_prixTotal.Text = pxTTl.ToString();
-                button8.Enabled = true;
-                button9.Enabled = true;
-                button2.Enabled = true;
+                if (lbl_nomC.Text != "")
+                {
+                    DataRow dr = ds.Tables["Cmd"].NewRow();
+                    dr[1] = idLCmd;
+                    dr[2] = lbl_prix.Text;
+                    dr[3] = lbl_prxQtt.Text;
+                    dr[4] = nud_qtt.Value;
+                    dr[5] = cb_Prod.SelectedValue.ToString();
+                    ds.Tables["Cmd"].Rows.Add(dr);
+                    //
+                    dr = dtnv.NewRow();
+                    dr[0] = cb_Prod.SelectedValue.ToString();
+                    dr[1] = cb_Prod.Text;
+                    dr[2] = nud_qtt.Value;
+                    dr[3] = lbl_prix.Text;
+                    dr[4] = lbl_prxQtt.Text;
+                    dtnv.Rows.Add(dr);
+                    lbl_qttV.Text = dtnv.Rows.Count.ToString();
+                    pxTTl += float.Parse(lbl_prxQtt.Text);
+                    lbl_prixTotal.Text = pxTTl.ToString();
+                    button8.Enabled = true;
+                    button9.Enabled = true;
+                    button2.Enabled = true;
+                }
+                else MessageBox.Show("قم بتحديد إسم الزبون أولا", " إسم الزبون غير محدد", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button2, MessageBoxOptions.RightAlign);
             }
-            else MessageBox.Show("قم بتحديد إسم الزبون أولا", " إسم الزبون غير محدد", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button2, MessageBoxOptions.RightAlign);
-        
+            catch (Exception ex)
+            {
+                MessageBox.Show("هناك خطأ أثناء العملية المرجوا إعادة المحاولة");
+                string Err = "[" + DateTime.Now + "] [Exception] __ [Form :" + this.Name + " ; Button: " + sender.ToString() + " ; Event: " + e.ToString() + "] __ ExceptionMessage : " + ex.Message;
+                Acceuil.WriteLog(Err);
+            }
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-            SQLiteCommandBuilder cmdb;
-            if (ch_ventADette.Checked)
-            {   //add to table Dettes
-                SQLiteDataAdapter dtaDette = new SQLiteDataAdapter("Select * from Dettes", Acceuil.cnx);
-                dtaDette.Fill(ds, "Dettes");
-                DataView dv = new DataView(ds.Tables["Dettes"], "NuClt = " + cb_nomC.SelectedValue.ToString(), "", DataViewRowState.CurrentRows);
-                float dt = float.Parse(dv[0]["PrixDette"].ToString());
-                dt += float.Parse(lbl_prixTotal.Text);
-                dv[0]["PrixDette"] = dt;
-                cmdb = new SQLiteCommandBuilder(dtaDette);
-                dtaDette.Update(ds, "Dettes");
+            try
+            {
+                SQLiteCommandBuilder cmdb;
+                if (ch_ventADette.Checked)
+                {   //add to table Dettes
+                    SQLiteDataAdapter dtaDette = new SQLiteDataAdapter("Select * from Dettes", Acceuil.cnx);
+                    dtaDette.Fill(ds, "Dettes");
+                    DataView dv = new DataView(ds.Tables["Dettes"], "NuClt = " + cb_nomC.SelectedValue.ToString(), "", DataViewRowState.CurrentRows);
+                    float dt = float.Parse(dv[0]["PrixDette"].ToString());
+                    float prx = float.Parse(lbl_prixTotal.Text);
+                    if (txt_AnvcD.Text != "")
+                    {
+                        prx -= float.Parse(txt_AnvcD.Text);
+                    }
+                    dt += prx;
+                    dv[0]["PrixDette"] = dt;
+                    cmdb = new SQLiteCommandBuilder(dtaDette);
+                    dtaDette.Update(ds, "Dettes");
+                }
+                DataRow dr = ds.Tables["LignCmd"].NewRow();
+                idCmd++;
+                dr[1] = lbl_nomC.Text;
+                dr[2] = idCmd;
+                dr[3] = lbl_prixTotal.Text;
+                dr[4] = DateTime.Now.ToShortDateString();
+                ds.Tables["LignCmd"].Rows.Add(dr);
+                cmdb = new SQLiteCommandBuilder(dtaCmd);
+                dtaCmd.Update(ds, "Cmd");
+                cmdb = new SQLiteCommandBuilder(dtaLCmd);
+                dtaLCmd.Update(ds, "LignCmd");
+                String dtn = DateTime.Now.Day + "_" + DateTime.Now.Month + "_" + DateTime.Now.Year;
+                CreatePdf("N" + idLCmd + "_" + dtn + ".pdf");
+                button9.Enabled = false;
+                button8.PerformClick();
             }
-            DataRow dr = ds.Tables["LignCmd"].NewRow();
-            idCmd++;
-            dr[1] = lbl_nomC.Text;
-            dr[2] = idCmd;
-            dr[3] = lbl_prixTotal.Text;
-            dr[4] = DateTime.Now.ToShortDateString();
-            ds.Tables["LignCmd"].Rows.Add(dr);
-            cmdb = new SQLiteCommandBuilder(dtaCmd);
-            dtaCmd.Update(ds, "Cmd");
-            cmdb = new SQLiteCommandBuilder(dtaLCmd);
-            dtaLCmd.Update(ds, "LignCmd");
-            String dtn = DateTime.Now.Day + "_" + DateTime.Now.Month + "_" + DateTime.Now.Year;
-            CreatePdf("N"+idLCmd+"_"+dtn+".pdf");
+            catch (Exception ex)
+            {
+                MessageBox.Show("هناك خطأ أثناء العملية المرجوا إعادة المحاولة");
+                string Err = "[" + DateTime.Now + "] [Exception] __ [Form :" + this.Name + " ; Button: " + sender.ToString() + " ; Event: " + e.ToString() + "] __ ExceptionMessage : " + ex.Message;
+                Acceuil.WriteLog(Err);
+            }
         }
            
 
@@ -395,52 +455,77 @@ namespace Gestion_des_factures
         string idPr;
         private void button5_Click(object sender, EventArgs e)
         {
-            if (dgv_ProdV.SelectedRows.Count == 1)
+            try
             {
-                idPr = dtnv.Rows[dgv_ProdV.CurrentRow.Index][0].ToString();
-                cb_Prod.SelectedValue = idPr;
-                nud_qtt.Value = int.Parse(dgv_ProdV.CurrentRow.Cells[2].Value.ToString());
-                button6.Visible = true;
-                button1.Visible = false;
+                if (dgv_ProdV.SelectedRows.Count == 1)
+                {
+                    idPr = dtnv.Rows[dgv_ProdV.CurrentRow.Index][0].ToString();
+                    cb_Prod.SelectedValue = idPr;
+                    nud_qtt.Value = int.Parse(dgv_ProdV.CurrentRow.Cells[2].Value.ToString());
+                    button6.Visible = true;
+                    button1.Visible = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("هناك خطأ أثناء العملية المرجوا إعادة المحاولة");
+                string Err = "[" + DateTime.Now + "] [Exception] __ [Form :" + this.Name + " ; Button: " + sender.ToString() + " ; Event: " + e.ToString() + "] __ ExceptionMessage : " + ex.Message;
+                Acceuil.WriteLog(Err);
             }
         }
 
         private void button6_Click(object sender, EventArgs e)
         {
-
-            int iV = ds.Tables["Cmd"].Rows.IndexOf(ds.Tables["Cmd"].Select("NumCmd = "+idLCmd+" AND NuPrd = " + idPr)[0]);
-            int idg = dtnv.Rows.IndexOf(dtnv.Select("الرقم = " + idPr)[0]);
-            ds.Tables["Cmd"].Rows[iV].BeginEdit();
-            ds.Tables["Cmd"].Rows[iV]["PrixCmd"] = lbl_prxQtt.Text;
-            ds.Tables["Cmd"].Rows[iV]["QttCmd"] = nud_qtt.Value;
-            ds.Tables["Cmd"].Rows[iV]["NuPrd"] = cb_Prod.SelectedValue.ToString();
-            ds.Tables["Cmd"].Rows[iV].EndEdit();
-            //
-            dtnv.Rows[idg].BeginEdit();
-            dtnv.Rows[idg]["الرقم"] = cb_Prod.SelectedValue.ToString();
-            dtnv.Rows[idg]["السلعة"] = cb_Prod.Text;
-            dtnv.Rows[idg]["الكمية"] = nud_qtt.Value;
-            dtnv.Rows[idg]["ثمن الوحدة"] = lbl_prix.Text;
-            dtnv.Rows[idg]["الواجب"] = lbl_prxQtt.Text;
-            dtnv.Rows[idg].EndEdit();
-            button6.Visible = false;
-            button1.Visible = true;
-            MessageBox.Show("تم تعديل المعلومات بنجاح", " تعديل المعلومات", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button2, MessageBoxOptions.RightAlign);
-
+            try
+            {
+                int iV = ds.Tables["Cmd"].Rows.IndexOf(ds.Tables["Cmd"].Select("NumCmd = " + idLCmd + " AND NuPrd = " + idPr)[0]);
+                int idg = dtnv.Rows.IndexOf(dtnv.Select("الرقم = " + idPr)[0]);
+                ds.Tables["Cmd"].Rows[iV].BeginEdit();
+                ds.Tables["Cmd"].Rows[iV]["PrixCmd"] = lbl_prxQtt.Text;
+                ds.Tables["Cmd"].Rows[iV]["QttCmd"] = nud_qtt.Value;
+                ds.Tables["Cmd"].Rows[iV]["NuPrd"] = cb_Prod.SelectedValue.ToString();
+                ds.Tables["Cmd"].Rows[iV].EndEdit();
+                //
+                dtnv.Rows[idg].BeginEdit();
+                dtnv.Rows[idg]["الرقم"] = cb_Prod.SelectedValue.ToString();
+                dtnv.Rows[idg]["السلعة"] = cb_Prod.Text;
+                dtnv.Rows[idg]["الكمية"] = nud_qtt.Value;
+                dtnv.Rows[idg]["ثمن الوحدة"] = lbl_prix.Text;
+                dtnv.Rows[idg]["الواجب"] = lbl_prxQtt.Text;
+                dtnv.Rows[idg].EndEdit();
+                button6.Visible = false;
+                button1.Visible = true;
+                MessageBox.Show("تم تعديل المعلومات بنجاح", " تعديل المعلومات", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button2, MessageBoxOptions.RightAlign);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("هناك خطأ أثناء العملية المرجوا إعادة المحاولة");
+                string Err = "[" + DateTime.Now + "] [Exception] __ [Form :" + this.Name + " ; Button: " + sender.ToString() + " ; Event: " + e.ToString() + "] __ ExceptionMessage : " + ex.Message;
+                Acceuil.WriteLog(Err);
+            }
         }
 
         private void button7_Click(object sender, EventArgs e)
         {
-            if (dgv_ProdV.SelectedRows.Count == 1)
+            try
             {
-                var rep = MessageBox.Show("هل تريد حذف المعلومات المختارة ", "حذف المعلومات", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1, MessageBoxOptions.RightAlign);
-                if (rep == DialogResult.Yes)
+                if (dgv_ProdV.SelectedRows.Count == 1)
                 {
-                    idPr = dtnv.Rows[dgv_ProdV.CurrentRow.Index][0].ToString();
-                    ds.Tables["Cmd"].Rows.Remove((ds.Tables["Cmd"].Select("NumCmd = " + idLCmd + " AND NuPrd = " + idPr)[0]));
-                    dtnv.Rows.RemoveAt(dgv_ProdV.CurrentRow.Index);
-                    dgv_ProdV.Text = dtnv.Rows.Count.ToString();
+                    var rep = MessageBox.Show("هل تريد حذف المعلومات المختارة ", "حذف المعلومات", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1, MessageBoxOptions.RightAlign);
+                    if (rep == DialogResult.Yes)
+                    {
+                        idPr = dtnv.Rows[dgv_ProdV.CurrentRow.Index][0].ToString();
+                        ds.Tables["Cmd"].Rows.Remove((ds.Tables["Cmd"].Select("NumCmd = " + idLCmd + " AND NuPrd = " + idPr)[0]));
+                        dtnv.Rows.RemoveAt(dgv_ProdV.CurrentRow.Index);
+                        dgv_ProdV.Text = dtnv.Rows.Count.ToString();
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("هناك خطأ أثناء العملية المرجوا إعادة المحاولة");
+                string Err = "[" + DateTime.Now + "] [Exception] __ [Form :" + this.Name + " ; Button: " + sender.ToString() + " ; Event: " + e.ToString() + "] __ ExceptionMessage : " + ex.Message;
+                Acceuil.WriteLog(Err);
             }
         }
 
@@ -458,7 +543,7 @@ namespace Gestion_des_factures
                 txt_numP.Text = "";
                 cb_typePrd.SelectedIndex = 0;
                 button8.Enabled = false;
-                button8.Enabled = false;
+                button9.Enabled = false;
                 button2.Enabled = false;
             }
             
@@ -523,6 +608,23 @@ namespace Gestion_des_factures
                 button8.Enabled = false;
                 button9.Enabled = false;
                 button2.Enabled = false;
+            }
+
+        }
+
+        private void txt_AnvcD_TextChanged(object sender, EventArgs e)  
+        {
+            float px;
+            if (txt_AnvcD.Text != "")
+            {
+                if (float.TryParse(txt_AnvcD.Text, out px))
+                {
+                    if (px >= float.Parse(lbl_prixTotal.Text))
+                    {
+                        MessageBox.Show("التسبيق بجب أن يكون أقل من الثمن الواجب أدائه", "خطأ في إدخال ثمن التسبيق", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button2, MessageBoxOptions.RightAlign);
+                    }
+                }
+                else MessageBox.Show("ثمن التسبيق غير مقبول", "خطأ في إدخال ثمن التسبيق", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button2, MessageBoxOptions.RightAlign);
             }
 
         }

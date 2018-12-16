@@ -34,56 +34,73 @@ namespace Gestion_des_factures
         }
         private void AjtDette_Load(object sender, EventArgs e)
         {
-            SQLiteDataAdapter dtaId = new SQLiteDataAdapter("Select * from sqlite_sequence where name='Clients'", Acceuil.cnx);
-            dtaDette.Fill(ds, "Dettes");
-            dtaClt.Fill(ds, "Client");
-            dtaId.Fill(ds, "IdC");
-            idC = int.Parse(ds.Tables["IdC"].Rows[0]["seq"].ToString());
-            dtnp.Columns.Add("الرقم");
-            dtnp.Columns.Add("إسم الزبون");
-            dtnp.Columns.Add("الهاتف");
-            dtnp.Columns.Add("العنوان");
-            dtnp.Columns.Add("مبلغ الدين");
-            dgv_AjtDette.DataSource = dtnp;
+            try {
+                SQLiteDataAdapter dtaId = new SQLiteDataAdapter("Select * from sqlite_sequence where name='Clients'", Acceuil.cnx);
+                dtaDette.Fill(ds, "Dettes");
+                dtaClt.Fill(ds, "Client");
+                dtaId.Fill(ds, "IdC");
+                idC = int.Parse(ds.Tables["IdC"].Rows[0]["seq"].ToString());
+                dtnp.Columns.Add("الرقم");
+                dtnp.Columns.Add("إسم الزبون");
+                dtnp.Columns.Add("الهاتف");
+                dtnp.Columns.Add("العنوان");
+                dtnp.Columns.Add("مبلغ الدين");
+                dgv_AjtDette.DataSource = dtnp;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("هناك خطأ أثناء العملية المرجوا إعادة المحاولة");
+                string Err = "[" + DateTime.Now + "] [Exception] __ [Form :" + this.Name + " ; Button: " + sender.ToString() + " ; Event: " + e.ToString() + "] __ ExceptionMessage : " + ex.Message;
+                Acceuil.WriteLog(Err);
+            }
         }
 
         private void button4_Click(object sender, EventArgs e)
         {
-            float pd;
-            if (txt_nmClt.Text != "" && txt_pxDtt.Text != "")
+            try
             {
-                if (!CheckInDt(ds.Tables["Client"], "'"+txt_nmClt.Text+"'", "NomClt"))
+                float pd;
+                if (txt_nmClt.Text != "" && txt_pxDtt.Text != "")
                 {
-                    if (float.TryParse(txt_pxDtt.Text, out pd))
+                    if (!CheckInDt(ds.Tables["Client"], "'" + txt_nmClt.Text + "'", "NomClt"))
                     {
-                        DataRow ligneC = ds.Tables["Client"].NewRow();
-                        DataRow ligneD = ds.Tables["Dettes"].NewRow();
-                        DataRow ligneDgv = dtnp.NewRow();
-                        ligneC[1] = txt_nmClt.Text;
-                        ligneC[2] = mst_teleClt.Text.Replace(" ", "");
-                        ligneC[3] = txt_Adrss.Text;
-                        ds.Tables["Client"].Rows.Add(ligneC);
-                        idC++;
-                        ligneD[1] = txt_pxDtt.Text;
-                        ligneD[2] = idC;
-                        ligneD[3] = DateTime.Now.ToShortDateString();
-                        ds.Tables["Dettes"].Rows.Add(ligneD);
-                        ligneDgv[0] = idC;
-                        ligneDgv[1] = txt_nmClt.Text;
-                        ligneDgv[2] = mst_teleClt.Text.Replace(" ", "");
-                        ligneDgv[3] = txt_Adrss.Text;
-                        ligneDgv[4] = txt_pxDtt.Text;
-                        dtnp.Rows.Add(ligneDgv);
-                        saved = false;
-                        button3.PerformClick();
-                        lbl_DetteAjt.Text = dtnp.Rows.Count.ToString();
-                        dgv_AjtDette.ClearSelection();
+                        if (float.TryParse(txt_pxDtt.Text, out pd))
+                        {
+                            DataRow ligneC = ds.Tables["Client"].NewRow();
+                            DataRow ligneD = ds.Tables["Dettes"].NewRow();
+                            DataRow ligneDgv = dtnp.NewRow();
+                            ligneC[1] = txt_nmClt.Text;
+                            ligneC[2] = mst_teleClt.Text.Replace(" ", "");
+                            ligneC[3] = txt_Adrss.Text;
+                            ds.Tables["Client"].Rows.Add(ligneC);
+                            idC++;
+                            ligneD[1] = txt_pxDtt.Text;
+                            ligneD[2] = idC;
+                            ligneD[3] = DateTime.Now.ToShortDateString();
+                            ds.Tables["Dettes"].Rows.Add(ligneD);
+                            ligneDgv[0] = idC;
+                            ligneDgv[1] = txt_nmClt.Text;
+                            ligneDgv[2] = mst_teleClt.Text.Replace(" ", "");
+                            ligneDgv[3] = txt_Adrss.Text;
+                            ligneDgv[4] = txt_pxDtt.Text;
+                            dtnp.Rows.Add(ligneDgv);
+                            saved = false;
+                            button3.PerformClick();
+                            lbl_DetteAjt.Text = dtnp.Rows.Count.ToString();
+                            dgv_AjtDette.ClearSelection();
+                        }
+                        else MessageBox.Show("ثمن الدين غير مقبول", "خطأ في إدخال ثمن الدين", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button2, MessageBoxOptions.RightAlign);
                     }
-                    else MessageBox.Show("أحد الأثمنة غير مقبولة", "خطأ في إدخال الأثمنة", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button2, MessageBoxOptions.RightAlign);
+                    else MessageBox.Show("إسم الزبون الذي أذخلته موجود سابقا ", "إسم الزبون مكرر", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button2, MessageBoxOptions.RightAlign);
                 }
-                else MessageBox.Show("إسم الزبون الذي أذخلته موجود سابقا ", "إسم الزبون مكرر", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button2, MessageBoxOptions.RightAlign);
+                else MessageBox.Show("الإسم الزبون و الثمن ضروريان  ", "أحد الحقول فارغة", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button2, MessageBoxOptions.RightAlign);
             }
-            else MessageBox.Show("الإسم الزبون و الثمن ضروريان  ", "أحد الحقول فارغة", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button2, MessageBoxOptions.RightAlign);
+            catch (Exception ex)
+            {
+                MessageBox.Show("هناك خطأ أثناء العملية المرجوا إعادة المحاولة");
+                string Err = "[" + DateTime.Now + "] [Exception] __ [Form :" + this.Name + " ; Button: " + sender.ToString() + " ; Event: " + e.ToString() + "] __ ExceptionMessage : " + ex.Message;
+                Acceuil.WriteLog(Err);
+            }
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -96,15 +113,24 @@ namespace Gestion_des_factures
 
         private void button1_Click(object sender, EventArgs e)
         {
-            Acceuil.cnx.Open();
-            SQLiteCommandBuilder cmdb = new SQLiteCommandBuilder(dtaClt);
-            dtaClt.Update(ds, "Client");
-            cmdb = new SQLiteCommandBuilder(dtaDette);
-            dtaDette.Update(ds, "Dettes");
-            saved = true;
-            dtnp.Rows.Clear();
-            Acceuil.cnx.Close();
-            MessageBox.Show("تم حفض المعلومات بنجاح", " حفض المعلومات", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button2, MessageBoxOptions.RightAlign);
+            try
+            {
+                Acceuil.cnx.Open();
+                SQLiteCommandBuilder cmdb = new SQLiteCommandBuilder(dtaClt);
+                dtaClt.Update(ds, "Client");
+                cmdb = new SQLiteCommandBuilder(dtaDette);
+                dtaDette.Update(ds, "Dettes");
+                saved = true;
+                dtnp.Rows.Clear();
+                Acceuil.cnx.Close();
+                MessageBox.Show("تم حفض المعلومات بنجاح", " حفض المعلومات", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button2, MessageBoxOptions.RightAlign);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("هناك خطأ أثناء العملية المرجوا إعادة المحاولة");
+                string Err = "[" + DateTime.Now + "] [Exception] __ [Form :" + this.Name + " ; Button: " + sender.ToString() + " ; Event: " + e.ToString() + "] __ ExceptionMessage : " + ex.Message;
+                Acceuil.WriteLog(Err);
+            }
         }
         bool ex = true;
         private void button6_Click(object sender, EventArgs e)
@@ -140,18 +166,27 @@ namespace Gestion_des_factures
         String numC, nomC;
         private void button2_Click(object sender, EventArgs e)
         {
-            if (dgv_AjtDette.SelectedRows.Count == 1)
+            try
             {
-                numC = dtnp.Rows[dgv_AjtDette.CurrentRow.Index][0].ToString();
-                nomC = dtnp.Rows[dgv_AjtDette.CurrentRow.Index][1].ToString();
-                txt_nmClt.Text = dgv_AjtDette.CurrentRow.Cells[1].Value.ToString();
-                mst_teleClt.Text = dgv_AjtDette.CurrentRow.Cells[2].Value.ToString();
-                txt_Adrss.Text = dgv_AjtDette.CurrentRow.Cells[3].Value.ToString();
-                txt_pxDtt.Text = dgv_AjtDette.CurrentRow.Cells[4].Value.ToString();
-                button5.Visible = true;
-                button4.Visible = false;
-                button2.Enabled = false;
-                dgv_AjtDette.ClearSelection();
+                if (dgv_AjtDette.SelectedRows.Count == 1)
+                {
+                    numC = dtnp.Rows[dgv_AjtDette.CurrentRow.Index][0].ToString();
+                    nomC = dtnp.Rows[dgv_AjtDette.CurrentRow.Index][1].ToString();
+                    txt_nmClt.Text = dgv_AjtDette.CurrentRow.Cells[1].Value.ToString();
+                    mst_teleClt.Text = dgv_AjtDette.CurrentRow.Cells[2].Value.ToString();
+                    txt_Adrss.Text = dgv_AjtDette.CurrentRow.Cells[3].Value.ToString();
+                    txt_pxDtt.Text = dgv_AjtDette.CurrentRow.Cells[4].Value.ToString();
+                    button5.Visible = true;
+                    button4.Visible = false;
+                    button2.Enabled = false;
+                    dgv_AjtDette.ClearSelection();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("هناك خطأ أثناء العملية المرجوا إعادة المحاولة");
+                string Err = "[" + DateTime.Now + "] [Exception] __ [Form :" + this.Name + " ; Button: " + sender.ToString() + " ; Event: " + e.ToString() + "] __ ExceptionMessage : " + ex.Message;
+                Acceuil.WriteLog(Err);
             }
         }
 
@@ -168,62 +203,89 @@ namespace Gestion_des_factures
 
         private void button5_Click(object sender, EventArgs e)
         {
-             float pd;
-            if (txt_nmClt.Text != "" && txt_pxDtt.Text != "")
+            try
             {
-                if (!CheckInDt(ds.Tables["Client"], "'"+txt_nmClt.Text+"'", "NomClt"))
+                float pd;
+                if (txt_nmClt.Text != "" && txt_pxDtt.Text != "")
                 {
-                    if (float.TryParse(txt_pxDtt.Text, out pd))
+                    if (!CheckInDt(ds.Tables["Client"], "'" + txt_nmClt.Text + "'", "NomClt"))
                     {
-                        int iC = ds.Tables["Client"].Rows.IndexOf(ds.Tables["Client"].Select("NomClt = '" + nomC + "'")[0]);
-                        int iD = ds.Tables["Dettes"].Rows.IndexOf(ds.Tables["Dettes"].Select("NuClt = " + numC)[0]);
-                        int idg = dtnp.Rows.IndexOf(dtnp.Select("الرقم = " + numC)[0]);
-                        //Update DataTable Client
-                        ds.Tables["Client"].Rows[iC].BeginEdit();
-                        ds.Tables["Client"].Rows[iC]["NomClt"] = txt_nmClt.Text;
-                        ds.Tables["Client"].Rows[iC]["Tele"] = mst_teleClt.Text.Replace(" ", "");
-                        ds.Tables["Client"].Rows[iC]["Adresse"] = txt_Adrss.Text;
-                        ds.Tables["Client"].Rows[iC].EndEdit();
-                        //Update DataTable Dettes
-                        ds.Tables["Dettes"].Rows[iD].BeginEdit();
-                        ds.Tables["Dettes"].Rows[iD]["PrixDette"] = txt_pxDtt.Text;
-                        ds.Tables["Dettes"].Rows[iD].EndEdit();
-                        //Update DataTable DTNP of GridView
-                        dtnp.Rows[idg].BeginEdit();
-                        dtnp.Rows[idg]["إسم الزبون"] = txt_nmClt.Text;
-                        dtnp.Rows[idg]["الهاتف"] = mst_teleClt.Text.Replace(" ", "");
-                        dtnp.Rows[idg]["العنوان"] = txt_Adrss.Text;
-                        dtnp.Rows[idg]["مبلغ الدين"] = txt_pxDtt.Text;
-                        dtnp.Rows[idg].EndEdit();
-                        button5.Visible = false;
-                        button4.Visible = true;
-                        button3.PerformClick();
-                        MessageBox.Show("تم تعديل المعلومات بنجاح", " تعديل المعلومات", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button2, MessageBoxOptions.RightAlign);
+                        if (float.TryParse(txt_pxDtt.Text, out pd))
+                        {
+                            int iC = ds.Tables["Client"].Rows.IndexOf(ds.Tables["Client"].Select("NomClt = '" + nomC + "'")[0]);
+                            int iD = ds.Tables["Dettes"].Rows.IndexOf(ds.Tables["Dettes"].Select("NuClt = " + numC)[0]);
+                            int idg = dtnp.Rows.IndexOf(dtnp.Select("الرقم = " + numC)[0]);
+                            //Update DataTable Client
+                            ds.Tables["Client"].Rows[iC].BeginEdit();
+                            ds.Tables["Client"].Rows[iC]["NomClt"] = txt_nmClt.Text;
+                            ds.Tables["Client"].Rows[iC]["Tele"] = mst_teleClt.Text.Replace(" ", "");
+                            ds.Tables["Client"].Rows[iC]["Adresse"] = txt_Adrss.Text;
+                            ds.Tables["Client"].Rows[iC].EndEdit();
+                            //Update DataTable Dettes
+                            ds.Tables["Dettes"].Rows[iD].BeginEdit();
+                            ds.Tables["Dettes"].Rows[iD]["PrixDette"] = txt_pxDtt.Text;
+                            ds.Tables["Dettes"].Rows[iD].EndEdit();
+                            //Update DataTable DTNP of GridView
+                            dtnp.Rows[idg].BeginEdit();
+                            dtnp.Rows[idg]["إسم الزبون"] = txt_nmClt.Text;
+                            dtnp.Rows[idg]["الهاتف"] = mst_teleClt.Text.Replace(" ", "");
+                            dtnp.Rows[idg]["العنوان"] = txt_Adrss.Text;
+                            dtnp.Rows[idg]["مبلغ الدين"] = txt_pxDtt.Text;
+                            dtnp.Rows[idg].EndEdit();
+                            button5.Visible = false;
+                            button4.Visible = true;
+                            button3.PerformClick();
+                            MessageBox.Show("تم تعديل المعلومات بنجاح", " تعديل المعلومات", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button2, MessageBoxOptions.RightAlign);
 
+                        }
+                        else MessageBox.Show("أحد الأثمنة غير مقبولة", "خطأ في إدخال الأثمنة", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button2, MessageBoxOptions.RightAlign);
                     }
-                    else MessageBox.Show("أحد الأثمنة غير مقبولة", "خطأ في إدخال الأثمنة", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button2, MessageBoxOptions.RightAlign);
+                    else MessageBox.Show("إسم الزبون الذي أذخلته موجود سابقا ", "إسم الزبون مكرر", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button2, MessageBoxOptions.RightAlign);
                 }
-                else MessageBox.Show("إسم الزبون الذي أذخلته موجود سابقا ", "إسم الزبون مكرر", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button2, MessageBoxOptions.RightAlign);
+                else MessageBox.Show("الإسم الزبون و الثمن ضروريان  ", "أحد الحقول فارغة", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button2, MessageBoxOptions.RightAlign);
             }
-            else MessageBox.Show("الإسم الزبون و الثمن ضروريان  ", "أحد الحقول فارغة", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button2, MessageBoxOptions.RightAlign);
-        
+            catch (Exception ex)
+            {
+                MessageBox.Show("هناك خطأ أثناء العملية المرجوا إعادة المحاولة");
+                string Err = "[" + DateTime.Now + "] [Exception] __ [Form :" + this.Name + " ; Button: " + sender.ToString() + " ; Event: " + e.ToString() + "] __ ExceptionMessage : " + ex.Message;
+                Acceuil.WriteLog(Err);
+            }
         }
 
         private void button7_Click(object sender, EventArgs e)
         {
-            if (dgv_AjtDette.SelectedRows.Count == 1)
+            try
             {
-                var rep = MessageBox.Show("هل تريد حدف الدين المختار  ", "حذف الدين", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1, MessageBoxOptions.RightAlign);
-                if (rep == DialogResult.Yes)
+                if (dgv_AjtDette.SelectedRows.Count == 1)
                 {
-                    numC = dtnp.Rows[dgv_AjtDette.CurrentRow.Index][0].ToString();
-                    nomC = dtnp.Rows[dgv_AjtDette.CurrentRow.Index][1].ToString();
-                    ds.Tables["Client"].Rows.Remove((ds.Tables["Client"].Select("NomClt = '" + nomC + "'")[0]));
-                    ds.Tables["Dettes"].Rows.Remove((ds.Tables["Dettes"].Select("NuClt = '" + numC + "'")[0]));
-                    dtnp.Rows.RemoveAt(dgv_AjtDette.CurrentRow.Index);
-                    lbl_DetteAjt.Text = dtnp.Rows.Count.ToString();
+                    var rep = MessageBox.Show("هل تريد حدف الدين المختار  ", "حذف الدين", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1, MessageBoxOptions.RightAlign);
+                    if (rep == DialogResult.Yes)
+                    {
+                        numC = dtnp.Rows[dgv_AjtDette.CurrentRow.Index][0].ToString();
+                        nomC = dtnp.Rows[dgv_AjtDette.CurrentRow.Index][1].ToString();
+                        ds.Tables["Client"].Rows.Remove((ds.Tables["Client"].Select("NomClt = '" + nomC + "'")[0]));
+                        ds.Tables["Dettes"].Rows.Remove((ds.Tables["Dettes"].Select("NuClt = '" + numC + "'")[0]));
+                        dtnp.Rows.RemoveAt(dgv_AjtDette.CurrentRow.Index);
+                        lbl_DetteAjt.Text = dtnp.Rows.Count.ToString();
+                    }
                 }
             }
+            catch (Exception ex)
+            {
+                MessageBox.Show("هناك خطأ أثناء العملية المرجوا إعادة المحاولة");
+                string Err = "[" + DateTime.Now + "] [Exception] __ [Form :" + this.Name + " ; Button: " + sender.ToString() + " ; Event: " + e.ToString() + "] __ ExceptionMessage : " + ex.Message;
+                Acceuil.WriteLog(Err);
+            }
+        }
+
+        private void txt_pxDtt_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void mst_teleClt_MaskInputRejected(object sender, MaskInputRejectedEventArgs e)
+        {
+
         }
     }
 }

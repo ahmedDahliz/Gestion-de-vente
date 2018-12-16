@@ -309,7 +309,6 @@
             this.cb_type.Name = "cb_type";
             this.cb_type.Size = new System.Drawing.Size(114, 21);
             this.cb_type.TabIndex = 12;
-            this.cb_type.SelectedIndexChanged += new System.EventHandler(this.cb_type_SelectedIndexChanged);
             this.cb_type.SelectionChangeCommitted += new System.EventHandler(this.cb_type_SelectionChangeCommitted);
             // 
             // button3
@@ -413,6 +412,7 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.button6);
             this.Controls.Add(this.dgv_AfficheProd);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "AffProduit";
             this.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.RightToLeftLayout = true;

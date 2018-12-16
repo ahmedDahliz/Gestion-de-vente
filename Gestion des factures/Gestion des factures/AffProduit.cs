@@ -117,35 +117,65 @@ namespace Gestion_des_factures
         }
         private void AffProduit_Load(object sender, EventArgs e)
         {
-            GetAllProduct();
-            ColorEmp();
-
+            try{
+                GetAllProduct();
+                ColorEmp();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("هناك خطأ أثناء العملية المرجوا إعادة المحاولة");
+                string Err = "[" + DateTime.Now + "] [Exception] __ [Form :" + this.Name + " ; Button: " + sender.ToString() + " ; Event: " + e.ToString() + "] __ ExceptionMessage : " + ex.Message;
+                Acceuil.WriteLog(Err);
+            }
         }
 
         private void button4_Click(object sender, EventArgs e)
         {
-            button3.PerformClick();
-            dgv_AfficheProd.DataSource = ds;
-            dgv_AfficheProd.DataMember = "ProduitsAjt";
-            ColorEmp();
-            lbl_nmProd.Text = ds.Tables["ProduitsAjt"].Rows.Count.ToString();
-            lbl_titrLstProd.Text = button4.Text;
-
+            try{
+                button3.PerformClick();
+                dgv_AfficheProd.DataSource = ds;
+                dgv_AfficheProd.DataMember = "ProduitsAjt";
+                ColorEmp();
+                lbl_nmProd.Text = ds.Tables["ProduitsAjt"].Rows.Count.ToString();
+                lbl_titrLstProd.Text = button4.Text;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("هناك خطأ أثناء العملية المرجوا إعادة المحاولة");
+                string Err = "[" + DateTime.Now + "] [Exception] __ [Form :" + this.Name + " ; Button: " + sender.ToString() + " ; Event: " + e.ToString() + "] __ ExceptionMessage : " + ex.Message;
+                Acceuil.WriteLog(Err);
+            }
 
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-            button3.PerformClick(); 
-            dgv_AfficheProd.DataSource = GetEmptyProducts();
-            lbl_titrLstProd.Text = button2.Text;
+            try {
+                button3.PerformClick(); 
+                dgv_AfficheProd.DataSource = GetEmptyProducts();
+                lbl_titrLstProd.Text = button2.Text;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("هناك خطأ أثناء العملية المرجوا إعادة المحاولة");
+                string Err = "[" + DateTime.Now + "] [Exception] __ [Form :" + this.Name + " ; Button: " + sender.ToString() + " ; Event: " + e.ToString() + "] __ ExceptionMessage : " + ex.Message;
+                Acceuil.WriteLog(Err);
+            }
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            button3.PerformClick();
-            dgv_AfficheProd.DataSource = GetAlmEmpProducts();
-            lbl_titrLstProd.Text = button1.Text;
+            try {
+                button3.PerformClick();
+                dgv_AfficheProd.DataSource = GetAlmEmpProducts();
+                lbl_titrLstProd.Text = button1.Text;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("هناك خطأ أثناء العملية المرجوا إعادة المحاولة");
+                string Err = "[" + DateTime.Now + "] [Exception] __ [Form :" + this.Name + " ; Button: " + sender.ToString() + " ; Event: " + e.ToString() + "] __ ExceptionMessage : " + ex.Message;
+                Acceuil.WriteLog(Err);
+            }
         }
 
         private void cb_type_SelectedIndexChanged(object sender, EventArgs e)
@@ -160,21 +190,39 @@ namespace Gestion_des_factures
         
         private void txt_prix_TextChanged(object sender, EventArgs e)
         {
-            float prx;
-            if (float.TryParse(txt_prix.Text, out prx) || txt_prix.Text == "")
-            {
-                dgv_AfficheProd.DataSource = GetFiltredData(txt_nuProd.Text, txt_NomProd.Text, cb_type.SelectedValue.ToString(), txt_prix.Text, tpPrix, dtp_datAjout.Text);
-                ColorEmp();
-             }
-            else {
-                MessageBox.Show("الثمن الذي أدخلته غير مقبول", "خطأ في إدخال الثمن", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            try{
+                float prx;
+                if (float.TryParse(txt_prix.Text, out prx) || txt_prix.Text == "")
+                {
+                    dgv_AfficheProd.DataSource = GetFiltredData(txt_nuProd.Text, txt_NomProd.Text, cb_type.SelectedValue.ToString(), txt_prix.Text, tpPrix, dtp_datAjout.Text);
+                    ColorEmp();
+                 }
+                else {
+                    MessageBox.Show("الثمن الذي أدخلته غير مقبول", "خطأ في إدخال الثمن", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
+            catch (Exception ex)
+            {
+                MessageBox.Show("هناك خطأ أثناء العملية المرجوا إعادة المحاولة");
+                string Err = "[" + DateTime.Now + "] [Exception] __ [Form :" + this.Name + " ; Button: " + sender.ToString() + " ; Event: " + e.ToString() + "] __ ExceptionMessage : " + ex.Message;
+                Acceuil.WriteLog(Err);
+            }
+        
         }
 
         private void dtp_datAjout_ValueChanged(object sender, EventArgs e)
         {
-            dgv_AfficheProd.DataSource = GetFiltredData(txt_nuProd.Text, txt_NomProd.Text, cb_type.SelectedValue.ToString(), txt_prix.Text, tpPrix, dtp_datAjout.Text);
-            ColorEmp();
+            try
+            {
+                dgv_AfficheProd.DataSource = GetFiltredData(txt_nuProd.Text, txt_NomProd.Text, cb_type.SelectedValue.ToString(), txt_prix.Text, tpPrix, dtp_datAjout.Text);
+                ColorEmp();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("هناك خطأ أثناء العملية المرجوا إعادة المحاولة");
+                string Err = "[" + DateTime.Now + "] [Exception] __ [Form :" + this.Name + " ; Button: " + sender.ToString() + " ; Event: " + e.ToString() + "] __ ExceptionMessage : " + ex.Message;
+                Acceuil.WriteLog(Err);
+            }
         }
 
         private void rb_a_CheckedChanged(object sender, EventArgs e)
@@ -207,22 +255,36 @@ namespace Gestion_des_factures
 
         private void txt_nuProd_TextChanged(object sender, EventArgs e)
         {
-            int prx;
-            if (int.TryParse(txt_nuProd.Text, out prx) || txt_nuProd.Text == "")
-            {
-                dgv_AfficheProd.DataSource = GetFiltredData(txt_nuProd.Text, txt_NomProd.Text, cb_type.SelectedValue.ToString(), txt_prix.Text, tpPrix, dtp_datAjout.Text);
-                ColorEmp();   
+            try{
+                int prx;
+                if (int.TryParse(txt_nuProd.Text, out prx) || txt_nuProd.Text == "")
+                {
+                    dgv_AfficheProd.DataSource = GetFiltredData(txt_nuProd.Text, txt_NomProd.Text, cb_type.SelectedValue.ToString(), txt_prix.Text, tpPrix, dtp_datAjout.Text);
+                    ColorEmp();   
+                }
+                else MessageBox.Show("رقم السلعة الذي أدخلته غير مقبول", "خطأ في إدخال رقم السلعة", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-            else
+            catch (Exception ex)
             {
-                MessageBox.Show("رقم السلعة الذي أدخلته غير مقبول", "خطأ في إدخال رقم السلعة", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("هناك خطأ أثناء العملية المرجوا إعادة المحاولة");
+                string Err = "[" + DateTime.Now + "] [Exception] __ [Form :" + this.Name + " ; Button: " + sender.ToString() + " ; Event: " + e.ToString() + "] __ ExceptionMessage : " + ex.Message;
+                Acceuil.WriteLog(Err);
             }
+
         }
 
         private void txt_NomProd_TextChanged(object sender, EventArgs e)
         {
-            dgv_AfficheProd.DataSource = GetFiltredData(txt_nuProd.Text, txt_NomProd.Text, cb_type.SelectedValue.ToString(), txt_prix.Text, tpPrix, dtp_datAjout.Text);
-            ColorEmp();   
+            try{
+                dgv_AfficheProd.DataSource = GetFiltredData(txt_nuProd.Text, txt_NomProd.Text, cb_type.SelectedValue.ToString(), txt_prix.Text, tpPrix, dtp_datAjout.Text);
+                ColorEmp();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("هناك خطأ أثناء العملية المرجوا إعادة المحاولة");
+                string Err = "[" + DateTime.Now + "] [Exception] __ [Form :" + this.Name + " ; Button: " + sender.ToString() + " ; Event: " + e.ToString() + "] __ ExceptionMessage : " + ex.Message;
+                Acceuil.WriteLog(Err);
+            }
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -258,22 +320,48 @@ namespace Gestion_des_factures
 
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
         {
-            dtp_datAjout.Enabled = !ch_ShDt.Checked;
-            dgv_AfficheProd.DataSource = GetFiltredData(txt_nuProd.Text, txt_NomProd.Text, cb_type.SelectedValue.ToString(), txt_prix.Text, tpPrix, dtp_datAjout.Text);
-            ColorEmp(); 
+            try
+            {
+                dtp_datAjout.Enabled = !ch_ShDt.Checked;
+                dgv_AfficheProd.DataSource = GetFiltredData(txt_nuProd.Text, txt_NomProd.Text, cb_type.SelectedValue.ToString(), txt_prix.Text, tpPrix, dtp_datAjout.Text);
+                ColorEmp();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("هناك خطأ أثناء العملية المرجوا إعادة المحاولة");
+                string Err = "[" + DateTime.Now + "] [Exception] __ [Form :" + this.Name + " ; Button: " + sender.ToString() + " ; Event: " + e.ToString() + "] __ ExceptionMessage : " + ex.Message;
+                Acceuil.WriteLog(Err);
+            }
 
         }
 
         private void button5_Click(object sender, EventArgs e)
         {
-            MdfProduit frmMdf = new MdfProduit(int.Parse(dgv_AfficheProd.CurrentRow.Cells[0].Value.ToString()), this);
-            frmMdf.ShowDialog();
+            try
+            {
+                MdfProduit frmMdf = new MdfProduit(int.Parse(dgv_AfficheProd.CurrentRow.Cells[0].Value.ToString()), this);
+                frmMdf.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("هناك خطأ أثناء العملية المرجوا إعادة المحاولة");
+                string Err = "[" + DateTime.Now + "] [Exception] __ [Form :" + this.Name + " ; Button: " + sender.ToString() + " ; Event: " + e.ToString() + "] __ ExceptionMessage : " + ex.Message;
+                Acceuil.WriteLog(Err);
+            }
         }
 
         private void cb_type_SelectionChangeCommitted(object sender, EventArgs e)
         {
-            dgv_AfficheProd.DataSource = GetFiltredData(txt_nuProd.Text, txt_NomProd.Text, cb_type.SelectedValue.ToString(), txt_prix.Text, tpPrix, dtp_datAjout.Text);
-            ColorEmp();
+            try {
+                dgv_AfficheProd.DataSource = GetFiltredData(txt_nuProd.Text, txt_NomProd.Text, cb_type.SelectedValue.ToString(), txt_prix.Text, tpPrix, dtp_datAjout.Text);
+                ColorEmp();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("هناك خطأ أثناء العملية المرجوا إعادة المحاولة");
+                string Err = "[" + DateTime.Now + "] [Exception] __ [Form :" + this.Name + " ; Button: " + sender.ToString() + " ; Event: " + e.ToString() + "] __ ExceptionMessage : " + ex.Message;
+                Acceuil.WriteLog(Err);
+            }
         } 
     }
 }

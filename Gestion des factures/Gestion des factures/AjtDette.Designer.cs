@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AjtDette));
             this.label10 = new System.Windows.Forms.Label();
             this.button6 = new System.Windows.Forms.Button();
             this.dgv_AjtDette = new System.Windows.Forms.DataGridView();
@@ -154,6 +155,7 @@
             this.mst_teleClt.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.mst_teleClt.Size = new System.Drawing.Size(186, 20);
             this.mst_teleClt.TabIndex = 45;
+            this.mst_teleClt.MaskInputRejected += new System.Windows.Forms.MaskInputRejectedEventHandler(this.mst_teleClt_MaskInputRejected);
             // 
             // button1
             // 
@@ -189,6 +191,7 @@
             this.txt_pxDtt.Name = "txt_pxDtt";
             this.txt_pxDtt.Size = new System.Drawing.Size(108, 20);
             this.txt_pxDtt.TabIndex = 30;
+            this.txt_pxDtt.TextChanged += new System.EventHandler(this.txt_pxDtt_TextChanged);
             // 
             // label3
             // 
@@ -243,6 +246,7 @@
             // 
             // pictureBox1
             // 
+            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
             this.pictureBox1.Location = new System.Drawing.Point(304, 8);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(59, 50);
@@ -275,6 +279,7 @@
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button4);
             this.Controls.Add(this.button3);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "AjtDette";
             this.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.RightToLeftLayout = true;

@@ -27,7 +27,14 @@ namespace Gestion_des_factures
         }
         public static SQLiteConnection cnx = new SQLiteConnection("Data Source="+Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)+@"\GestionFactures\db\GestionStckFct.db;Version=3;");
         public static DataSet ds = new DataSet();
-      
+        public static void WriteLog(string msg) {
+            string path = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\GestionFactures\\Log";
+            DirectoryInfo di = Directory.CreateDirectory(path);
+            using (StreamWriter outputFile = new StreamWriter(Path.Combine(path, "Exceptions.log"), true))
+            {
+                    outputFile.WriteLine(msg);
+            }
+        }
         //fonction pour ouvrir les fenaitre depuis la bare menu
         public void OpenForm(Form f)
         {
@@ -35,14 +42,20 @@ namespace Gestion_des_factures
             form.ShowDialog();
         }
         public void RefreshAccui() {
-            SQLiteDataAdapter dap = new SQLiteDataAdapter("select * from Stocks", cnx);
-            DataSet nds = new DataSet();
-            dap.Fill(nds, "Stocks");
-            lbl_nbrPrdStk.Text = nds.Tables["Stocks"].Rows.Count.ToString();
-            dap = new SQLiteDataAdapter("select p.NumPrd as 'رقم السلعة', p.Desingation as 'الإسم', s.QttProd as 'الكمية', s.QttPrsFini as 'الكمية الأدنى', s.DateAjout as 'تاريخ اللإضافة' from Stocks s, Produits p where s.NuPrd = p.NumPrd order by p.NumPrd DESC LIMIT 10", cnx);
-            dap.Fill(nds, "DerProduitsAjt");
-            dgv_dernProdajt.DataSource = nds.Tables["DerProduitsAjt"];
-            RefreshLabels(nds.Tables["Stocks"]);
+            try {
+                SQLiteDataAdapter dap = new SQLiteDataAdapter("select * from Stocks", cnx);
+                DataSet nds = new DataSet();
+                dap.Fill(nds, "Stocks");
+                lbl_nbrPrdStk.Text = nds.Tables["Stocks"].Rows.Count.ToString();
+                dap = new SQLiteDataAdapter("select p.NumPrd as 'رقم السلعة', p.Desingation as 'الإسم', s.QttProd as 'الكمية', s.QttPrsFini as 'الكمية الأدنى', s.DateAjout as 'تاريخ اللإضافة' from Stocks s, Produits p where s.NuPrd = p.NumPrd order by p.NumPrd DESC LIMIT 10", cnx);
+                dap.Fill(nds, "DerProduitsAjt");
+                dgv_dernProdajt.DataSource = nds.Tables["DerProduitsAjt"];
+                RefreshLabels(nds.Tables["Stocks"]);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("هناك خطأ أثناء العملية المرجوا إعادة المحاولة");
+            }
         }
         public void LoadForm()
         {
@@ -80,12 +93,26 @@ namespace Gestion_des_factures
         }
         public void Form1_Load(object sender, EventArgs e)
         {
-            LoadForm();
+            try{
+                LoadForm();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("هناك خطأ أثناء العملية المرجوا إعادة المحاولة");
+                string Err = "[" + DateTime.Now + "] [Exception] __ [Form :" + this.Name + " ; Button: " + sender.ToString() + " ; Event: " + e.ToString() + "] __ ExceptionMessage : " + ex.Message;
+                Acceuil.WriteLog(Err);
+            }
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            Application.Exit();
+            try{
+                Application.Exit();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("هناك خطأ أثناء العملية المرجوا إعادة المحاولة");
+            }
         }
 
         private void AjtVentToolStripMenuItem_Click(object sender, EventArgs e)
@@ -135,9 +162,19 @@ namespace Gestion_des_factures
 
         private void button3_Click(object sender, EventArgs e)
         {
+            try
+            {
+                this.Hide();
+                FrmConnex.ConnexionShow(this);
 
-            this.Hide();
-            FrmConnex.ConnexionShow(this);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("هناك خطأ أثناء العملية المرجوا إعادة المحاولة");
+                string Err = "[" + DateTime.Now + "] [Exception] __ [Form :" + this.Name + " ; Button: " + sender.ToString() + " ; Event: " + e.ToString() + "] __ ExceptionMessage : " + ex.Message;
+                WriteLog(Err);
+            }
+        
         }
 
         private void Acceuil_FormClosing(object sender, FormClosingEventArgs e)
@@ -147,11 +184,19 @@ namespace Gestion_des_factures
 
         private void button2_Click(object sender, EventArgs e)
         {
-            String path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\Factures    ";
-            System.IO.DirectoryInfo di = System.IO.Directory.CreateDirectory(path);
-            if (System.IO.Directory.Exists(path)) 
-             System.Diagnostics.Process.Start((path));
-
+            try
+            {
+                String path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\Factures    ";
+                System.IO.DirectoryInfo di = System.IO.Directory.CreateDirectory(path);
+                if (System.IO.Directory.Exists(path)) 
+                System.Diagnostics.Process.Start((path));
+            } catch (Exception ex)
+            {
+                MessageBox.Show("هناك خطأ أثناء العملية المرجوا إعادة المحاولة");
+                string Err = "[" + DateTime.Now + "] [Exception] __ [Form :" + this.Name + " ; Button: " + sender.ToString()+" ; Event: "+e.ToString()+"] __ ExceptionMessage : "+ex.Message;
+                WriteLog(Err);
+            }
+        
         }
 
         

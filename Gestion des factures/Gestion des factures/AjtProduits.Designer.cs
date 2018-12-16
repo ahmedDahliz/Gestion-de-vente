@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AjtProduits));
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.cb_nvType = new System.Windows.Forms.ComboBox();
@@ -109,6 +110,7 @@
             this.cb_nvType.Name = "cb_nvType";
             this.cb_nvType.Size = new System.Drawing.Size(126, 21);
             this.cb_nvType.TabIndex = 13;
+            this.cb_nvType.SelectedIndexChanged += new System.EventHandler(this.cb_nvType_SelectedIndexChanged);
             this.cb_nvType.SelectionChangeCommitted += new System.EventHandler(this.cb_nvType_SelectionChangeCommitted);
             // 
             // button11
@@ -175,6 +177,7 @@
             this.txt_nomTp.Name = "txt_nomTp";
             this.txt_nomTp.Size = new System.Drawing.Size(126, 20);
             this.txt_nomTp.TabIndex = 9;
+            this.txt_nomTp.TextChanged += new System.EventHandler(this.txt_nomTp_TextChanged);
             // 
             // label6
             // 
@@ -203,7 +206,6 @@
             this.cb_tpPrd.Name = "cb_tpPrd";
             this.cb_tpPrd.Size = new System.Drawing.Size(140, 21);
             this.cb_tpPrd.TabIndex = 2;
-            this.cb_tpPrd.SelectedIndexChanged += new System.EventHandler(this.cb_tpPrd_SelectedIndexChanged);
             // 
             // label8
             // 
@@ -397,7 +399,7 @@
             // button8
             // 
             this.button8.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button8.Location = new System.Drawing.Point(454, 134);
+            this.button8.Location = new System.Drawing.Point(453, 134);
             this.button8.Name = "button8";
             this.button8.Size = new System.Drawing.Size(91, 32);
             this.button8.TabIndex = 7;
@@ -463,6 +465,7 @@
             // 
             // pictureBox1
             // 
+            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
             this.pictureBox1.Location = new System.Drawing.Point(326, 12);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(59, 50);
@@ -485,6 +488,7 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.lbl_prdAjt);
             this.Controls.Add(this.label2);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "AjtProduits";
             this.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.RightToLeftLayout = true;

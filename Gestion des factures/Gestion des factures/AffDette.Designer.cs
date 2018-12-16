@@ -292,6 +292,7 @@
             this.Controls.Add(this.dgv_affDette);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.label10);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "AffDette";
             this.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.RightToLeftLayout = true;

@@ -49,8 +49,6 @@ namespace Gestion_des_factures
                             SQLiteCommandBuilder cmdb = new SQLiteCommandBuilder(dta);
                             dta.Update(ds, "users");
                             MessageBox.Show("نم تغيير المعلومات بنجاح", "تعديل المعلومات ", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button2, MessageBoxOptions.RightAlign);
-
-
                         }
                         else MessageBox.Show("كلمة السر الحالية غير صحيحة", "كلمة السر الحالية", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button2, MessageBoxOptions.RightAlign);
 
@@ -58,12 +56,13 @@ namespace Gestion_des_factures
                     else MessageBox.Show("كلمتا السر غير متطابقتان", "تأكيد كلمة السر", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button2, MessageBoxOptions.RightAlign);
                 }
                 else MessageBox.Show("المرجوا إدخال إسم المستخدم", "إسم المستخدم فارغ", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button2, MessageBoxOptions.RightAlign);
-        
+
             }
             catch (Exception ex)
             {
-
-                MessageBox.Show(ex.Message);
+                MessageBox.Show("هناك خطأ أثناء العملية المرجوا إعادة المحاولة");
+                string Err = "[" + DateTime.Now + "] [Exception] __ [Form :" + this.Name + " ; Button: " + sender.ToString() + " ; Event: " + e.ToString() + "] __ ExceptionMessage : " + ex.Message;
+                Acceuil.WriteLog(Err);
             }
         }
     
@@ -75,8 +74,17 @@ namespace Gestion_des_factures
 
         private void MfdConnexion_Load(object sender, EventArgs e)
         {
-            dta.Fill(ds, "users");
-            txt_nomU.Text = ds.Tables["users"].Rows[0]["username"].ToString();
+            try
+            {
+                dta.Fill(ds, "users");
+                txt_nomU.Text = ds.Tables["users"].Rows[0]["username"].ToString();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("هناك خطأ أثناء العملية المرجوا إعادة المحاولة");
+                string Err = "[" + DateTime.Now + "] [Exception] __ [Form :" + this.Name + " ; Button: " + sender.ToString() + " ; Event: " + e.ToString() + "] __ ExceptionMessage : " + ex.Message;
+                Acceuil.WriteLog(Err);
+            }
         }
     }
 }

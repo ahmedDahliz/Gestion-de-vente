@@ -40,24 +40,31 @@ namespace Gestion_des_factures
 
         private void button1_Click(object sender, EventArgs e)
         {
-            SQLiteCommand cmd = new SQLiteCommand("select * from Users where username = '"+txt_username.Text+"' and password = '"+txt_password.Text+"'", Acceuil.cnx);
-            Acceuil.cnx.Open();
-            SQLiteDataReader dr = cmd.ExecuteReader();
-            if (dr.HasRows)
+            try
             {
-                if (FrmAcc == null)
+                SQLiteCommand cmd = new SQLiteCommand("select * from Users where username = '" + txt_username.Text.Trim() + "' and password = '" + txt_password.Text + "'", Acceuil.cnx);
+                Acceuil.cnx.Open();
+                SQLiteDataReader dr = cmd.ExecuteReader();
+                if (dr.HasRows)
                 {
-                    Acceuil ac = new Acceuil(this);
-                    ac.Show();
+                    if (FrmAcc == null)
+                    {
+                        Acceuil ac = new Acceuil(this);
+                        ac.Show();
 
+                    }
+                    else FrmAcc.Show();
+                    Hide();
                 }
-                else FrmAcc.Show();
-
-                Hide();
-                
+                else MessageBox.Show("إسم الدخول أو كلمة المرور خاطئة", "المعلومات خاطئة", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button2, MessageBoxOptions.RightAlign);
+                Acceuil.cnx.Close();
             }
-            else MessageBox.Show("إسم الدخول أو كلمة المرور خاطئة", "المعلومات خاطئة", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button2, MessageBoxOptions.RightAlign);
-            Acceuil.cnx.Close();
+            catch (Exception ex)
+            {
+                MessageBox.Show("هناك خطأ أثناء العملية المرجوا إعادة المحاولة");
+                string Err = "[" + DateTime.Now + "] [Exception] __ [Form :" + this.Name + " ; Button: " + sender.ToString() + " ; Event: " + e.ToString() + "] __ ExceptionMessage : " + ex.Message;
+                Acceuil.WriteLog(Err);
+            }
         }
 
         private void Connexion_FormClosing(object sender, FormClosingEventArgs e)
