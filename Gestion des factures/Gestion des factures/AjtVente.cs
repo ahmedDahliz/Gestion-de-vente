@@ -436,7 +436,7 @@ namespace Gestion_des_factures
                 String dtn = DateTime.Now.Day + "_" + DateTime.Now.Month + "_" + DateTime.Now.Year;
                 CreatePdf("N" + idLCmd + "_" + dtn + ".pdf");
                 button9.Enabled = false;
-                button8.PerformClick();
+                NewSell();
             }
             catch (Exception ex)
             {
@@ -528,25 +528,30 @@ namespace Gestion_des_factures
                 Acceuil.WriteLog(Err);
             }
         }
-
+        
         private void button8_Click(object sender, EventArgs e)
         {
             var rep = MessageBox.Show("هل تريد القيام ببيع جديد ؟ ", "بيع جديد", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1, MessageBoxOptions.RightAlign);
             if (rep == DialogResult.Yes)
             {
-                dtnv.Rows.Clear();
-                idLCmd++;
-                lbl_prixTotal.Text = "0";
-                lbl_nomC.Text = "";
-                lbl_qttV.Text = "";
-                txt_nomPrd.Text = "";
-                txt_numP.Text = "";
-                cb_typePrd.SelectedIndex = 0;
-                button8.Enabled = false;
-                button9.Enabled = false;
-                button2.Enabled = false;
+                NewSell();
             }
             
+        }
+
+        private void NewSell()
+        {
+            dtnv.Rows.Clear();
+            idLCmd++;
+            lbl_prixTotal.Text = "0";
+            lbl_nomC.Text = "";
+            lbl_qttV.Text = "";
+            txt_nomPrd.Text = "";
+            txt_numP.Text = "";
+            cb_typePrd.SelectedIndex = 0;
+            button8.Enabled = false;
+            button9.Enabled = false;
+            button2.Enabled = false;
         }
         void addCell(Chunk e, PdfPTable t,String str, bool AlignCenter)
         {
