@@ -38,13 +38,12 @@
             this.button6 = new System.Windows.Forms.Button();
             this.label19 = new System.Windows.Forms.Label();
             this.label17 = new System.Windows.Forms.Label();
-            this.lbl_prxavi = new System.Windows.Forms.Label();
+            this.lbl_qttavi = new System.Windows.Forms.Label();
             this.lbl_prxQtt = new System.Windows.Forms.Label();
             this.lbl_prix = new System.Windows.Forms.Label();
             this.label14 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
             this.txt_prx = new System.Windows.Forms.TextBox();
-            this.button3 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.label3 = new System.Windows.Forms.Label();
@@ -88,6 +87,10 @@
             this.cb_typePrd = new System.Windows.Forms.ComboBox();
             this.button9 = new System.Windows.Forms.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.label20 = new System.Windows.Forms.Label();
+            this.label23 = new System.Windows.Forms.Label();
+            this.lbl_prxAch = new System.Windows.Forms.Label();
+            this.label25 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox5.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -115,15 +118,18 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox1.Controls.Add(this.groupBox5);
             this.groupBox1.Controls.Add(this.button6);
+            this.groupBox1.Controls.Add(this.label25);
             this.groupBox1.Controls.Add(this.label19);
             this.groupBox1.Controls.Add(this.label17);
-            this.groupBox1.Controls.Add(this.lbl_prxavi);
+            this.groupBox1.Controls.Add(this.lbl_qttavi);
+            this.groupBox1.Controls.Add(this.lbl_prxAch);
             this.groupBox1.Controls.Add(this.lbl_prxQtt);
             this.groupBox1.Controls.Add(this.lbl_prix);
+            this.groupBox1.Controls.Add(this.label23);
+            this.groupBox1.Controls.Add(this.label20);
             this.groupBox1.Controls.Add(this.label14);
             this.groupBox1.Controls.Add(this.label11);
             this.groupBox1.Controls.Add(this.txt_prx);
-            this.groupBox1.Controls.Add(this.button3);
             this.groupBox1.Controls.Add(this.button1);
             this.groupBox1.Controls.Add(this.groupBox2);
             this.groupBox1.Controls.Add(this.cb_Prod);
@@ -191,7 +197,7 @@
             // 
             this.button6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.button6.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.button6.Location = new System.Drawing.Point(619, 143);
+            this.button6.Location = new System.Drawing.Point(618, 143);
             this.button6.Name = "button6";
             this.button6.Size = new System.Drawing.Size(133, 29);
             this.button6.TabIndex = 52;
@@ -206,7 +212,7 @@
             this.label19.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label19.AutoSize = true;
             this.label19.ForeColor = System.Drawing.Color.Green;
-            this.label19.Location = new System.Drawing.Point(253, 91);
+            this.label19.Location = new System.Drawing.Point(256, 92);
             this.label19.Name = "label19";
             this.label19.Size = new System.Drawing.Size(29, 13);
             this.label19.TabIndex = 50;
@@ -217,28 +223,28 @@
             this.label17.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label17.AutoSize = true;
             this.label17.ForeColor = System.Drawing.Color.Green;
-            this.label17.Location = new System.Drawing.Point(253, 65);
+            this.label17.Location = new System.Drawing.Point(256, 65);
             this.label17.Name = "label17";
             this.label17.Size = new System.Drawing.Size(29, 13);
             this.label17.TabIndex = 50;
             this.label17.Text = "درهم";
             // 
-            // lbl_prxavi
+            // lbl_qttavi
             // 
-            this.lbl_prxavi.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.lbl_prxavi.AutoSize = true;
-            this.lbl_prxavi.Location = new System.Drawing.Point(584, 105);
-            this.lbl_prxavi.Name = "lbl_prxavi";
-            this.lbl_prxavi.Size = new System.Drawing.Size(13, 13);
-            this.lbl_prxavi.TabIndex = 50;
-            this.lbl_prxavi.Text = "0";
+            this.lbl_qttavi.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.lbl_qttavi.AutoSize = true;
+            this.lbl_qttavi.Location = new System.Drawing.Point(584, 105);
+            this.lbl_qttavi.Name = "lbl_qttavi";
+            this.lbl_qttavi.Size = new System.Drawing.Size(13, 13);
+            this.lbl_qttavi.TabIndex = 50;
+            this.lbl_qttavi.Text = "0";
             // 
             // lbl_prxQtt
             // 
             this.lbl_prxQtt.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lbl_prxQtt.AutoSize = true;
             this.lbl_prxQtt.ForeColor = System.Drawing.Color.Green;
-            this.lbl_prxQtt.Location = new System.Drawing.Point(285, 91);
+            this.lbl_prxQtt.Location = new System.Drawing.Point(290, 120);
             this.lbl_prxQtt.Name = "lbl_prxQtt";
             this.lbl_prxQtt.Size = new System.Drawing.Size(13, 13);
             this.lbl_prxQtt.TabIndex = 50;
@@ -249,7 +255,7 @@
             this.lbl_prix.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lbl_prix.AutoSize = true;
             this.lbl_prix.ForeColor = System.Drawing.Color.Green;
-            this.lbl_prix.Location = new System.Drawing.Point(285, 65);
+            this.lbl_prix.Location = new System.Drawing.Point(289, 92);
             this.lbl_prix.Name = "lbl_prix";
             this.lbl_prix.Size = new System.Drawing.Size(13, 13);
             this.lbl_prix.TabIndex = 50;
@@ -259,17 +265,17 @@
             // 
             this.label14.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(339, 91);
+            this.label14.Location = new System.Drawing.Point(336, 62);
             this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(66, 13);
+            this.label14.Size = new System.Drawing.Size(64, 13);
             this.label14.TabIndex = 50;
-            this.label14.Text = "ثمن × العدد : ";
+            this.label14.Text = "ثمن الشراء : ";
             // 
             // label11
             // 
             this.label11.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(339, 65);
+            this.label11.Location = new System.Drawing.Point(334, 91);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(71, 13);
             this.label11.TabIndex = 50;
@@ -284,16 +290,6 @@
             this.txt_prx.Size = new System.Drawing.Size(81, 20);
             this.txt_prx.TabIndex = 3;
             this.txt_prx.TextChanged += new System.EventHandler(this.txt_prx_TextChanged);
-            // 
-            // button3
-            // 
-            this.button3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button3.Location = new System.Drawing.Point(527, 143);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(85, 29);
-            this.button3.TabIndex = 44;
-            this.button3.Text = "إفراغ الحقول";
-            this.button3.UseVisualStyleBackColor = true;
             // 
             // button1
             // 
@@ -788,6 +784,47 @@
             this.pictureBox1.TabIndex = 53;
             this.pictureBox1.TabStop = false;
             // 
+            // label20
+            // 
+            this.label20.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label20.AutoSize = true;
+            this.label20.Location = new System.Drawing.Point(334, 147);
+            this.label20.Name = "label20";
+            this.label20.Size = new System.Drawing.Size(0, 13);
+            this.label20.TabIndex = 50;
+            // 
+            // label23
+            // 
+            this.label23.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label23.AutoSize = true;
+            this.label23.Location = new System.Drawing.Point(335, 120);
+            this.label23.Name = "label23";
+            this.label23.Size = new System.Drawing.Size(66, 13);
+            this.label23.TabIndex = 50;
+            this.label23.Text = "ثمن × العدد : ";
+            // 
+            // lbl_prxAch
+            // 
+            this.lbl_prxAch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.lbl_prxAch.AutoSize = true;
+            this.lbl_prxAch.ForeColor = System.Drawing.Color.Green;
+            this.lbl_prxAch.Location = new System.Drawing.Point(290, 65);
+            this.lbl_prxAch.Name = "lbl_prxAch";
+            this.lbl_prxAch.Size = new System.Drawing.Size(13, 13);
+            this.lbl_prxAch.TabIndex = 50;
+            this.lbl_prxAch.Text = "0";
+            // 
+            // label25
+            // 
+            this.label25.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label25.AutoSize = true;
+            this.label25.ForeColor = System.Drawing.Color.Green;
+            this.label25.Location = new System.Drawing.Point(257, 120);
+            this.label25.Name = "label25";
+            this.label25.Size = new System.Drawing.Size(29, 13);
+            this.label25.TabIndex = 50;
+            this.label25.Text = "درهم";
+            // 
             // AjtVente
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -847,7 +884,6 @@
         private System.Windows.Forms.TextBox txt_nomC;
         private System.Windows.Forms.ComboBox cb_nomC;
         private System.Windows.Forms.RadioButton rb_CltnE;
-        private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.DataGridView dgv_ProdV;
         private System.Windows.Forms.Button button2;
@@ -867,7 +903,7 @@
         private System.Windows.Forms.Label lbl_prix;
         private System.Windows.Forms.Label label17;
         private System.Windows.Forms.Label label18;
-        private System.Windows.Forms.Label lbl_prxavi;
+        private System.Windows.Forms.Label lbl_qttavi;
         private System.Windows.Forms.TextBox txt_prx;
         private System.Windows.Forms.Label lbl_ttrprxav;
         private System.Windows.Forms.Label label4;
@@ -889,6 +925,10 @@
         private System.Windows.Forms.GroupBox groupBox5;
         private System.Windows.Forms.Label label16;
         private System.Windows.Forms.TextBox txt_AnvcD;
+        private System.Windows.Forms.Label label25;
+        private System.Windows.Forms.Label lbl_prxAch;
+        private System.Windows.Forms.Label label23;
+        private System.Windows.Forms.Label label20;
 
     }
 }

@@ -17,7 +17,7 @@ namespace Gestion_des_factures
         {
             InitializeComponent();
         }
-        SQLiteDataAdapter dta = new SQLiteDataAdapter("Select d.NumDette as 'رقم الدين', c.NomClt as 'إسم الزبون', c.Tele 'هاتف الزبون' , c.Adresse as 'عنوان الزبون', d.PrixDette as 'ثمن الدين', d.DateDette as 'تاريخ الإضافة' from Dettes d, Clients c where d.NuClt = c.NumClt", Acceuil.cnx);
+        SQLiteDataAdapter dta = new SQLiteDataAdapter("Select d.NumDette as 'الرقم', c.NomClt as 'إسم الزبون', c.Tele 'هاتف الزبون' , c.Adresse as 'عنوان الزبون', d.PrixDette as 'ثمن الدين', d.DateDette as 'تاريخ الإضافة' from Dettes d, Clients c where d.NuClt = c.NumClt", Acceuil.cnx);
         DataSet ds = new DataSet();
         void GetDette() {
             dta.Fill(ds, "Dettes");
@@ -26,12 +26,12 @@ namespace Gestion_des_factures
         }
         DataTable GetFilterdDette(string idD, string nmC, string tele, string pxd, string dateD) { 
 
-            String flNum = (idD != "") ? " AND d.NumDette = "+idD : "";
+            String flNum = (idD != "") ? " AND d.NumDette = "+ idD : "";
             String flNom = (nmC != "") ? " AND c.NomClt LIKE '%" + nmC + "%'" : "";
             String flTele = (tele != "") ? " AND c.Tele LIKE '%" + tele + "%'" : "";
             String flpx = (pxd != "") ? " AND d.PrixDette LIKE '%" + pxd + "%'" : "";
             String flDate = (!ch_ShDt.Checked) ? " AND d.DateDette = '" + dateD + "'" : "";
-            string rqt = "Select d.NumDette as 'رقم الدين', c.NomClt as 'إسم الزبون', c.Tele 'هاتف الزبون' , c.Adresse as 'عنوان الزبون', d.PrixDette as 'ثمن الدين', d.DateDette as 'تاريخ الإضافة' " +
+            string rqt = "Select d.NumDette as 'الرقم', c.NomClt as 'إسم الزبون', c.Tele 'هاتف الزبون' , c.Adresse as 'عنوان الزبون', d.PrixDette as 'ثمن الدين', d.DateDette as 'تاريخ الإضافة' " +
                 "from Dettes d, Clients c where d.NuClt = c.NumClt " +
                 flNum + " " + flNom + " " + flTele + " " + flpx + " " + flDate;
             SQLiteDataAdapter da = new SQLiteDataAdapter(rqt, Acceuil.cnx);
@@ -105,10 +105,50 @@ namespace Gestion_des_factures
         {
             dtp_datAjout.Enabled = !(ch_ShDt.Checked);
         }
-
+        bool dl = false;
         private void button6_Click(object sender, EventArgs e)
         {
             Close();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (dgv_affDette.SelectedRows.Count == 1)
+                {
+                    var rep = MessageBox.Show("هل تريد حذف الدين المختار؟  ", "حذف الدين", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1, MessageBoxOptions.RightAlign);
+                    if (rep == DialogResult.Yes)
+                    {
+                        int idDt = int.Parse(ds.Tables["Dettes"].Rows[dgv_affDette.CurrentRow.Index][0].ToString());
+                        ds.Tables["Dettes"].Rows.Remove((ds.Tables["Dettes"].Select("الرقم = " + idDt)[0]));
+                        dl = true;
+                        //dtnv.Rows.RemoveAt(dgv_affDette.CurrentRow.Index);
+                        //dgv_ProdV.Text = dtnv.Rows.Count.ToString();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("هناك خطأ أثناء العملية المرجوا إعادة المحاولة");
+                string Err = "[" + DateTime.Now + "] [Exception] __ [Form :" + this.Name + " ; Controle: " + sender.ToString() + " ; Event: " + e.ToString() + "] __ ExceptionMessage : " + ex.Message;
+                Acceuil.WriteLog(Err);
+            }
+        }
+
+        private void dgv_affDette_SelectionChanged(object sender, EventArgs e)
+        {
+            button1.Enabled = (dgv_affDette.SelectedRows.Count == 1);
+        }
+
+        private void AffDette_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (dl)
+            {
+                MessageBox.Show("f");
+                SQLiteCommandBuilder cmdb = new SQLiteCommandBuilder(dta);
+                dta.Update(ds, "Dettes");
+            }
         }
     }
 }

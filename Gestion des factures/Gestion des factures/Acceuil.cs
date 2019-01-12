@@ -55,6 +55,9 @@ namespace Gestion_des_factures
             catch (Exception ex)
             {
                 MessageBox.Show("هناك خطأ أثناء العملية المرجوا إعادة المحاولة");
+                MessageBox.Show("هناك خطأ أثناء العملية المرجوا إعادة المحاولة");
+                string Err = "[" + DateTime.Now + "] [Exception] __ [Form :" + this.Name + " ; Controle: Actualisation de page d'acceuil ; Event: ] __ ExceptionMessage : " + ex.Message;
+                Acceuil.WriteLog(Err);
             }
         }
         public void LoadForm()
@@ -99,7 +102,7 @@ namespace Gestion_des_factures
             catch (Exception ex)
             {
                 MessageBox.Show("هناك خطأ أثناء العملية المرجوا إعادة المحاولة");
-                string Err = "[" + DateTime.Now + "] [Exception] __ [Form :" + this.Name + " ; Button: " + sender.ToString() + " ; Event: " + e.ToString() + "] __ ExceptionMessage : " + ex.Message;
+                string Err = "[" + DateTime.Now + "] [Exception] __ [Form :" + this.Name + " ; Controle: " + sender.ToString() + " ; Event: " + e.ToString() + "] __ ExceptionMessage : " + ex.Message;
                 Acceuil.WriteLog(Err);
             }
         }
@@ -112,12 +115,14 @@ namespace Gestion_des_factures
             catch (Exception ex)
             {
                 MessageBox.Show("هناك خطأ أثناء العملية المرجوا إعادة المحاولة");
+                string Err = "[" + DateTime.Now + "] [Exception] __ [Form :" + this.Name + " ; Controle: " + sender.ToString() + " ; Event: " + e.ToString() + "] __ ExceptionMessage : " + ex.Message;
+                Acceuil.WriteLog(Err);
             }
         }
 
         private void AjtVentToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            OpenForm(new AjtVente());
+            OpenForm(new AjtVente(this));
         }
 
         private void ttVentToolStripMenuItem_Click(object sender, EventArgs e)
@@ -127,7 +132,7 @@ namespace Gestion_des_factures
 
         private void AffProdToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            OpenForm(new AffProduit());
+            OpenForm(new AffProduit(this));
         }
 
         private void AjtProdToolStripMenuItem_Click(object sender, EventArgs e)

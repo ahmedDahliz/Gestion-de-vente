@@ -56,6 +56,8 @@
             this.label15 = new System.Windows.Forms.Label();
             this.cb_chngType = new System.Windows.Forms.ComboBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.txt_prxAch = new System.Windows.Forms.TextBox();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nud_qttMn)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nud_qtt)).BeginInit();
@@ -82,12 +84,14 @@
             this.groupBox2.Controls.Add(this.label3);
             this.groupBox2.Controls.Add(this.button2);
             this.groupBox2.Controls.Add(this.txt_pb);
+            this.groupBox2.Controls.Add(this.txt_prxAch);
             this.groupBox2.Controls.Add(this.txt_pc);
             this.groupBox2.Controls.Add(this.txt_pa);
             this.groupBox2.Controls.Add(this.nud_qttMn);
             this.groupBox2.Controls.Add(this.label13);
             this.groupBox2.Controls.Add(this.nud_qtt);
             this.groupBox2.Controls.Add(this.label12);
+            this.groupBox2.Controls.Add(this.label4);
             this.groupBox2.Controls.Add(this.label11);
             this.groupBox2.Controls.Add(this.label10);
             this.groupBox2.Controls.Add(this.label9);
@@ -107,7 +111,7 @@
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label3.ForeColor = System.Drawing.Color.Green;
-            this.label3.Location = new System.Drawing.Point(326, 89);
+            this.label3.Location = new System.Drawing.Point(232, 89);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(145, 13);
             this.label3.TabIndex = 35;
@@ -116,7 +120,8 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(500, 84);
+            this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button2.Location = new System.Drawing.Point(393, 84);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(75, 23);
             this.button2.TabIndex = 34;
@@ -134,7 +139,7 @@
             // 
             // txt_pc
             // 
-            this.txt_pc.Location = new System.Drawing.Point(216, 49);
+            this.txt_pc.Location = new System.Drawing.Point(216, 52);
             this.txt_pc.Name = "txt_pc";
             this.txt_pc.Size = new System.Drawing.Size(67, 20);
             this.txt_pc.TabIndex = 33;
@@ -190,7 +195,7 @@
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(289, 52);
+            this.label11.Location = new System.Drawing.Point(289, 55);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(45, 13);
             this.label11.TabIndex = 25;
@@ -263,6 +268,7 @@
             // 
             // button4
             // 
+            this.button4.Enabled = false;
             this.button4.Location = new System.Drawing.Point(12, 260);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(91, 23);
@@ -342,6 +348,23 @@
             this.pictureBox1.TabIndex = 70;
             this.pictureBox1.TabStop = false;
             // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(583, 90);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(67, 13);
+            this.label4.TabIndex = 25;
+            this.label4.Text = "الثمن الشراء :";
+            // 
+            // txt_prxAch
+            // 
+            this.txt_prxAch.Location = new System.Drawing.Point(508, 87);
+            this.txt_prxAch.Name = "txt_prxAch";
+            this.txt_prxAch.Size = new System.Drawing.Size(67, 20);
+            this.txt_prxAch.TabIndex = 33;
+            this.txt_prxAch.TextChanged += new System.EventHandler(this.saved);
+            // 
             // MdfProduit
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -403,5 +426,7 @@
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.TextBox txt_prxAch;
+        private System.Windows.Forms.Label label4;
     }
 }

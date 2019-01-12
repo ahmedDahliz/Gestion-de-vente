@@ -16,9 +16,12 @@ namespace Gestion_des_factures
 {
     public partial class AjtVente : Form
     {
-        public AjtVente()
+
+        private readonly Acceuil FrmAcc;
+        public AjtVente(Acceuil FAcc)
         {
             InitializeComponent();
+            FrmAcc = FAcc;
         }
         SQLiteDataAdapter dtaType = new SQLiteDataAdapter("Select * from Types", Acceuil.cnx);
         SQLiteDataAdapter dtaProduit = new SQLiteDataAdapter("Select * from Produits", Acceuil.cnx);
@@ -49,9 +52,10 @@ namespace Gestion_des_factures
                         }
                         else
                         {
-                            lbl_prix.Text = "0";
-                            lbl_prxavi.Text = "0";
+                            //lbl_prix.Text = "0";
+                            //lbl_prxavi.Text = "0";
                             cb_Prod.DataSource = ds.Tables["Produits"];
+                            cb_Prod.SelectedIndex = 0;
                         }
                     }
                     else
@@ -67,7 +71,9 @@ namespace Gestion_des_factures
                         }
                     }
                 }
-                else dv = new DataView(ds.Tables["Produits"], "NumPrd = " + txt_numP.Text + "", "", DataViewRowState.CurrentRows);
+                else { 
+                    dv = new DataView(ds.Tables["Produits"], "NumPrd = " + txt_numP.Text, "", DataViewRowState.CurrentRows); 
+                }
                 if (dv.ToTable().Rows.Count != 0)
                 {
                     cb_Prod.DataSource = dv.ToTable();
@@ -76,7 +82,7 @@ namespace Gestion_des_factures
             catch (Exception ex)
             {
                 MessageBox.Show("هناك خطأ أثناء العملية المرجوا إعادة المحاولة");
-                string Err = "[" + DateTime.Now + "] [Exception] __ [Form :" + this.Name + " ; Button: " + sender.ToString() + " ; Event: " + e.ToString() + "] __ ExceptionMessage : " + ex.Message;
+                string Err = "[" + DateTime.Now + "] [Exception] __ [Form :" + this.Name + " ; Controle: " + sender.ToString() + " ; Event: " + e.ToString() + "] __ ExceptionMessage : " + ex.Message;
                 Acceuil.WriteLog(Err);
             }
                 
@@ -123,8 +129,8 @@ namespace Gestion_des_factures
                 idLCmd = int.Parse(ds.Tables["idLign"].Rows[0]["seq"].ToString());
                 idLCmd++;
                 dtnv.Columns.Add("الرقم");
-                dtnv.Columns.Add("السلعة");
                 dtnv.Columns.Add("الكمية");
+                dtnv.Columns.Add("السلعة");
                 dtnv.Columns.Add("ثمن الوحدة");
                 dtnv.Columns.Add("الواجب");
                 dgv_ProdV.DataSource = dtnv;
@@ -203,10 +209,11 @@ namespace Gestion_des_factures
             try
             {
                 DataView dv = new DataView(ds.Tables["Stocks"], "NuPrd = " + cb_Prod.SelectedValue.ToString(), "", DataViewRowState.CurrentRows);
+                DataView dvp = new DataView(ds.Tables["Produits"], "NumPrd = " + cb_Prod.SelectedValue.ToString(), "", DataViewRowState.CurrentRows);
                 if (int.Parse(dv[0]["QttProd"].ToString()) == 0)
                 {
                     lbl_ttrprxav.ForeColor = System.Drawing.Color.Red;
-                    lbl_prxavi.ForeColor = System.Drawing.Color.Red;
+                    lbl_qttavi.ForeColor = System.Drawing.Color.Red;
                     button1.Enabled = false;
 
                 }
@@ -214,10 +221,10 @@ namespace Gestion_des_factures
                 {
                     button1.Enabled = true;
                     lbl_ttrprxav.ForeColor = System.Drawing.Color.Black;
-                    lbl_prxavi.ForeColor = System.Drawing.Color.Black;
+                    lbl_qttavi.ForeColor = System.Drawing.Color.Black;
                     nud_qtt.Minimum = 1;
                 }
-                lbl_prxavi.Text = dv[0]["QttProd"].ToString();
+                lbl_qttavi.Text = dv[0]["QttProd"].ToString();
                 nud_qtt.Maximum = int.Parse(dv[0]["QttProd"].ToString());
                 DataView dva = new DataView(ds.Tables["TypPA"], "NuPrd = " + cb_Prod.SelectedValue.ToString(), "", DataViewRowState.CurrentRows);
                 pa = dva[0]["Prix"].ToString();
@@ -227,12 +234,7 @@ namespace Gestion_des_factures
                 pc = dvc[0]["Prix"].ToString();
                 lbl_prix.Text = (rb_A.Checked) ? pa : (rd_B.Checked) ? pb : (rb_C.Checked) ? pc : "";
                 lbl_prxQtt.Text = float.Parse((float.Parse(lbl_prix.Text) * int.Parse(nud_qtt.Value.ToString())).ToString()).ToString();
-                if (cb_Prod.Text == "إختر منتوج")
-                {
-                    lbl_prix.Text = "0";
-                    lbl_prxavi.Text = "0";
-                }
-
+                lbl_prxAch.Text = dvp[0]["prxAchat"].ToString();
             }
             catch (Exception ex)
             {
@@ -284,6 +286,7 @@ namespace Gestion_des_factures
                 cell.HorizontalAlignment = Element.ALIGN_CENTER;
                 tableProduct.AddCell(cell);
             }
+            //add products
             for (int i = 0; i < dtnv.Rows.Count; i++)
             {
                 for (int j = 1; j < dtnv.Columns.Count; j++)
@@ -300,13 +303,13 @@ namespace Gestion_des_factures
             addCell(e2, FootTable, "عدد السلع : " + lbl_qttV.Text);
             addCell(e2, FootTable, "الواجب أدائه  : " + lbl_prixTotal.Text + " درهم");
             document.Add(FootTable);
-            //add  
+            //add debt informations if exit
             if (ch_ventADette.Checked)
             {
                 SQLiteDataAdapter dtaDette = new SQLiteDataAdapter("Select * from Dettes", Acceuil.cnx);
                 dtaDette.Fill(ds, "Dettes");
-                DataView dvD = new DataView(ds.Tables["Dettes"], "NuClt = " + cb_nomC.SelectedValue.ToString(), "", DataViewRowState.CurrentRows);
-                float dt = float.Parse(dvD[0]["PrixDette"].ToString());
+                //DataView dvD = new DataView(ds.Tables["Dettes"], "NuClt = " + cb_nomC.SelectedValue.ToString(), "", DataViewRowState.CurrentRows);
+                //float dt = float.Parse(dvD[0]["PrixDette"].ToString());
                 DataView dvC = new DataView(ds.Tables["Client"], "NumClt = " + cb_nomC.SelectedValue.ToString(), "", DataViewRowState.CurrentRows);
                 //add separator
                 document.Add(p);
@@ -322,9 +325,9 @@ namespace Gestion_des_factures
                     addCell(e2, DetteTable, "التسبيق   : " + txt_AnvcD.Text + " درهم");
                     pxd -= float.Parse(txt_AnvcD.Text);
                 }
-                addCell(e2, DetteTable, "الثمن المضاف إلى الدين   : " + pxd + " درهم");
+                addCell(e2, DetteTable, "ثمن الدين   : " + pxd + " درهم");
                // dt += float.Parse(lbl_prixTotal.Text);
-                addCell(e2, DetteTable, "مجموع الدين الحالي  : " + dt + " درهم");
+                //addCell(e2, DetteTable, "مجموع الدين الحالي  : " + dt + " درهم");
                 document.Add(DetteTable);
             }
             document.Close();
@@ -379,11 +382,12 @@ namespace Gestion_des_factures
                     //
                     dr = dtnv.NewRow();
                     dr[0] = cb_Prod.SelectedValue.ToString();
-                    dr[1] = cb_Prod.Text;
-                    dr[2] = nud_qtt.Value;
+                    dr[1] = nud_qtt.Value;
+                    dr[2] = cb_Prod.Text;
                     dr[3] = lbl_prix.Text;
                     dr[4] = lbl_prxQtt.Text;
                     dtnv.Rows.Add(dr);
+                    ChangeQtt(cb_Prod.SelectedValue.ToString(), int.Parse(lbl_qttavi.Text) - nud_qtt.Value);
                     lbl_qttV.Text = dtnv.Rows.Count.ToString();
                     pxTTl += float.Parse(lbl_prxQtt.Text);
                     lbl_prixTotal.Text = pxTTl.ToString();
@@ -433,8 +437,10 @@ namespace Gestion_des_factures
                 dtaCmd.Update(ds, "Cmd");
                 cmdb = new SQLiteCommandBuilder(dtaLCmd);
                 dtaLCmd.Update(ds, "LignCmd");
+                cmdb = new SQLiteCommandBuilder(dtaStocke);
+                dtaStocke.Update(ds, "Stocks");
                 String dtn = DateTime.Now.Day + "_" + DateTime.Now.Month + "_" + DateTime.Now.Year;
-                CreatePdf("N" + idLCmd + "_" + dtn + ".pdf");
+                CreatePdf("No" + idLCmd + "_" + dtn + ".pdf");
                 button9.Enabled = false;
                 NewSell();
             }
@@ -460,8 +466,10 @@ namespace Gestion_des_factures
                 if (dgv_ProdV.SelectedRows.Count == 1)
                 {
                     idPr = dtnv.Rows[dgv_ProdV.CurrentRow.Index][0].ToString();
+                    DataView dv = new DataView(ds.Tables["Stocks"], "NuPrd = " + idPr, "", DataViewRowState.CurrentRows);
+                    ChangeQtt(cb_Prod.SelectedValue.ToString(), int.Parse(dv[0]["QttProd"].ToString()) + int.Parse(dgv_ProdV.CurrentRow.Cells[1].Value.ToString()));
                     cb_Prod.SelectedValue = idPr;
-                    nud_qtt.Value = int.Parse(dgv_ProdV.CurrentRow.Cells[2].Value.ToString());
+                    nud_qtt.Value = int.Parse(dgv_ProdV.CurrentRow.Cells[1].Value.ToString());
                     button6.Visible = true;
                     button1.Visible = false;
                 }
@@ -493,6 +501,7 @@ namespace Gestion_des_factures
                 dtnv.Rows[idg]["ثمن الوحدة"] = lbl_prix.Text;
                 dtnv.Rows[idg]["الواجب"] = lbl_prxQtt.Text;
                 dtnv.Rows[idg].EndEdit();
+                ChangeQtt(cb_Prod.SelectedValue.ToString(), int.Parse(lbl_qttavi.Text) - nud_qtt.Value);
                 button6.Visible = false;
                 button1.Visible = true;
                 MessageBox.Show("تم تعديل المعلومات بنجاح", " تعديل المعلومات", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button2, MessageBoxOptions.RightAlign);
@@ -505,6 +514,14 @@ namespace Gestion_des_factures
             }
         }
 
+        private void ChangeQtt(string idp, decimal qtt)
+        {
+            int iP = ds.Tables["Stocks"].Rows.IndexOf(ds.Tables["Stocks"].Select("NuPrd = '" + idp + "'")[0]);
+            ds.Tables["Stocks"].Rows[iP].BeginEdit();
+            ds.Tables["Stocks"].Rows[iP]["QttProd"] = qtt;
+            ds.Tables["Stocks"].Rows[iP].EndEdit();
+        }
+
         private void button7_Click(object sender, EventArgs e)
         {
             try
@@ -515,6 +532,8 @@ namespace Gestion_des_factures
                     if (rep == DialogResult.Yes)
                     {
                         idPr = dtnv.Rows[dgv_ProdV.CurrentRow.Index][0].ToString();
+                        DataView dv = new DataView(ds.Tables["Stocks"], "NuPrd = " + idPr, "", DataViewRowState.CurrentRows);
+                        ChangeQtt(cb_Prod.SelectedValue.ToString(), int.Parse(dv[0]["QttProd"].ToString()) + int.Parse(dgv_ProdV.CurrentRow.Cells[1].Value.ToString()));
                         ds.Tables["Cmd"].Rows.Remove((ds.Tables["Cmd"].Select("NumCmd = " + idLCmd + " AND NuPrd = " + idPr)[0]));
                         dtnv.Rows.RemoveAt(dgv_ProdV.CurrentRow.Index);
                         dgv_ProdV.Text = dtnv.Rows.Count.ToString();
@@ -524,7 +543,7 @@ namespace Gestion_des_factures
             catch (Exception ex)
             {
                 MessageBox.Show("هناك خطأ أثناء العملية المرجوا إعادة المحاولة");
-                string Err = "[" + DateTime.Now + "] [Exception] __ [Form :" + this.Name + " ; Button: " + sender.ToString() + " ; Event: " + e.ToString() + "] __ ExceptionMessage : " + ex.Message;
+                string Err = "[" + DateTime.Now + "] [Exception] __ [Form :" + this.Name + " ; Controle: " + sender.ToString() + " ; Event: " + e.ToString() + "] __ ExceptionMessage : " + ex.Message;
                 Acceuil.WriteLog(Err);
             }
         }
@@ -587,7 +606,7 @@ namespace Gestion_des_factures
 
         private void AjtVente_FormClosing(object sender, FormClosingEventArgs e)
         {
-
+            FrmAcc.RefreshAccui();
             if (!saved)
             {
                 if (ex)
@@ -617,7 +636,7 @@ namespace Gestion_des_factures
 
         }
 
-        private void txt_AnvcD_TextChanged(object sender, EventArgs e)  
+        private void txt_AnvcD_TextChanged(object sender, EventArgs e)
         {
             float px;
             if (txt_AnvcD.Text != "")

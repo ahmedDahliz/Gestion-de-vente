@@ -65,6 +65,8 @@
             this.lbl_prdAjt = new System.Windows.Forms.Label();
             this.button9 = new System.Windows.Forms.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.txt_prxAch = new System.Windows.Forms.TextBox();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nud_qttMn)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nud_qtt)).BeginInit();
@@ -202,9 +204,9 @@
             this.cb_tpPrd.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.cb_tpPrd.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cb_tpPrd.FormattingEnabled = true;
-            this.cb_tpPrd.Location = new System.Drawing.Point(572, 53);
+            this.cb_tpPrd.Location = new System.Drawing.Point(574, 53);
             this.cb_tpPrd.Name = "cb_tpPrd";
-            this.cb_tpPrd.Size = new System.Drawing.Size(140, 21);
+            this.cb_tpPrd.Size = new System.Drawing.Size(138, 21);
             this.cb_tpPrd.TabIndex = 2;
             // 
             // label8
@@ -221,7 +223,7 @@
             // 
             this.label9.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(435, 28);
+            this.label9.Location = new System.Drawing.Point(435, 60);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(45, 13);
             this.label9.TabIndex = 17;
@@ -231,7 +233,7 @@
             // 
             this.label10.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(435, 54);
+            this.label10.Location = new System.Drawing.Point(435, 86);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(45, 13);
             this.label10.TabIndex = 18;
@@ -241,7 +243,7 @@
             // 
             this.label11.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(435, 80);
+            this.label11.Location = new System.Drawing.Point(435, 112);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(45, 13);
             this.label11.TabIndex = 19;
@@ -337,6 +339,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.groubbox1.Controls.Add(this.txt_prxB);
             this.groubbox1.Controls.Add(this.txt_prxC);
+            this.groubbox1.Controls.Add(this.txt_prxAch);
             this.groubbox1.Controls.Add(this.txt_prxA);
             this.groubbox1.Controls.Add(this.button1);
             this.groubbox1.Controls.Add(this.button8);
@@ -349,6 +352,7 @@
             this.groubbox1.Controls.Add(this.label8);
             this.groubbox1.Controls.Add(this.nud_qttMn);
             this.groubbox1.Controls.Add(this.cb_tpPrd);
+            this.groubbox1.Controls.Add(this.label4);
             this.groubbox1.Controls.Add(this.label12);
             this.groubbox1.Controls.Add(this.label9);
             this.groubbox1.Controls.Add(this.label10);
@@ -364,7 +368,7 @@
             // txt_prxB
             // 
             this.txt_prxB.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.txt_prxB.Location = new System.Drawing.Point(347, 51);
+            this.txt_prxB.Location = new System.Drawing.Point(347, 83);
             this.txt_prxB.Name = "txt_prxB";
             this.txt_prxB.Size = new System.Drawing.Size(82, 20);
             this.txt_prxB.TabIndex = 6;
@@ -372,7 +376,7 @@
             // txt_prxC
             // 
             this.txt_prxC.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.txt_prxC.Location = new System.Drawing.Point(347, 76);
+            this.txt_prxC.Location = new System.Drawing.Point(347, 108);
             this.txt_prxC.Name = "txt_prxC";
             this.txt_prxC.Size = new System.Drawing.Size(82, 20);
             this.txt_prxC.TabIndex = 7;
@@ -380,10 +384,11 @@
             // txt_prxA
             // 
             this.txt_prxA.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.txt_prxA.Location = new System.Drawing.Point(347, 25);
+            this.txt_prxA.Location = new System.Drawing.Point(347, 57);
             this.txt_prxA.Name = "txt_prxA";
             this.txt_prxA.Size = new System.Drawing.Size(82, 20);
             this.txt_prxA.TabIndex = 5;
+            this.txt_prxA.TextChanged += new System.EventHandler(this.txt_prxA_TextChanged);
             // 
             // button1
             // 
@@ -399,7 +404,7 @@
             // button8
             // 
             this.button8.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button8.Location = new System.Drawing.Point(453, 134);
+            this.button8.Location = new System.Drawing.Point(454, 134);
             this.button8.Name = "button8";
             this.button8.Size = new System.Drawing.Size(91, 32);
             this.button8.TabIndex = 7;
@@ -472,6 +477,24 @@
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox1.TabIndex = 54;
             this.pictureBox1.TabStop = false;
+            // 
+            // label4
+            // 
+            this.label4.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(435, 28);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(61, 13);
+            this.label4.TabIndex = 17;
+            this.label4.Text = "ثمن الشراء :";
+            // 
+            // txt_prxAch
+            // 
+            this.txt_prxAch.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.txt_prxAch.Location = new System.Drawing.Point(347, 25);
+            this.txt_prxAch.Name = "txt_prxAch";
+            this.txt_prxAch.Size = new System.Drawing.Size(82, 20);
+            this.txt_prxAch.TabIndex = 5;
             // 
             // AjtProduits
             // 
@@ -546,5 +569,7 @@
         private System.Windows.Forms.Button button10;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.TextBox txt_prxAch;
+        private System.Windows.Forms.Label label4;
     }
 }

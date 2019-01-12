@@ -131,7 +131,7 @@ namespace Gestion_des_factures
             try
             {
                 float pd;
-                if (txt_nmC.Text != "" && txt_pxD.Text != "" && txt_adress.Text != "" && msk_teleC.Text != "")
+                if (txt_nmC.Text != "" && txt_pxD.Text != "")
                 {
                     //if (!nameClt.Equals(txt_nmC.Text) && CheckInDt(ds.Tables["Client"], txt_nmC.Text, "NomClt"))
                     //{

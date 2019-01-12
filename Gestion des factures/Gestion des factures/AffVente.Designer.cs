@@ -50,6 +50,8 @@
             this.label10 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.lbl_prxtt = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_Facture)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_DetailFacture)).BeginInit();
@@ -295,11 +297,33 @@
             this.pictureBox1.TabIndex = 53;
             this.pictureBox1.TabStop = false;
             // 
+            // lbl_prxtt
+            // 
+            this.lbl_prxtt.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.lbl_prxtt.AutoSize = true;
+            this.lbl_prxtt.Location = new System.Drawing.Point(609, 463);
+            this.lbl_prxtt.Name = "lbl_prxtt";
+            this.lbl_prxtt.Size = new System.Drawing.Size(13, 13);
+            this.lbl_prxtt.TabIndex = 54;
+            this.lbl_prxtt.Text = "0";
+            // 
+            // label8
+            // 
+            this.label8.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(438, 463);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(124, 13);
+            this.label8.TabIndex = 55;
+            this.label8.Text = "مجموع المبيعات الظاهرة : ";
+            // 
             // AffVente
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(815, 875);
+            this.Controls.Add(this.lbl_prxtt);
+            this.Controls.Add(this.label8);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.label11);
             this.Controls.Add(this.lbl_VentAp);
@@ -352,5 +376,7 @@
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.CheckBox ch_ShDt;
         private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.Label lbl_prxtt;
+        private System.Windows.Forms.Label label8;
     }
 }

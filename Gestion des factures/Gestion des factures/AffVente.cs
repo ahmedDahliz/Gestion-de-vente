@@ -34,6 +34,11 @@ namespace Gestion_des_factures
             DataSet dst = new DataSet();
             da.Fill(dst, "Dettefiltrd");
             lbl_VentAp.Text = dst.Tables["Dettefiltrd"].Rows.Count.ToString();
+            lbl_prxtt.Text = "0";
+            foreach (DataRow prd in dst.Tables["Dettefiltrd"].Rows)
+            {
+                lbl_prxtt.Text = (double.Parse(lbl_prxtt.Text) + double.Parse(prd["مجموع الأداء"].ToString())).ToString();
+            }
             dgv_Facture.ClearSelection();
             return dst.Tables["Dettefiltrd"];
         }
@@ -45,6 +50,11 @@ namespace Gestion_des_factures
                 dgv_Facture.DataSource = ds.Tables["LignCmd"];
                 dgv_Facture.ClearSelection();
                 lbl_VentAp.Text = ds.Tables["LignCmd"].Rows.Count.ToString();
+                lbl_prxtt.Text = "0";
+                foreach (DataRow prd in ds.Tables["LignCmd"].Rows)
+                {
+                    lbl_prxtt.Text = (double.Parse(lbl_prxtt.Text) + double.Parse(prd["مجموع الأداء"].ToString())).ToString();
+                }
                 first = false;
             }
             catch (Exception ex)

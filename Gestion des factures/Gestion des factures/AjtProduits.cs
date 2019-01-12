@@ -45,7 +45,7 @@ namespace Gestion_des_factures
             catch (Exception ex)
             {
                 MessageBox.Show("هناك خطأ أثناء العملية المرجوا إعادة المحاولة");
-                string Err = "[" + DateTime.Now + "] [Exception] __ [Form :" + this.Name + " ; Button: " + sender.ToString() + " ; Event: " + e.ToString() + "] __ ExceptionMessage : " + ex.Message;
+                string Err = "[" + DateTime.Now + "] [Exception] __ [Form :" + this.Name + " ; Controle: " + sender.ToString() + " ; Event: " + e.ToString() + "] __ ExceptionMessage : " + ex.Message;
                 Acceuil.WriteLog(Err);
             }
         }
@@ -63,14 +63,14 @@ namespace Gestion_des_factures
         {
             try
             {
-                float pa, pb, pc;
-                if (txt_nomPrd.Text != "" && txt_prxA.Text != "" && txt_prxB.Text != "" && txt_prxC.Text != "")
+                float pac, pa, pb, pc;
+                if (txt_nomPrd.Text != "" && txt_prxAch.Text != ""  && txt_prxA.Text != "" && txt_prxB.Text != "" && txt_prxC.Text != "")
                 {
                     if (!CheckInDt(ds.Tables["Produits"], "'" + txt_nomPrd.Text + "'", "Desingation"))
                     {
                         if (nud_qtt.Value != 0)
                         {
-                            if (float.TryParse(txt_prxA.Text, out pa) && float.TryParse(txt_prxB.Text, out pb) && float.TryParse(txt_prxB.Text, out pc))
+                            if (float.TryParse(txt_prxAch.Text, out pac) && float.TryParse(txt_prxA.Text, out pa) && float.TryParse(txt_prxB.Text, out pb) && float.TryParse(txt_prxB.Text, out pc))
                             {
                                 DataRow ligneP = ds.Tables["Produits"].NewRow();
                                 DataRow ligneS = ds.Tables["Stocks"].NewRow();
@@ -80,6 +80,7 @@ namespace Gestion_des_factures
                                 DataRow ligneDgv = dtnp.NewRow();
                                 ligneP[1] = txt_nomPrd.Text;
                                 ligneP[2] = cb_tpPrd.SelectedValue.ToString();
+                                ligneP[3] = txt_prxAch.Text;
                                 ds.Tables["Produits"].Rows.Add(ligneP);
                                 idP++;
                                 lignePrA[1] = txt_prxA.Text;
@@ -100,11 +101,12 @@ namespace Gestion_des_factures
                                 ligneDgv[1] = txt_nomPrd.Text;
                                 ligneDgv[2] = nud_qtt.Value;
                                 ligneDgv[3] = nud_qttMn.Value;
-                                ligneDgv[4] = txt_prxA.Text;
-                                ligneDgv[5] = txt_prxB.Text;
-                                ligneDgv[6] = txt_prxC.Text;
-                                ligneDgv[7] = cb_tpPrd.Text;
-                                ligneDgv[8] = DateTime.Now.ToShortDateString();
+                                ligneDgv[4] = txt_prxAch.Text;
+                                ligneDgv[5] = txt_prxA.Text;
+                                ligneDgv[6] = txt_prxB.Text;
+                                ligneDgv[7] = txt_prxC.Text;
+                                ligneDgv[8] = cb_tpPrd.Text;
+                                ligneDgv[9] = DateTime.Now.ToShortDateString();
                                 dtnp.Rows.Add(ligneDgv);
                                 saved = false;
                                 button1.PerformClick();
@@ -126,7 +128,7 @@ namespace Gestion_des_factures
             catch (Exception ex)
             {
                 MessageBox.Show("هناك خطأ أثناء العملية المرجوا إعادة المحاولة");
-                string Err = "[" + DateTime.Now + "] [Exception] __ [Form :" + this.Name + " ; Button: " + sender.ToString() + " ; Event: " + e.ToString() + "] __ ExceptionMessage : " + ex.Message;
+                string Err = "[" + DateTime.Now + "] [Exception] __ [Form :" + this.Name + " ; Controle: " + sender.ToString() + " ; Event: " + e.ToString() + "] __ ExceptionMessage : " + ex.Message;
                 Acceuil.WriteLog(Err);
             }
         }
@@ -154,6 +156,7 @@ namespace Gestion_des_factures
                 dtnp.Columns.Add("الإسم");
                 dtnp.Columns.Add("الكمية");
                 dtnp.Columns.Add("الكمية الأدنى");
+                dtnp.Columns.Add("ثمن الشراء");
                 dtnp.Columns.Add("ثمن A");
                 dtnp.Columns.Add("ثمن B");
                 dtnp.Columns.Add("ثمن C");
@@ -169,7 +172,7 @@ namespace Gestion_des_factures
             catch (Exception ex)
             {
                 MessageBox.Show("هناك خطأ أثناء العملية المرجوا إعادة المحاولة");
-                string Err = "[" + DateTime.Now + "] [Exception] __ [Form :" + this.Name + " ; Button: " + sender.ToString() + " ; Event: " + e.ToString() + "] __ ExceptionMessage : " + ex.Message;
+                string Err = "[" + DateTime.Now + "] [Exception] __ [Form :" + this.Name + " ; Controle: " + sender.ToString() + " ; Event: " + e.ToString() + "] __ ExceptionMessage : " + ex.Message;
                 Acceuil.WriteLog(Err);
             }
         }
@@ -196,7 +199,7 @@ namespace Gestion_des_factures
             catch (Exception ex)
             {
                 MessageBox.Show("هناك خطأ أثناء العملية المرجوا إعادة المحاولة");
-                string Err = "[" + DateTime.Now + "] [Exception] __ [Form :" + this.Name + " ; Button: " + sender.ToString() + " ; Event: " + e.ToString() + "] __ ExceptionMessage : " + ex.Message;
+                string Err = "[" + DateTime.Now + "] [Exception] __ [Form :" + this.Name + " ; Controle: " + sender.ToString() + " ; Event: " + e.ToString() + "] __ ExceptionMessage : " + ex.Message;
                 Acceuil.WriteLog(Err);
             }
         }
@@ -225,7 +228,7 @@ namespace Gestion_des_factures
             catch (Exception ex)
             {
                 MessageBox.Show("هناك خطأ أثناء العملية المرجوا إعادة المحاولة");
-                string Err = "[" + DateTime.Now + "] [Exception] __ [Form :" + this.Name + " ; Button: " + sender.ToString() + " ; Event: " + e.ToString() + "] __ ExceptionMessage : " + ex.Message;
+                string Err = "[" + DateTime.Now + "] [Exception] __ [Form :" + this.Name + " ; Controle: " + sender.ToString() + " ; Event: " + e.ToString() + "] __ ExceptionMessage : " + ex.Message;
                 Acceuil.WriteLog(Err);
             }
         }
@@ -250,6 +253,7 @@ namespace Gestion_des_factures
             txt_nomPrd.Text = "";
             cb_tpPrd.SelectedValue = 0;
             nud_qtt.Value = 0;
+            txt_prxAch.Text = "";
             txt_prxA.Text = "";
             txt_prxB.Text = "";
             txt_prxC.Text = "";
@@ -282,10 +286,11 @@ namespace Gestion_des_factures
                     txt_nomPrd.Text = dgr_nvProd.CurrentRow.Cells[1].Value.ToString();
                     nud_qtt.Value = int.Parse(dgr_nvProd.CurrentRow.Cells[2].Value.ToString());
                     nud_qttMn.Value = int.Parse(dgr_nvProd.CurrentRow.Cells[3].Value.ToString());
-                    txt_prxA.Text = dgr_nvProd.CurrentRow.Cells[4].Value.ToString();
-                    txt_prxB.Text = dgr_nvProd.CurrentRow.Cells[5].Value.ToString();
-                    txt_prxC.Text = dgr_nvProd.CurrentRow.Cells[6].Value.ToString();
-                    cb_tpPrd.SelectedIndex = cb_tpPrd.FindStringExact(dgr_nvProd.CurrentRow.Cells[7].Value.ToString());
+                    txt_prxAch.Text = dgr_nvProd.CurrentRow.Cells[4].Value.ToString();
+                    txt_prxA.Text = dgr_nvProd.CurrentRow.Cells[5].Value.ToString();
+                    txt_prxB.Text = dgr_nvProd.CurrentRow.Cells[6].Value.ToString();
+                    txt_prxC.Text = dgr_nvProd.CurrentRow.Cells[7].Value.ToString();
+                    cb_tpPrd.SelectedIndex = cb_tpPrd.FindStringExact(dgr_nvProd.CurrentRow.Cells[8].Value.ToString());
                     button8.Visible = true;
                     button2.Visible = false;
                 }
@@ -293,7 +298,7 @@ namespace Gestion_des_factures
             catch (Exception ex)
             {
                 MessageBox.Show("هناك خطأ أثناء العملية المرجوا إعادة المحاولة");
-                string Err = "[" + DateTime.Now + "] [Exception] __ [Form :" + this.Name + " ; Button: " + sender.ToString() + " ; Event: " + e.ToString() + "] __ ExceptionMessage : " + ex.Message;
+                string Err = "[" + DateTime.Now + "] [Exception] __ [Form :" + this.Name + " ; Controle: " + sender.ToString() + " ; Event: " + e.ToString() + "] __ ExceptionMessage : " + ex.Message;
                 Acceuil.WriteLog(Err);
             }
         }
@@ -312,6 +317,7 @@ namespace Gestion_des_factures
                 ds.Tables["Produits"].Rows[iP].BeginEdit();
                 ds.Tables["Produits"].Rows[iP]["Desingation"] = txt_nomPrd.Text;
                 ds.Tables["Produits"].Rows[iP]["NuType"] = cb_tpPrd.SelectedValue;
+                ds.Tables["Produits"].Rows[iP]["prxAchat"] = txt_prxAch.Text;
                 ds.Tables["Produits"].Rows[iP].EndEdit();
                 //Update DataTable TypPA
                 ds.Tables["TypPA"].Rows[iPA].BeginEdit();
@@ -335,6 +341,7 @@ namespace Gestion_des_factures
                 dtnp.Rows[idg]["الإسم"] = txt_nomPrd.Text;
                 dtnp.Rows[idg]["الكمية"] = nud_qtt.Value;
                 dtnp.Rows[idg]["الكمية الأدنى"] = nud_qttMn.Value;
+                dtnp.Rows[idg]["ثمن الشراء"] = nud_qttMn.Value;
                 dtnp.Rows[idg]["ثمن A"] = txt_prxA.Text;
                 dtnp.Rows[idg]["ثمن B"] = txt_prxB.Text;
                 dtnp.Rows[idg]["ثمن C"] = txt_prxB.Text;
@@ -348,7 +355,7 @@ namespace Gestion_des_factures
             catch (Exception ex)
             {
                 MessageBox.Show("هناك خطأ أثناء العملية المرجوا إعادة المحاولة");
-                string Err = "[" + DateTime.Now + "] [Exception] __ [Form :" + this.Name + " ; Button: " + sender.ToString() + " ; Event: " + e.ToString() + "] __ ExceptionMessage : " + ex.Message;
+                string Err = "[" + DateTime.Now + "] [Exception] __ [Form :" + this.Name + " ; Controle: " + sender.ToString() + " ; Event: " + e.ToString() + "] __ ExceptionMessage : " + ex.Message;
                 Acceuil.WriteLog(Err);
             }
           }
@@ -399,7 +406,7 @@ namespace Gestion_des_factures
             catch (Exception ex)
             {
                 MessageBox.Show("هناك خطأ أثناء العملية المرجوا إعادة المحاولة");
-                string Err = "[" + DateTime.Now + "] [Exception] __ [Form :" + this.Name + " ; Button: " + sender.ToString() + " ; Event: " + e.ToString() + "] __ ExceptionMessage : " + ex.Message;
+                string Err = "[" + DateTime.Now + "] [Exception] __ [Form :" + this.Name + " ; Controle: " + sender.ToString() + " ; Event: " + e.ToString() + "] __ ExceptionMessage : " + ex.Message;
                 Acceuil.WriteLog(Err);
             }
         }
@@ -422,7 +429,7 @@ namespace Gestion_des_factures
             catch (Exception ex)
             {
                 MessageBox.Show("هناك خطأ أثناء العملية المرجوا إعادة المحاولة");
-                string Err = "[" + DateTime.Now + "] [Exception] __ [Form :" + this.Name + " ; Button: " + sender.ToString() + " ; Event: " + e.ToString() + "] __ ExceptionMessage : " + ex.Message;
+                string Err = "[" + DateTime.Now + "] [Exception] __ [Form :" + this.Name + " ; Controle: " + sender.ToString() + " ; Event: " + e.ToString() + "] __ ExceptionMessage : " + ex.Message;
                 Acceuil.WriteLog(Err);
             }
         }
@@ -441,7 +448,7 @@ namespace Gestion_des_factures
             catch (Exception ex)
             {
                 MessageBox.Show("هناك خطأ أثناء العملية المرجوا إعادة المحاولة");
-                string Err = "[" + DateTime.Now + "] [Exception] __ [Form :" + this.Name + " ; Button: " + sender.ToString() + " ; Event: " + e.ToString() + "] __ ExceptionMessage : " + ex.Message;
+                string Err = "[" + DateTime.Now + "] [Exception] __ [Form :" + this.Name + " ; Controle: " + sender.ToString() + " ; Event: " + e.ToString() + "] __ ExceptionMessage : " + ex.Message;
                 Acceuil.WriteLog(Err);
             }
         }
@@ -452,6 +459,11 @@ namespace Gestion_des_factures
         }
 
         private void txt_nomTp_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txt_prxA_TextChanged(object sender, EventArgs e)
         {
 
         }

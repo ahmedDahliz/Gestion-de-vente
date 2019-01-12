@@ -39,6 +39,8 @@ namespace Gestion_des_factures
         void saved(object sender, EventArgs e)
         {
             label3.Visible = false;
+            button4.Enabled = false;
+            button2.BackColor = Color.Green;
         }
         private void MdfProduit_Load(object sender, EventArgs e)
         {
@@ -49,7 +51,7 @@ namespace Gestion_des_factures
                 dtaPxA.Fill(ds, "TypPA");
                 dtaPxB.Fill(ds, "TypPB");
                 dtaPxC.Fill(ds, "TypPC");
-                dta = new SQLiteDataAdapter("select p.NumPrd, p.Desingation, s.QttProd, s.QttPrsFini, pa.Prix, pb.Prix, pc.prix, p.NuType from Stocks s, Produits p, TypePrixA pa, TypePrixB pb, TypePrixC pc where s.NuPrd = p.NumPrd AND p.NumPrd = pa.NuPrd AND p.NumPrd =  pb.NuPrd AND p.NumPrd = pc.NuPrd AND p.NumPrd = " + idpr, Acceuil.cnx);
+                dta = new SQLiteDataAdapter("select p.NumPrd, p.Desingation, s.QttProd, s.QttPrsFini, pa.Prix, pb.Prix, pc.prix, p.NuType, p.prxAchat from Stocks s, Produits p, TypePrixA pa, TypePrixB pb, TypePrixC pc where s.NuPrd = p.NumPrd AND p.NumPrd = pa.NuPrd AND p.NumPrd =  pb.NuPrd AND p.NumPrd = pc.NuPrd AND p.NumPrd = " + idpr, Acceuil.cnx);
                 dta.Fill(ds, "EdtPrd");
                 dt2 = new SQLiteDataAdapter("select * from Types", Acceuil.cnx);
                 dt2.Fill(ds, "types");
@@ -68,6 +70,7 @@ namespace Gestion_des_factures
                 txt_pb.Text = ds.Tables["EdtPrd"].Rows[0][5].ToString();
                 txt_pc.Text = ds.Tables["EdtPrd"].Rows[0][6].ToString();
                 cb_tpPrd.SelectedValue = ds.Tables["EdtPrd"].Rows[0][7].ToString();
+                txt_prxAch.Text = ds.Tables["EdtPrd"].Rows[0][8].ToString();
             }
             catch (Exception ex)
             {
@@ -169,15 +172,16 @@ namespace Gestion_des_factures
         {
             try
             {
-                float pa, pb, pc;
-                if (txt_nmPrd.Text != "" && txt_pa.Text != "" && txt_pb.Text != "" && txt_pc.Text != "")
+                float pac, pa, pb, pc;
+                if (txt_nmPrd.Text != "" && txt_pa.Text != "" && txt_pb.Text != "" && txt_pc.Text != "" && txt_prxAch.Text != "")
                 {
-                    if (float.TryParse(txt_pa.Text, out pa) && float.TryParse(txt_pb.Text, out pb) && float.TryParse(txt_pc.Text, out pc))
+                    if (float.TryParse(txt_pa.Text, out pa) && float.TryParse(txt_pb.Text, out pb) && float.TryParse(txt_pc.Text, out pc) && float.TryParse(txt_prxAch.Text, out pac))
                     {
                         DataView dv = new DataView(ds.Tables["Produits"], "NumPrd = " + idpr, "", DataViewRowState.CurrentRows);
                         dv[0].BeginEdit();
                         dv[0][1] = txt_nmPrd.Text;
                         dv[0][2] = cb_tpPrd.SelectedValue;
+                        dv[0][3] = txt_prxAch.Text;
                         dv[0].EndEdit();
                         dv = new DataView(ds.Tables["Stocks"], "NuPrd = " + idpr, "", DataViewRowState.CurrentRows);
                         dv[0].BeginEdit();
@@ -198,6 +202,8 @@ namespace Gestion_des_factures
                         dv[0].EndEdit();
                         ds.Tables["EdtPrd"].Rows[0].EndEdit();
                         label3.Visible = true;
+                        button2.BackColor = SystemColors.Control;
+                        button4.Enabled = true;
                     }
                     else MessageBox.Show("أحد الأثمنة غير مقبولة", "خطأ في إدخال الأثمنة", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
