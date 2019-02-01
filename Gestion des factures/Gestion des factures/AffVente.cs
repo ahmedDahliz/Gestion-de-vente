@@ -165,7 +165,7 @@ namespace Gestion_des_factures
                 DirectoryInfo di = Directory.CreateDirectory(path);
                 DateTime dt = DateTime.Parse(dgv_Facture.CurrentRow.Cells[3].Value.ToString());
                 string dtn = dt.Day + "_" + dt.Month + "_" + dt.Year;
-                System.Diagnostics.Process.Start(path + "\\" + "N" + dgv_Facture.CurrentRow.Cells[0].Value.ToString() + "_" + dtn + ".pdf");
+                System.Diagnostics.Process.Start(path + "\\" + "No" + dgv_Facture.CurrentRow.Cells[0].Value.ToString() + "_" + dtn + ".pdf");
             }
             catch (Exception ex)
             {

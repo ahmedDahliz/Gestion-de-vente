@@ -71,10 +71,12 @@ namespace Gestion_des_factures
                         }
                     }
                 }
-                else { 
-                    dv = new DataView(ds.Tables["Produits"], "NumPrd = " + txt_numP.Text, "", DataViewRowState.CurrentRows); 
+                else {
+                    int np;
+                    if(int.TryParse(txt_numP.Text, out np)) 
+                        dv = new DataView(ds.Tables["Produits"], "NumPrd = " + np, "", DataViewRowState.CurrentRows); 
                 }
-                if (dv.ToTable().Rows.Count != 0)
+                if (dv != null && dv.ToTable().Rows.Count != 0)
                 {
                     cb_Prod.DataSource = dv.ToTable();
                 }
@@ -650,6 +652,11 @@ namespace Gestion_des_factures
                 }
                 else MessageBox.Show("ثمن التسبيق غير مقبول", "خطأ في إدخال ثمن التسبيق", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button2, MessageBoxOptions.RightAlign);
             }
+
+        }
+
+        private void cb_typePrd_SelectedIndexChanged(object sender, EventArgs e)
+        {
 
         }
        

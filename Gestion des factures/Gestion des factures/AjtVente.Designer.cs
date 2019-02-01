@@ -36,11 +36,15 @@
             this.txt_AnvcD = new System.Windows.Forms.TextBox();
             this.ch_ventADette = new System.Windows.Forms.CheckBox();
             this.button6 = new System.Windows.Forms.Button();
+            this.label25 = new System.Windows.Forms.Label();
             this.label19 = new System.Windows.Forms.Label();
             this.label17 = new System.Windows.Forms.Label();
             this.lbl_qttavi = new System.Windows.Forms.Label();
+            this.lbl_prxAch = new System.Windows.Forms.Label();
             this.lbl_prxQtt = new System.Windows.Forms.Label();
             this.lbl_prix = new System.Windows.Forms.Label();
+            this.label23 = new System.Windows.Forms.Label();
+            this.label20 = new System.Windows.Forms.Label();
             this.label14 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
             this.txt_prx = new System.Windows.Forms.TextBox();
@@ -87,10 +91,6 @@
             this.cb_typePrd = new System.Windows.Forms.ComboBox();
             this.button9 = new System.Windows.Forms.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.label20 = new System.Windows.Forms.Label();
-            this.label23 = new System.Windows.Forms.Label();
-            this.lbl_prxAch = new System.Windows.Forms.Label();
-            this.label25 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox5.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -207,6 +207,17 @@
             this.button6.Visible = false;
             this.button6.Click += new System.EventHandler(this.button6_Click);
             // 
+            // label25
+            // 
+            this.label25.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label25.AutoSize = true;
+            this.label25.ForeColor = System.Drawing.Color.Green;
+            this.label25.Location = new System.Drawing.Point(257, 120);
+            this.label25.Name = "label25";
+            this.label25.Size = new System.Drawing.Size(29, 13);
+            this.label25.TabIndex = 50;
+            this.label25.Text = "درهم";
+            // 
             // label19
             // 
             this.label19.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -239,6 +250,17 @@
             this.lbl_qttavi.TabIndex = 50;
             this.lbl_qttavi.Text = "0";
             // 
+            // lbl_prxAch
+            // 
+            this.lbl_prxAch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.lbl_prxAch.AutoSize = true;
+            this.lbl_prxAch.ForeColor = System.Drawing.Color.Green;
+            this.lbl_prxAch.Location = new System.Drawing.Point(290, 65);
+            this.lbl_prxAch.Name = "lbl_prxAch";
+            this.lbl_prxAch.Size = new System.Drawing.Size(13, 13);
+            this.lbl_prxAch.TabIndex = 50;
+            this.lbl_prxAch.Text = "0";
+            // 
             // lbl_prxQtt
             // 
             this.lbl_prxQtt.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -260,6 +282,25 @@
             this.lbl_prix.Size = new System.Drawing.Size(13, 13);
             this.lbl_prix.TabIndex = 50;
             this.lbl_prix.Text = "0";
+            // 
+            // label23
+            // 
+            this.label23.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label23.AutoSize = true;
+            this.label23.Location = new System.Drawing.Point(335, 120);
+            this.label23.Name = "label23";
+            this.label23.Size = new System.Drawing.Size(66, 13);
+            this.label23.TabIndex = 50;
+            this.label23.Text = "ثمن × العدد : ";
+            // 
+            // label20
+            // 
+            this.label20.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label20.AutoSize = true;
+            this.label20.Location = new System.Drawing.Point(334, 147);
+            this.label20.Name = "label20";
+            this.label20.Size = new System.Drawing.Size(0, 13);
+            this.label20.TabIndex = 50;
             // 
             // label14
             // 
@@ -760,6 +801,7 @@
             this.cb_typePrd.Name = "cb_typePrd";
             this.cb_typePrd.Size = new System.Drawing.Size(138, 21);
             this.cb_typePrd.TabIndex = 33;
+            this.cb_typePrd.SelectedIndexChanged += new System.EventHandler(this.cb_typePrd_SelectedIndexChanged);
             this.cb_typePrd.SelectionChangeCommitted += new System.EventHandler(this.GetProduct);
             // 
             // button9
@@ -783,47 +825,6 @@
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox1.TabIndex = 53;
             this.pictureBox1.TabStop = false;
-            // 
-            // label20
-            // 
-            this.label20.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label20.AutoSize = true;
-            this.label20.Location = new System.Drawing.Point(334, 147);
-            this.label20.Name = "label20";
-            this.label20.Size = new System.Drawing.Size(0, 13);
-            this.label20.TabIndex = 50;
-            // 
-            // label23
-            // 
-            this.label23.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label23.AutoSize = true;
-            this.label23.Location = new System.Drawing.Point(335, 120);
-            this.label23.Name = "label23";
-            this.label23.Size = new System.Drawing.Size(66, 13);
-            this.label23.TabIndex = 50;
-            this.label23.Text = "ثمن × العدد : ";
-            // 
-            // lbl_prxAch
-            // 
-            this.lbl_prxAch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.lbl_prxAch.AutoSize = true;
-            this.lbl_prxAch.ForeColor = System.Drawing.Color.Green;
-            this.lbl_prxAch.Location = new System.Drawing.Point(290, 65);
-            this.lbl_prxAch.Name = "lbl_prxAch";
-            this.lbl_prxAch.Size = new System.Drawing.Size(13, 13);
-            this.lbl_prxAch.TabIndex = 50;
-            this.lbl_prxAch.Text = "0";
-            // 
-            // label25
-            // 
-            this.label25.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label25.AutoSize = true;
-            this.label25.ForeColor = System.Drawing.Color.Green;
-            this.label25.Location = new System.Drawing.Point(257, 120);
-            this.label25.Name = "label25";
-            this.label25.Size = new System.Drawing.Size(29, 13);
-            this.label25.TabIndex = 50;
-            this.label25.Text = "درهم";
             // 
             // AjtVente
             // 
