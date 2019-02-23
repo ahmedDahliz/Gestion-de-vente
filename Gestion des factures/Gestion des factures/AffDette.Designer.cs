@@ -236,14 +236,14 @@
             this.dgv_affDette.Location = new System.Drawing.Point(12, 188);
             this.dgv_affDette.Name = "dgv_affDette";
             this.dgv_affDette.ReadOnly = true;
-            this.dgv_affDette.Size = new System.Drawing.Size(662, 218);
+            this.dgv_affDette.Size = new System.Drawing.Size(662, 217);
             this.dgv_affDette.TabIndex = 39;
             this.dgv_affDette.SelectionChanged += new System.EventHandler(this.dgv_affDette_SelectionChanged);
             // 
             // button6
             // 
             this.button6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button6.Location = new System.Drawing.Point(586, 412);
+            this.button6.Location = new System.Drawing.Point(586, 411);
             this.button6.Name = "button6";
             this.button6.Size = new System.Drawing.Size(88, 36);
             this.button6.TabIndex = 40;
@@ -255,7 +255,7 @@
             // 
             this.lbl_nmDett.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lbl_nmDett.AutoSize = true;
-            this.lbl_nmDett.Location = new System.Drawing.Point(87, 424);
+            this.lbl_nmDett.Location = new System.Drawing.Point(87, 423);
             this.lbl_nmDett.Name = "lbl_nmDett";
             this.lbl_nmDett.Size = new System.Drawing.Size(13, 13);
             this.lbl_nmDett.TabIndex = 41;
@@ -265,7 +265,7 @@
             // 
             this.label5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(9, 424);
+            this.label5.Location = new System.Drawing.Point(9, 423);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(67, 13);
             this.label5.TabIndex = 42;
@@ -284,11 +284,12 @@
             // 
             // button1
             // 
+            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.button1.BackColor = System.Drawing.Color.Red;
             this.button1.Enabled = false;
             this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button1.ForeColor = System.Drawing.Color.Black;
-            this.button1.Location = new System.Drawing.Point(109, 412);
+            this.button1.Location = new System.Drawing.Point(109, 411);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(98, 36);
             this.button1.TabIndex = 44;
@@ -300,7 +301,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(686, 458);
+            this.ClientSize = new System.Drawing.Size(686, 457);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.lbl_nmDett);

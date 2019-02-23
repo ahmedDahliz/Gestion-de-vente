@@ -165,7 +165,6 @@
             // label16
             // 
             this.label16.AutoSize = true;
-            this.label16.Enabled = false;
             this.label16.Location = new System.Drawing.Point(87, 19);
             this.label16.Name = "label16";
             this.label16.Size = new System.Drawing.Size(45, 13);
@@ -197,7 +196,7 @@
             // 
             this.button6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.button6.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.button6.Location = new System.Drawing.Point(618, 143);
+            this.button6.Location = new System.Drawing.Point(619, 143);
             this.button6.Name = "button6";
             this.button6.Size = new System.Drawing.Size(133, 29);
             this.button6.TabIndex = 52;

@@ -165,7 +165,14 @@ namespace Gestion_des_factures
                 DirectoryInfo di = Directory.CreateDirectory(path);
                 DateTime dt = DateTime.Parse(dgv_Facture.CurrentRow.Cells[3].Value.ToString());
                 string dtn = dt.Day + "_" + dt.Month + "_" + dt.Year;
-                System.Diagnostics.Process.Start(path + "\\" + "No" + dgv_Facture.CurrentRow.Cells[0].Value.ToString() + "_" + dtn + ".pdf");
+                string file = path + "\\" + "No" + dgv_Facture.CurrentRow.Cells[0].Value.ToString() + "_" + dtn + ".pdf";
+                if (File.Exists(file))
+                {
+                    System.Diagnostics.Process.Start(file);
+                }
+                else { 
+                     MessageBox.Show("الفاتورة المختارة غير موجودة في المجلد", "الملف غير موجود", MessageBoxButtons.OK, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button2, MessageBoxOptions.RightAlign);
+                }
             }
             catch (Exception ex)
             {

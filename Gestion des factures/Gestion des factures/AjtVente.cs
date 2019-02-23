@@ -333,6 +333,7 @@ namespace Gestion_des_factures
                 document.Add(DetteTable);
             }
             document.Close();
+            // open pdf
             System.Diagnostics.Process.Start(path + "\\"+ FileName);
         }
         private void txt_prx_TextChanged(object sender, EventArgs e)
@@ -396,6 +397,7 @@ namespace Gestion_des_factures
                     button8.Enabled = true;
                     button9.Enabled = true;
                     button2.Enabled = true;
+                    txt_AnvcD.Enabled = true;
                 }
                 else MessageBox.Show("قم بتحديد إسم الزبون أولا", " إسم الزبون غير محدد", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button2, MessageBoxOptions.RightAlign);
             }
@@ -573,6 +575,7 @@ namespace Gestion_des_factures
             button8.Enabled = false;
             button9.Enabled = false;
             button2.Enabled = false;
+            txt_AnvcD.Enabled = false;
         }
         void addCell(Chunk e, PdfPTable t,String str, bool AlignCenter)
         {
@@ -634,6 +637,7 @@ namespace Gestion_des_factures
                 button8.Enabled = false;
                 button9.Enabled = false;
                 button2.Enabled = false;
+                txt_AnvcD.Enabled = false;
             }
 
         }
