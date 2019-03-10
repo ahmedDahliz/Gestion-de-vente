@@ -201,7 +201,7 @@ namespace Gestion_des_factures
                 string Err = "[" + DateTime.Now + "] [Exception] __ [Form :" + this.Name + " ; Button: " + sender.ToString()+" ; Event: "+e.ToString()+"] __ ExceptionMessage : "+ex.Message;
                 WriteLog(Err);
             }
-        
+
         }
 
         

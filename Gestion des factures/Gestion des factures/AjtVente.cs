@@ -11,6 +11,7 @@ using System.Data.SQLite;
 using iTextSharp.text.pdf;
 using iTextSharp.text;
 using System.IO;
+using System.Drawing.Printing;
 
 namespace Gestion_des_factures
 {
@@ -94,6 +95,7 @@ namespace Gestion_des_factures
         {
             try
             {
+                this.WindowState = FormWindowState.Maximized;
                 SQLiteDataAdapter dtaIdCmd = new SQLiteDataAdapter("Select * from sqlite_sequence where name='Commande'", Acceuil.cnx);
                 SQLiteDataAdapter dtaIdLCmd = new SQLiteDataAdapter("Select * from sqlite_sequence where name='Ling_commande'", Acceuil.cnx);
                 dtaType.Fill(ds, "Types");
@@ -202,7 +204,8 @@ namespace Gestion_des_factures
             rb_CltE.Checked = ch_ventADette.Checked;
             rb_CltnE.Checked = !ch_ventADette.Checked;
             txt_AnvcD.Enabled = ch_ventADette.Checked;
-            label16.Enabled = ch_ventADette.Checked; ;
+            label16.Enabled = ch_ventADette.Checked;
+            txt_nomC.Text = "";
 
         }
 
@@ -250,7 +253,9 @@ namespace Gestion_des_factures
 
         }
         private void CreatePdf(String FileName) {
-            Document document = new Document();
+            
+            iTextSharp.text.Rectangle pageSize = new iTextSharp.text.Rectangle(100, 290);
+            Document document = new Document(pageSize, 0, 0, 0, 0);
             string path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\Factures";
             DirectoryInfo di = Directory.CreateDirectory(path);
             PdfWriter writer = PdfWriter.GetInstance(document, new FileStream(path + "\\"+FileName, FileMode.Create));
@@ -258,33 +263,39 @@ namespace Gestion_des_factures
             string fontpath = Environment.GetEnvironmentVariable("SystemRoot") + "\\fonts\\times.ttf";
             BaseFont basefont = BaseFont.CreateFont(fontpath, BaseFont.IDENTITY_H, true);
             iTextSharp.text.Font arabicFont = new iTextSharp.text.Font(basefont, 24, iTextSharp.text.Font.NORMAL, iTextSharp.text.Color.BLUE);
-            var el = new Chunk();
+            var e1 = new Chunk();
             var e2 = new Chunk();
-            iTextSharp.text.Font f2 = new iTextSharp.text.Font(basefont, e2.Font.Size, e2.Font.Style, e2.Font.Color);
-            iTextSharp.text.Font f1 = new iTextSharp.text.Font(basefont, 16, el.Font.Style, el.Font.Color);
-            el.Font = f1;
+            iTextSharp.text.Font f2 = new iTextSharp.text.Font(basefont, 4, e2.Font.Style, e2.Font.Color);
+            iTextSharp.text.Font f1 = new iTextSharp.text.Font(basefont, 4, e1.Font.Style, e1.Font.Color);
+            e1.Font = f1;
             e2.Font = f2;
             PdfPTable HeadTable = new PdfPTable(3);
             HeadTable.WidthPercentage = 100;
             HeadTable.RunDirection = PdfWriter.RUN_DIRECTION_RTL;
             //Add header page
-            addCell(e2, HeadTable, "رقم الفاتورة : " + idLCmd);
-            addCell(el, HeadTable, "فاتورة البيع", true);
-            addCell(e2, HeadTable, "بتاريخ : " + DateTime.Now.Year + "/" + DateTime.Now.Month + "/" + DateTime.Now.Day, false);
-            addCell(e2, HeadTable, "إسم الزبون(ة) : السيد(ة) " + lbl_nomC.Text);
-            addCell(e2, HeadTable, " ");
-            addCell(e2, HeadTable, " ");
+            addCell(e1, HeadTable, "رقم الفاتورة : " + idLCmd);
+            addCell(e2, HeadTable, "فاتورة البيع", true);
+            addCell(e1, HeadTable, DateTime.Now.ToShortTimeString() + " " + DateTime.Now.Day + "/" + DateTime.Now.Month + "/" + DateTime.Now.Year, false);
+            addCell(e1, HeadTable, "السيد(ة): " + lbl_nomC.Text);
+            addCell(e1, HeadTable, " ");
+            addCell(e1, HeadTable, " ");
+            HeadTable.SpacingBefore = 0;
+            HeadTable.SpacingAfter = 0;
             document.Add(HeadTable);
             //add separator
             Paragraph p = new Paragraph(new Chunk(new iTextSharp.text.pdf.draw.LineSeparator(0.0F, 100.0F, iTextSharp.text.Color.BLACK, Element.ALIGN_RIGHT, 1)));
+            p.SpacingBefore = 0;
             document.Add(p);
-            document.Add(new Chunk("\n", f2));
+            //document.Add(new Chunk(" ", f2));
             //add Product header
             PdfPTable tableProduct = new PdfPTable(dtnv.Columns.Count - 1);
             tableProduct.RunDirection = PdfWriter.RUN_DIRECTION_RTL;
+            tableProduct.WidthPercentage = 100;
+            int[] widthsTab = { 9, 10, 20, 8 };
+            tableProduct.SetWidths(widthsTab);
             for (int i = 1; i < dtnv.Columns.Count; i++)
             {
-                PdfPCell cell = new PdfPCell(new Phrase(10, dtnv.Columns[i].ColumnName, e2.Font));
+                PdfPCell cell = new PdfPCell(new Phrase(10, dtnv.Columns[i].ColumnName, e2.Font));  
                 cell.HorizontalAlignment = Element.ALIGN_CENTER;
                 tableProduct.AddCell(cell);
             }
@@ -296,8 +307,9 @@ namespace Gestion_des_factures
                     tableProduct.AddCell(new PdfPCell(new Phrase(dtnv.Rows[i][j].ToString(), e2.Font)));
                 }
             }
+            tableProduct.SpacingAfter = 5;
+            tableProduct.SpacingBefore = 5;
             document.Add(tableProduct);
-            document.Add(new Chunk("\n", f2));
             //add Sells Informations
             PdfPTable FootTable = new PdfPTable(1);
             FootTable.WidthPercentage = 100;
@@ -332,6 +344,12 @@ namespace Gestion_des_factures
                 //addCell(e2, DetteTable, "مجموع الدين الحالي  : " + dt + " درهم");
                 document.Add(DetteTable);
             }
+            PdfPTable underFootTable = new PdfPTable(1);
+            underFootTable.WidthPercentage = 100;
+            underFootTable.RunDirection = PdfWriter.RUN_DIRECTION_RTL;
+            addCell(e2, underFootTable, "**************************************", true);
+            addCell(e2, underFootTable, "شـكـرا عـلـى زيـارتـكـم", true);
+            document.Add(underFootTable);
             document.Close();
             // open pdf
             System.Diagnostics.Process.Start(path + "\\"+ FileName);
@@ -394,6 +412,13 @@ namespace Gestion_des_factures
                     lbl_qttV.Text = dtnv.Rows.Count.ToString();
                     pxTTl += float.Parse(lbl_prxQtt.Text);
                     lbl_prixTotal.Text = pxTTl.ToString();
+                    lbl_qttavi.Text = (int.Parse(lbl_qttavi.Text) - nud_qtt.Value).ToString();
+                    if (int.Parse(lbl_qttavi.Text) == 0)
+                    {
+                        lbl_ttrprxav.ForeColor = System.Drawing.Color.Red;
+                        lbl_qttavi.ForeColor = System.Drawing.Color.Red;
+                        button1.Enabled = false;
+                    }
                     button8.Enabled = true;
                     button9.Enabled = true;
                     button2.Enabled = true;
@@ -463,20 +488,30 @@ namespace Gestion_des_factures
             button7.Enabled = (dgv_ProdV.SelectedRows.Count == 1);
         }
         string idPr;
+        float newPrice = 0;
         private void button5_Click(object sender, EventArgs e)
         {
+            if (dgv_ProdV.SelectedRows.Count == 1)
+            {
+                cb_Prod.Enabled = false;
+                idPr = dtnv.Rows[dgv_ProdV.CurrentRow.Index][0].ToString();
+                DataView dv = new DataView(ds.Tables["Stocks"], "NuPrd = " + idPr, "", DataViewRowState.CurrentRows);
+                ChangeQtt(cb_Prod.SelectedValue.ToString(), int.Parse(dv[0]["QttProd"].ToString()) + int.Parse(dgv_ProdV.CurrentRow.Cells[1].Value.ToString()));
+                cb_Prod.SelectedValue = idPr;
+                nud_qtt.Maximum = int.Parse(dv[0]["QttProd"].ToString());
+                lbl_qttavi.ForeColor = System.Drawing.Color.Black;
+                lbl_ttrprxav.ForeColor = System.Drawing.Color.Black;
+                lbl_qttavi.Text = dv[0]["QttProd"].ToString();
+                nud_qtt.Value = int.Parse(dgv_ProdV.CurrentRow.Cells[1].Value.ToString());
+                newPrice = float.Parse(lbl_prixTotal.Text) - float.Parse(dtnv.Rows[dgv_ProdV.CurrentRow.Index][4].ToString());
+                button5.Enabled = false;
+                button7.Enabled = false;
+                button6.Visible = true;
+                button1.Visible = false;
+            }
             try
             {
-                if (dgv_ProdV.SelectedRows.Count == 1)
-                {
-                    idPr = dtnv.Rows[dgv_ProdV.CurrentRow.Index][0].ToString();
-                    DataView dv = new DataView(ds.Tables["Stocks"], "NuPrd = " + idPr, "", DataViewRowState.CurrentRows);
-                    ChangeQtt(cb_Prod.SelectedValue.ToString(), int.Parse(dv[0]["QttProd"].ToString()) + int.Parse(dgv_ProdV.CurrentRow.Cells[1].Value.ToString()));
-                    cb_Prod.SelectedValue = idPr;
-                    nud_qtt.Value = int.Parse(dgv_ProdV.CurrentRow.Cells[1].Value.ToString());
-                    button6.Visible = true;
-                    button1.Visible = false;
-                }
+                
             }
             catch (Exception ex)
             {
@@ -485,7 +520,7 @@ namespace Gestion_des_factures
                 Acceuil.WriteLog(Err);
             }
         }
-
+        
         private void button6_Click(object sender, EventArgs e)
         {
             try
@@ -506,8 +541,20 @@ namespace Gestion_des_factures
                 dtnv.Rows[idg]["الواجب"] = lbl_prxQtt.Text;
                 dtnv.Rows[idg].EndEdit();
                 ChangeQtt(cb_Prod.SelectedValue.ToString(), int.Parse(lbl_qttavi.Text) - nud_qtt.Value);
+                lbl_qttavi.Text = (int.Parse(lbl_qttavi.Text) - nud_qtt.Value).ToString();
+                if (int.Parse(lbl_qttavi.Text) == 0)
+                {
+                    lbl_ttrprxav.ForeColor = System.Drawing.Color.Red;
+                    lbl_qttavi.ForeColor = System.Drawing.Color.Red;
+                    button1.Enabled = false;
+                }
+                newPrice += float.Parse(lbl_prxQtt.Text);
+                lbl_prixTotal.Text = newPrice.ToString();
+                button5.Enabled = true;
+                button7.Enabled = true;
                 button6.Visible = false;
                 button1.Visible = true;
+                cb_Prod.Enabled = true;
                 MessageBox.Show("تم تعديل المعلومات بنجاح", " تعديل المعلومات", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button2, MessageBoxOptions.RightAlign);
             }
             catch (Exception ex)
@@ -539,8 +586,12 @@ namespace Gestion_des_factures
                         DataView dv = new DataView(ds.Tables["Stocks"], "NuPrd = " + idPr, "", DataViewRowState.CurrentRows);
                         ChangeQtt(cb_Prod.SelectedValue.ToString(), int.Parse(dv[0]["QttProd"].ToString()) + int.Parse(dgv_ProdV.CurrentRow.Cells[1].Value.ToString()));
                         ds.Tables["Cmd"].Rows.Remove((ds.Tables["Cmd"].Select("NumCmd = " + idLCmd + " AND NuPrd = " + idPr)[0]));
+                        lbl_prixTotal.Text = (float.Parse(lbl_prixTotal.Text) - float.Parse(dtnv.Rows[dgv_ProdV.CurrentRow.Index][4].ToString())).ToString();
                         dtnv.Rows.RemoveAt(dgv_ProdV.CurrentRow.Index);
                         dgv_ProdV.Text = dtnv.Rows.Count.ToString();
+                        if (dtnv.Rows.Count == 0) {
+                            txt_AnvcD.Enabled = false;
+                        }
                     }
                 }
             }
@@ -549,7 +600,7 @@ namespace Gestion_des_factures
                 MessageBox.Show("هناك خطأ أثناء العملية المرجوا إعادة المحاولة");
                 string Err = "[" + DateTime.Now + "] [Exception] __ [Form :" + this.Name + " ; Controle: " + sender.ToString() + " ; Event: " + e.ToString() + "] __ ExceptionMessage : " + ex.Message;
                 Acceuil.WriteLog(Err);
-            }
+              }
         }
         
         private void button8_Click(object sender, EventArgs e)

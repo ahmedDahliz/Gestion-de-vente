@@ -34,12 +34,14 @@
             this.label3 = new System.Windows.Forms.Label();
             this.button2 = new System.Windows.Forms.Button();
             this.txt_pb = new System.Windows.Forms.TextBox();
+            this.txt_prxAch = new System.Windows.Forms.TextBox();
             this.txt_pc = new System.Windows.Forms.TextBox();
             this.txt_pa = new System.Windows.Forms.TextBox();
             this.nud_qttMn = new System.Windows.Forms.NumericUpDown();
             this.label13 = new System.Windows.Forms.Label();
             this.nud_qtt = new System.Windows.Forms.NumericUpDown();
             this.label12 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
@@ -56,8 +58,6 @@
             this.label15 = new System.Windows.Forms.Label();
             this.cb_chngType = new System.Windows.Forms.ComboBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.label4 = new System.Windows.Forms.Label();
-            this.txt_prxAch = new System.Windows.Forms.TextBox();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nud_qttMn)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nud_qtt)).BeginInit();
@@ -137,6 +137,14 @@
             this.txt_pb.TabIndex = 33;
             this.txt_pb.TextChanged += new System.EventHandler(this.saved);
             // 
+            // txt_prxAch
+            // 
+            this.txt_prxAch.Location = new System.Drawing.Point(508, 87);
+            this.txt_prxAch.Name = "txt_prxAch";
+            this.txt_prxAch.Size = new System.Drawing.Size(67, 20);
+            this.txt_prxAch.TabIndex = 33;
+            this.txt_prxAch.TextChanged += new System.EventHandler(this.saved);
+            // 
             // txt_pc
             // 
             this.txt_pc.Location = new System.Drawing.Point(216, 52);
@@ -178,6 +186,11 @@
             // nud_qtt
             // 
             this.nud_qtt.Location = new System.Drawing.Point(6, 19);
+            this.nud_qtt.Maximum = new decimal(new int[] {
+            -727379969,
+            232,
+            0,
+            0});
             this.nud_qtt.Name = "nud_qtt";
             this.nud_qtt.Size = new System.Drawing.Size(65, 20);
             this.nud_qtt.TabIndex = 30;
@@ -191,6 +204,15 @@
             this.label12.Size = new System.Drawing.Size(38, 13);
             this.label12.TabIndex = 29;
             this.label12.Text = "العدد : ";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(583, 90);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(67, 13);
+            this.label4.TabIndex = 25;
+            this.label4.Text = "الثمن الشراء :";
             // 
             // label11
             // 
@@ -347,23 +369,6 @@
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox1.TabIndex = 70;
             this.pictureBox1.TabStop = false;
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(583, 90);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(67, 13);
-            this.label4.TabIndex = 25;
-            this.label4.Text = "الثمن الشراء :";
-            // 
-            // txt_prxAch
-            // 
-            this.txt_prxAch.Location = new System.Drawing.Point(508, 87);
-            this.txt_prxAch.Name = "txt_prxAch";
-            this.txt_prxAch.Size = new System.Drawing.Size(67, 20);
-            this.txt_prxAch.TabIndex = 33;
-            this.txt_prxAch.TextChanged += new System.EventHandler(this.saved);
             // 
             // MdfProduit
             // 

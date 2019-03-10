@@ -570,6 +570,7 @@
             this.dgv_ProdV.Location = new System.Drawing.Point(6, 50);
             this.dgv_ProdV.Name = "dgv_ProdV";
             this.dgv_ProdV.ReadOnly = true;
+            this.dgv_ProdV.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgv_ProdV.Size = new System.Drawing.Size(742, 332);
             this.dgv_ProdV.TabIndex = 7;
             this.dgv_ProdV.SelectionChanged += new System.EventHandler(this.dgv_ProdV_SelectionChanged);
@@ -817,6 +818,7 @@
             // 
             // pictureBox1
             // 
+            this.pictureBox1.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
             this.pictureBox1.Location = new System.Drawing.Point(297, 6);
             this.pictureBox1.Name = "pictureBox1";
