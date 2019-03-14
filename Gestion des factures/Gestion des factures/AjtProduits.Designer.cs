@@ -56,17 +56,17 @@
             this.groubbox1 = new System.Windows.Forms.GroupBox();
             this.txt_prxB = new System.Windows.Forms.TextBox();
             this.txt_prxC = new System.Windows.Forms.TextBox();
+            this.txt_prxAch = new System.Windows.Forms.TextBox();
             this.txt_prxA = new System.Windows.Forms.TextBox();
             this.button1 = new System.Windows.Forms.Button();
             this.button8 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
+            this.label4 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.button7 = new System.Windows.Forms.Button();
             this.lbl_prdAjt = new System.Windows.Forms.Label();
             this.button9 = new System.Windows.Forms.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.label4 = new System.Windows.Forms.Label();
-            this.txt_prxAch = new System.Windows.Forms.TextBox();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nud_qttMn)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nud_qtt)).BeginInit();
@@ -381,6 +381,14 @@
             this.txt_prxC.Size = new System.Drawing.Size(82, 20);
             this.txt_prxC.TabIndex = 7;
             // 
+            // txt_prxAch
+            // 
+            this.txt_prxAch.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.txt_prxAch.Location = new System.Drawing.Point(347, 25);
+            this.txt_prxAch.Name = "txt_prxAch";
+            this.txt_prxAch.Size = new System.Drawing.Size(82, 20);
+            this.txt_prxAch.TabIndex = 5;
+            // 
             // txt_prxA
             // 
             this.txt_prxA.Anchor = System.Windows.Forms.AnchorStyles.Right;
@@ -423,6 +431,16 @@
             this.button2.Text = "إضافة";
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
+            // label4
+            // 
+            this.label4.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(435, 28);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(61, 13);
+            this.label4.TabIndex = 17;
+            this.label4.Text = "ثمن الشراء :";
             // 
             // label2
             // 
@@ -477,24 +495,6 @@
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox1.TabIndex = 54;
             this.pictureBox1.TabStop = false;
-            // 
-            // label4
-            // 
-            this.label4.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(435, 28);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(61, 13);
-            this.label4.TabIndex = 17;
-            this.label4.Text = "ثمن الشراء :";
-            // 
-            // txt_prxAch
-            // 
-            this.txt_prxAch.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.txt_prxAch.Location = new System.Drawing.Point(347, 25);
-            this.txt_prxAch.Name = "txt_prxAch";
-            this.txt_prxAch.Size = new System.Drawing.Size(82, 20);
-            this.txt_prxAch.TabIndex = 5;
             // 
             // AjtProduits
             // 

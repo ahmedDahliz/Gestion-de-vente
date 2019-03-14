@@ -40,7 +40,7 @@ namespace Gestion_des_factures
         {
             label3.Visible = false;
             button4.Enabled = false;
-            button2.BackColor = Color.Green;
+            button2.BackColor = Color.Orange;
         }
         private void MdfProduit_Load(object sender, EventArgs e)
         {
@@ -190,15 +190,15 @@ namespace Gestion_des_factures
                         dv[0].EndEdit();
                         dv = new DataView(ds.Tables["TypPA"], "NuPrd = " + idpr, "", DataViewRowState.CurrentRows);
                         dv[0].BeginEdit();
-                        dv[0][1] = pa;
+                        dv[0][1] = txt_pa.Text;
                         dv[0].EndEdit();
                         dv = new DataView(ds.Tables["TypPB"], "NuPrd = " + idpr, "", DataViewRowState.CurrentRows);
                         dv[0].BeginEdit();
-                        dv[0][1] = pb;
+                        dv[0][1] = txt_pb.Text;
                         dv[0].EndEdit();
                         dv = new DataView(ds.Tables["TypPC"], "NuPrd = " + idpr, "", DataViewRowState.CurrentRows);
                         dv[0].BeginEdit();
-                        dv[0][1] = pc;
+                        dv[0][1] = txt_pc.Text;
                         dv[0].EndEdit();
                         ds.Tables["EdtPrd"].Rows[0].EndEdit();
                         label3.Visible = true;

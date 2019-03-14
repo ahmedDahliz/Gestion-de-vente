@@ -243,7 +243,7 @@
             // 
             this.lbl_qttavi.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lbl_qttavi.AutoSize = true;
-            this.lbl_qttavi.Location = new System.Drawing.Point(584, 105);
+            this.lbl_qttavi.Location = new System.Drawing.Point(584, 122);
             this.lbl_qttavi.Name = "lbl_qttavi";
             this.lbl_qttavi.Size = new System.Drawing.Size(13, 13);
             this.lbl_qttavi.TabIndex = 50;
@@ -254,7 +254,7 @@
             this.lbl_prxAch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lbl_prxAch.AutoSize = true;
             this.lbl_prxAch.ForeColor = System.Drawing.Color.Green;
-            this.lbl_prxAch.Location = new System.Drawing.Point(290, 65);
+            this.lbl_prxAch.Location = new System.Drawing.Point(285, 65);
             this.lbl_prxAch.Name = "lbl_prxAch";
             this.lbl_prxAch.Size = new System.Drawing.Size(13, 13);
             this.lbl_prxAch.TabIndex = 50;
@@ -265,7 +265,7 @@
             this.lbl_prxQtt.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lbl_prxQtt.AutoSize = true;
             this.lbl_prxQtt.ForeColor = System.Drawing.Color.Green;
-            this.lbl_prxQtt.Location = new System.Drawing.Point(290, 120);
+            this.lbl_prxQtt.Location = new System.Drawing.Point(285, 120);
             this.lbl_prxQtt.Name = "lbl_prxQtt";
             this.lbl_prxQtt.Size = new System.Drawing.Size(13, 13);
             this.lbl_prxQtt.TabIndex = 50;
@@ -276,7 +276,7 @@
             this.lbl_prix.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lbl_prix.AutoSize = true;
             this.lbl_prix.ForeColor = System.Drawing.Color.Green;
-            this.lbl_prix.Location = new System.Drawing.Point(289, 92);
+            this.lbl_prix.Location = new System.Drawing.Point(285, 92);
             this.lbl_prix.Name = "lbl_prix";
             this.lbl_prix.Size = new System.Drawing.Size(13, 13);
             this.lbl_prix.TabIndex = 50;
@@ -325,11 +325,13 @@
             // 
             this.txt_prx.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.txt_prx.Enabled = false;
-            this.txt_prx.Location = new System.Drawing.Point(424, 62);
+            this.txt_prx.Location = new System.Drawing.Point(423, 62);
             this.txt_prx.Name = "txt_prx";
             this.txt_prx.Size = new System.Drawing.Size(81, 20);
             this.txt_prx.TabIndex = 3;
             this.txt_prx.TextChanged += new System.EventHandler(this.txt_prx_TextChanged);
+            this.txt_prx.DoubleClick += new System.EventHandler(this.txt_prx_DoubleClick);
+            this.txt_prx.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.txt_prx_MouseDoubleClick);
             // 
             // button1
             // 
@@ -415,10 +417,11 @@
             // 
             this.cb_Prod.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.cb_Prod.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cb_Prod.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cb_Prod.FormattingEnabled = true;
-            this.cb_Prod.Location = new System.Drawing.Point(507, 23);
+            this.cb_Prod.Location = new System.Drawing.Point(510, 22);
             this.cb_Prod.Name = "cb_Prod";
-            this.cb_Prod.Size = new System.Drawing.Size(176, 21);
+            this.cb_Prod.Size = new System.Drawing.Size(176, 26);
             this.cb_Prod.TabIndex = 40;
             this.cb_Prod.SelectedIndexChanged += new System.EventHandler(this.cb_Prod_SelectedIndexChanged);
             // 
@@ -437,12 +440,15 @@
             this.nud_qtt.Size = new System.Drawing.Size(65, 20);
             this.nud_qtt.TabIndex = 39;
             this.nud_qtt.ValueChanged += new System.EventHandler(this.nud_qtt_ValueChanged);
+            this.nud_qtt.KeyDown += new System.Windows.Forms.KeyEventHandler(this.nud_qtt_KeyDown);
+            this.nud_qtt.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.nud_qtt_KeyPress);
+            this.nud_qtt.KeyUp += new System.Windows.Forms.KeyEventHandler(this.nud_qtt_KeyUp);
             // 
             // lbl_ttrprxav
             // 
             this.lbl_ttrprxav.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lbl_ttrprxav.AutoSize = true;
-            this.lbl_ttrprxav.Location = new System.Drawing.Point(619, 105);
+            this.lbl_ttrprxav.Location = new System.Drawing.Point(619, 122);
             this.lbl_ttrprxav.Name = "lbl_ttrprxav";
             this.lbl_ttrprxav.Size = new System.Drawing.Size(131, 13);
             this.lbl_ttrprxav.TabIndex = 38;
@@ -462,7 +468,7 @@
             // 
             this.rb_persn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.rb_persn.AutoSize = true;
-            this.rb_persn.Location = new System.Drawing.Point(507, 63);
+            this.rb_persn.Location = new System.Drawing.Point(506, 63);
             this.rb_persn.Name = "rb_persn";
             this.rb_persn.Size = new System.Drawing.Size(72, 17);
             this.rb_persn.TabIndex = 37;
@@ -475,9 +481,10 @@
             // 
             this.rd_B.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.rd_B.AutoSize = true;
-            this.rd_B.Location = new System.Drawing.Point(631, 63);
+            this.rd_B.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.rd_B.Location = new System.Drawing.Point(635, 61);
             this.rd_B.Name = "rd_B";
-            this.rd_B.Size = new System.Drawing.Size(32, 17);
+            this.rd_B.Size = new System.Drawing.Size(35, 21);
             this.rd_B.TabIndex = 36;
             this.rd_B.Text = "B";
             this.rd_B.UseVisualStyleBackColor = true;
@@ -487,9 +494,10 @@
             // 
             this.rb_C.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.rb_C.AutoSize = true;
-            this.rb_C.Location = new System.Drawing.Point(679, 63);
+            this.rb_C.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.rb_C.Location = new System.Drawing.Point(680, 61);
             this.rb_C.Name = "rb_C";
-            this.rb_C.Size = new System.Drawing.Size(32, 17);
+            this.rb_C.Size = new System.Drawing.Size(35, 21);
             this.rb_C.TabIndex = 35;
             this.rb_C.Text = "C";
             this.rb_C.UseVisualStyleBackColor = true;
@@ -500,9 +508,10 @@
             this.rb_A.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.rb_A.AutoSize = true;
             this.rb_A.Checked = true;
-            this.rb_A.Location = new System.Drawing.Point(585, 63);
+            this.rb_A.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.rb_A.Location = new System.Drawing.Point(589, 61);
             this.rb_A.Name = "rb_A";
-            this.rb_A.Size = new System.Drawing.Size(32, 17);
+            this.rb_A.Size = new System.Drawing.Size(35, 21);
             this.rb_A.TabIndex = 34;
             this.rb_A.TabStop = true;
             this.rb_A.Text = "A";
@@ -615,7 +624,7 @@
             this.lbl_prixTotal.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.lbl_prixTotal.AutoSize = true;
             this.lbl_prixTotal.ForeColor = System.Drawing.Color.Green;
-            this.lbl_prixTotal.Location = new System.Drawing.Point(635, 427);
+            this.lbl_prixTotal.Location = new System.Drawing.Point(625, 427);
             this.lbl_prixTotal.Name = "lbl_prixTotal";
             this.lbl_prixTotal.Size = new System.Drawing.Size(13, 13);
             this.lbl_prixTotal.TabIndex = 49;
@@ -645,7 +654,7 @@
             // 
             this.lbl_nomC.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lbl_nomC.AutoSize = true;
-            this.lbl_nomC.Location = new System.Drawing.Point(615, 28);
+            this.lbl_nomC.Location = new System.Drawing.Point(581, 28);
             this.lbl_nomC.Name = "lbl_nomC";
             this.lbl_nomC.Size = new System.Drawing.Size(0, 13);
             this.lbl_nomC.TabIndex = 49;
@@ -796,10 +805,11 @@
             // 
             this.cb_typePrd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.cb_typePrd.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cb_typePrd.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cb_typePrd.FormattingEnabled = true;
-            this.cb_typePrd.Location = new System.Drawing.Point(40, 21);
+            this.cb_typePrd.Location = new System.Drawing.Point(40, 19);
             this.cb_typePrd.Name = "cb_typePrd";
-            this.cb_typePrd.Size = new System.Drawing.Size(138, 21);
+            this.cb_typePrd.Size = new System.Drawing.Size(138, 26);
             this.cb_typePrd.TabIndex = 33;
             this.cb_typePrd.SelectedIndexChanged += new System.EventHandler(this.cb_typePrd_SelectedIndexChanged);
             this.cb_typePrd.SelectionChangeCommitted += new System.EventHandler(this.GetProduct);

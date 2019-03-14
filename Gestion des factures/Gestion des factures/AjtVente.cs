@@ -159,6 +159,7 @@ namespace Gestion_des_factures
         {
             txt_prx.Enabled = b;
             if (!b) txt_prx.Text = "";
+            else txt_prx.Focus();
         }
 
         private void radioButton1_CheckedChanged(object sender, EventArgs e)
@@ -211,8 +212,8 @@ namespace Gestion_des_factures
 
         private void cb_Prod_SelectedIndexChanged(object sender, EventArgs e)
         {
-            try
-            {
+            //try
+            //{
                 DataView dv = new DataView(ds.Tables["Stocks"], "NuPrd = " + cb_Prod.SelectedValue.ToString(), "", DataViewRowState.CurrentRows);
                 DataView dvp = new DataView(ds.Tables["Produits"], "NumPrd = " + cb_Prod.SelectedValue.ToString(), "", DataViewRowState.CurrentRows);
                 if (int.Parse(dv[0]["QttProd"].ToString()) == 0)
@@ -229,6 +230,7 @@ namespace Gestion_des_factures
                     lbl_qttavi.ForeColor = System.Drawing.Color.Black;
                     nud_qtt.Minimum = 1;
                 }
+                nud_qtt.Value = nud_qtt.Minimum;
                 lbl_qttavi.Text = dv[0]["QttProd"].ToString();
                 nud_qtt.Maximum = int.Parse(dv[0]["QttProd"].ToString());
                 DataView dva = new DataView(ds.Tables["TypPA"], "NuPrd = " + cb_Prod.SelectedValue.ToString(), "", DataViewRowState.CurrentRows);
@@ -237,16 +239,17 @@ namespace Gestion_des_factures
                 pb = dvb[0]["Prix"].ToString();
                 DataView dvc = new DataView(ds.Tables["TypPC"], "NuPrd = " + cb_Prod.SelectedValue.ToString(), "", DataViewRowState.CurrentRows);
                 pc = dvc[0]["Prix"].ToString();
-                lbl_prix.Text = (rb_A.Checked) ? pa : (rd_B.Checked) ? pb : (rb_C.Checked) ? pc : "";
+                txt_prx.Text ="0";
+                lbl_prix.Text = (rb_A.Checked) ? pa : (rd_B.Checked) ? pb : (rb_C.Checked) ? pc : (rb_persn.Checked) ? txt_prx.Text: "";
                 lbl_prxQtt.Text = float.Parse((float.Parse(lbl_prix.Text) * int.Parse(nud_qtt.Value.ToString())).ToString()).ToString();
                 lbl_prxAch.Text = dvp[0]["prxAchat"].ToString();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("هناك خطأ أثناء العملية المرجوا إعادة المحاولة");
-                string Err = "[" + DateTime.Now + "] [Exception] __ [Form :" + this.Name + " ; Button: " + sender.ToString() + " ; Event: " + e.ToString() + "] __ ExceptionMessage : " + ex.Message;
-                Acceuil.WriteLog(Err);
-            }
+            //}
+            //catch (Exception ex)
+            //{
+            //    MessageBox.Show("هناك خطأ أثناء العملية المرجوا إعادة المحاولة");
+            //    string Err = "[" + DateTime.Now + "] [Exception] __ [Form :" + this.Name + " ; Contrôle : " + sender.ToString() + " ; Event: " + e.ToString() + "] __ ExceptionMessage : " + ex.Message;
+            //    Acceuil.WriteLog(Err);
+            //}
         }
         private void getNamClient(string str) {
             lbl_nomC.Text = str;
@@ -276,7 +279,7 @@ namespace Gestion_des_factures
             addCell(e1, HeadTable, "رقم الفاتورة : " + idLCmd);
             addCell(e2, HeadTable, "فاتورة البيع", true);
             addCell(e1, HeadTable, DateTime.Now.ToShortTimeString() + " " + DateTime.Now.Day + "/" + DateTime.Now.Month + "/" + DateTime.Now.Year, false);
-            addCell(e1, HeadTable, "السيد(ة): " + lbl_nomC.Text);
+            addCell(e1, HeadTable, "السيد(ة): " + lbl_nomC.Text,3);
             addCell(e1, HeadTable, " ");
             addCell(e1, HeadTable, " ");
             HeadTable.SpacingBefore = 0;
@@ -291,7 +294,7 @@ namespace Gestion_des_factures
             PdfPTable tableProduct = new PdfPTable(dtnv.Columns.Count - 1);
             tableProduct.RunDirection = PdfWriter.RUN_DIRECTION_RTL;
             tableProduct.WidthPercentage = 100;
-            int[] widthsTab = { 9, 10, 20, 8 };
+            int[] widthsTab = { 7, 9, 28, 6};
             tableProduct.SetWidths(widthsTab);
             for (int i = 1; i < dtnv.Columns.Count; i++)
             {
@@ -316,6 +319,7 @@ namespace Gestion_des_factures
             FootTable.RunDirection = PdfWriter.RUN_DIRECTION_RTL;
             addCell(e2, FootTable, "عدد السلع : " + lbl_qttV.Text);
             addCell(e2, FootTable, "الواجب أدائه  : " + lbl_prixTotal.Text + " درهم");
+            FootTable.SpacingAfter = 20;
             document.Add(FootTable);
             //add debt informations if exit
             if (ch_ventADette.Checked)
@@ -373,7 +377,7 @@ namespace Gestion_des_factures
         }
 
         private void nud_qtt_ValueChanged(object sender, EventArgs e)
-        {
+        {    
             lbl_prxQtt.Text = float.Parse((float.Parse(lbl_prix.Text) * int.Parse(nud_qtt.Value.ToString())).ToString()).ToString();
         }
 
@@ -386,6 +390,16 @@ namespace Gestion_des_factures
         {
             getNamClient(txt_nomC.Text);
         }
+        bool CheckInDt(DataTable dt, string val, string Column)
+        {
+            DataRow[] found = dt.Select(Column + " = " + val);
+            if (found.Length != 0)
+            {
+                return true;
+            }
+            return false;
+
+        }
         float pxTTl = 0;
         private void button1_Click(object sender, EventArgs e)
         {
@@ -393,36 +407,41 @@ namespace Gestion_des_factures
             {
                 if (lbl_nomC.Text != "")
                 {
-                    DataRow dr = ds.Tables["Cmd"].NewRow();
-                    dr[1] = idLCmd;
-                    dr[2] = lbl_prix.Text;
-                    dr[3] = lbl_prxQtt.Text;
-                    dr[4] = nud_qtt.Value;
-                    dr[5] = cb_Prod.SelectedValue.ToString();
-                    ds.Tables["Cmd"].Rows.Add(dr);
-                    //
-                    dr = dtnv.NewRow();
-                    dr[0] = cb_Prod.SelectedValue.ToString();
-                    dr[1] = nud_qtt.Value;
-                    dr[2] = cb_Prod.Text;
-                    dr[3] = lbl_prix.Text;
-                    dr[4] = lbl_prxQtt.Text;
-                    dtnv.Rows.Add(dr);
-                    ChangeQtt(cb_Prod.SelectedValue.ToString(), int.Parse(lbl_qttavi.Text) - nud_qtt.Value);
-                    lbl_qttV.Text = dtnv.Rows.Count.ToString();
-                    pxTTl += float.Parse(lbl_prxQtt.Text);
-                    lbl_prixTotal.Text = pxTTl.ToString();
-                    lbl_qttavi.Text = (int.Parse(lbl_qttavi.Text) - nud_qtt.Value).ToString();
-                    if (int.Parse(lbl_qttavi.Text) == 0)
+                    if (!CheckInDt(dtnv, "'" + cb_Prod.Text + "'", "السلعة"))
                     {
-                        lbl_ttrprxav.ForeColor = System.Drawing.Color.Red;
-                        lbl_qttavi.ForeColor = System.Drawing.Color.Red;
-                        button1.Enabled = false;
+                        DataRow dr = ds.Tables["Cmd"].NewRow();
+                        dr[1] = idLCmd;
+                        dr[2] = lbl_prix.Text;
+                        dr[3] = lbl_prxQtt.Text;
+                        dr[4] = nud_qtt.Value;
+                        dr[5] = cb_Prod.SelectedValue.ToString();
+                        ds.Tables["Cmd"].Rows.Add(dr);
+                        //
+                        dr = dtnv.NewRow();
+                        dr[0] = cb_Prod.SelectedValue.ToString();
+                        dr[1] = nud_qtt.Value;
+                        dr[2] = cb_Prod.Text;
+                        dr[3] = lbl_prix.Text;
+                        dr[4] = lbl_prxQtt.Text;
+                        dtnv.Rows.Add(dr);
+                        ChangeQtt(cb_Prod.SelectedValue.ToString(), int.Parse(lbl_qttavi.Text) - nud_qtt.Value);
+                        lbl_qttV.Text = dtnv.Rows.Count.ToString();
+                        pxTTl += float.Parse(lbl_prxQtt.Text);
+                        lbl_prixTotal.Text = pxTTl.ToString();
+                        lbl_qttavi.Text = (int.Parse(lbl_qttavi.Text) - nud_qtt.Value).ToString();
+                        if (int.Parse(lbl_qttavi.Text) == 0)
+                        {
+                            lbl_ttrprxav.ForeColor = System.Drawing.Color.Red;
+                            lbl_qttavi.ForeColor = System.Drawing.Color.Red;
+                            button1.Enabled = false;
+                        }
+                        nud_qtt.Value = nud_qtt.Minimum;
+                        button8.Enabled = true;
+                        button9.Enabled = true;
+                        button2.Enabled = true;
+                        txt_AnvcD.Enabled = true;
                     }
-                    button8.Enabled = true;
-                    button9.Enabled = true;
-                    button2.Enabled = true;
-                    txt_AnvcD.Enabled = true;
+                    else MessageBox.Show("المنتوج الذي أدخلته موجود في الفاتورة", "المنتوج موجود", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button2, MessageBoxOptions.RightAlign);
                 }
                 else MessageBox.Show("قم بتحديد إسم الزبون أولا", " إسم الزبون غير محدد", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button2, MessageBoxOptions.RightAlign);
             }
@@ -504,6 +523,7 @@ namespace Gestion_des_factures
                 lbl_qttavi.Text = dv[0]["QttProd"].ToString();
                 nud_qtt.Value = int.Parse(dgv_ProdV.CurrentRow.Cells[1].Value.ToString());
                 newPrice = float.Parse(lbl_prixTotal.Text) - float.Parse(dtnv.Rows[dgv_ProdV.CurrentRow.Index][4].ToString());
+                dgv_ProdV.Enabled = false;
                 button5.Enabled = false;
                 button7.Enabled = false;
                 button6.Visible = true;
@@ -523,10 +543,10 @@ namespace Gestion_des_factures
         
         private void button6_Click(object sender, EventArgs e)
         {
-            try
-            {
+            //try
+            //{
                 int iV = ds.Tables["Cmd"].Rows.IndexOf(ds.Tables["Cmd"].Select("NumCmd = " + idLCmd + " AND NuPrd = " + idPr)[0]);
-                int idg = dtnv.Rows.IndexOf(dtnv.Select("الرقم = " + idPr)[0]);
+                int idg = dgv_ProdV.CurrentRow.Index;
                 ds.Tables["Cmd"].Rows[iV].BeginEdit();
                 ds.Tables["Cmd"].Rows[iV]["PrixCmd"] = lbl_prxQtt.Text;
                 ds.Tables["Cmd"].Rows[iV]["QttCmd"] = nud_qtt.Value;
@@ -550,19 +570,20 @@ namespace Gestion_des_factures
                 }
                 newPrice += float.Parse(lbl_prxQtt.Text);
                 lbl_prixTotal.Text = newPrice.ToString();
+                dgv_ProdV.Enabled = true;
                 button5.Enabled = true;
                 button7.Enabled = true;
                 button6.Visible = false;
                 button1.Visible = true;
                 cb_Prod.Enabled = true;
                 MessageBox.Show("تم تعديل المعلومات بنجاح", " تعديل المعلومات", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button2, MessageBoxOptions.RightAlign);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("هناك خطأ أثناء العملية المرجوا إعادة المحاولة");
-                string Err = "[" + DateTime.Now + "] [Exception] __ [Form :" + this.Name + " ; Button: " + sender.ToString() + " ; Event: " + e.ToString() + "] __ ExceptionMessage : " + ex.Message;
-                Acceuil.WriteLog(Err);
-            }
+            //}
+            //catch (Exception ex)
+            //{
+            //    MessageBox.Show("هناك خطأ أثناء العملية المرجوا إعادة المحاولة");
+            //    string Err = "[" + DateTime.Now + "] [Exception] __ [Form :" + this.Name + " ; Button: " + sender.ToString() + " ; Event: " + e.ToString() + "] __ ExceptionMessage : " + ex.Message;
+            //    Acceuil.WriteLog(Err);
+            //}
         }
 
         private void ChangeQtt(string idp, decimal qtt)
@@ -627,6 +648,8 @@ namespace Gestion_des_factures
             button9.Enabled = false;
             button2.Enabled = false;
             txt_AnvcD.Enabled = false;
+            txt_nomC.Text = "";
+            pxTTl = 0;
         }
         void addCell(Chunk e, PdfPTable t,String str, bool AlignCenter)
         {
@@ -639,6 +662,13 @@ namespace Gestion_des_factures
         void addCell(Chunk e, PdfPTable t, String str)
         {
             PdfPCell cell = new PdfPCell(new Phrase(10, str, e.Font));
+            cell.BorderColor = iTextSharp.text.Color.WHITE;
+            t.AddCell(cell);
+        }
+        void addCell(Chunk e, PdfPTable t, String str,int colspan)
+        {
+            PdfPCell cell = new PdfPCell(new Phrase(10, str, e.Font));
+            cell.Colspan = colspan;
             cell.BorderColor = iTextSharp.text.Color.WHITE;
             t.AddCell(cell);
         }
@@ -684,7 +714,9 @@ namespace Gestion_des_factures
                 lbl_qttV.Text = "";
                 txt_nomPrd.Text = "";
                 txt_numP.Text = "";
+                txt_nomC.Text = "";
                 cb_typePrd.SelectedIndex = 0;
+                pxTTl = 0;
                 button8.Enabled = false;
                 button9.Enabled = false;
                 button2.Enabled = false;
@@ -714,6 +746,45 @@ namespace Gestion_des_factures
         {
 
         }
+
+        private void nud_qtt_ValueChanged(object sender, KeyEventArgs e)
+        {
+
+        }
+
+        private void txt_prx_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            rb_persn.Checked = true;
+        }
+
+        private void txt_prx_DoubleClick(object sender, EventArgs e)
+        {
+            rb_persn.Checked = true;
+        }
+
+        private void AjtVente_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            if (txt_prx.ClientRectangle.Contains(e.Location))
+            {
+                rb_persn.Checked = true;
+            }
+        }
+
+        private void nud_qtt_KeyDown(object sender, KeyEventArgs e)
+        {
+        }
+
+        private void nud_qtt_KeyPress(object sender, KeyPressEventArgs e)
+        {
+        }
+
+        private void nud_qtt_KeyUp(object sender, KeyEventArgs e)
+        {
+            lbl_prxQtt.Text = float.Parse((float.Parse(lbl_prix.Text) * int.Parse(nud_qtt.Value.ToString())).ToString()).ToString();
+        
+        }
+
+
        
         
     }
