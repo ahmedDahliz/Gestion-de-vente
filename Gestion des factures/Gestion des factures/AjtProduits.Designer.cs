@@ -47,13 +47,13 @@
             this.label10 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
-            this.nud_qttMn = new System.Windows.Forms.NumericUpDown();
-            this.nud_qtt = new System.Windows.Forms.NumericUpDown();
             this.label13 = new System.Windows.Forms.Label();
             this.dgr_nvProd = new System.Windows.Forms.DataGridView();
             this.button5 = new System.Windows.Forms.Button();
             this.button6 = new System.Windows.Forms.Button();
             this.groubbox1 = new System.Windows.Forms.GroupBox();
+            this.nud_qtt = new System.Windows.Forms.TextBox();
+            this.nud_qttMn = new System.Windows.Forms.TextBox();
             this.txt_prxB = new System.Windows.Forms.TextBox();
             this.txt_prxC = new System.Windows.Forms.TextBox();
             this.txt_prxAch = new System.Windows.Forms.TextBox();
@@ -68,8 +68,6 @@
             this.button9 = new System.Windows.Forms.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.groupBox2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nud_qttMn)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nud_qtt)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgr_nvProd)).BeginInit();
             this.groubbox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -259,30 +257,6 @@
             this.label12.TabIndex = 23;
             this.label12.Text = "العدد : ";
             // 
-            // nud_qttMn
-            // 
-            this.nud_qttMn.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.nud_qttMn.Enabled = false;
-            this.nud_qttMn.Location = new System.Drawing.Point(608, 107);
-            this.nud_qttMn.Name = "nud_qttMn";
-            this.nud_qttMn.Size = new System.Drawing.Size(105, 20);
-            this.nud_qttMn.TabIndex = 4;
-            this.nud_qttMn.ValueChanged += new System.EventHandler(this.nud_qttMn_ValueChanged);
-            // 
-            // nud_qtt
-            // 
-            this.nud_qtt.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.nud_qtt.Location = new System.Drawing.Point(608, 80);
-            this.nud_qtt.Maximum = new decimal(new int[] {
-            1215752191,
-            23,
-            0,
-            0});
-            this.nud_qtt.Name = "nud_qtt";
-            this.nud_qtt.Size = new System.Drawing.Size(104, 20);
-            this.nud_qtt.TabIndex = 3;
-            this.nud_qtt.ValueChanged += new System.EventHandler(this.nud_qtt_ValueChanged);
-            // 
             // label13
             // 
             this.label13.Anchor = System.Windows.Forms.AnchorStyles.Right;
@@ -337,6 +311,8 @@
             // 
             this.groubbox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.groubbox1.Controls.Add(this.nud_qtt);
+            this.groubbox1.Controls.Add(this.nud_qttMn);
             this.groubbox1.Controls.Add(this.txt_prxB);
             this.groubbox1.Controls.Add(this.txt_prxC);
             this.groubbox1.Controls.Add(this.txt_prxAch);
@@ -347,10 +323,8 @@
             this.groubbox1.Controls.Add(this.label6);
             this.groubbox1.Controls.Add(this.txt_nomPrd);
             this.groubbox1.Controls.Add(this.groupBox2);
-            this.groubbox1.Controls.Add(this.nud_qtt);
             this.groubbox1.Controls.Add(this.label13);
             this.groubbox1.Controls.Add(this.label8);
-            this.groubbox1.Controls.Add(this.nud_qttMn);
             this.groubbox1.Controls.Add(this.cb_tpPrd);
             this.groubbox1.Controls.Add(this.label4);
             this.groubbox1.Controls.Add(this.label12);
@@ -365,6 +339,27 @@
             this.groubbox1.Text = "معلومات السلعة";
             this.groubbox1.Enter += new System.EventHandler(this.groubbox1_Enter);
             // 
+            // nud_qtt
+            // 
+            this.nud_qtt.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.nud_qtt.Location = new System.Drawing.Point(612, 79);
+            this.nud_qtt.Name = "nud_qtt";
+            this.nud_qtt.Size = new System.Drawing.Size(100, 20);
+            this.nud_qtt.TabIndex = 26;
+            this.nud_qtt.TextChanged += new System.EventHandler(this.nud_qtt_TextChanged);
+            this.nud_qtt.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.nud_qtt_keyPress);
+            // 
+            // nud_qttMn
+            // 
+            this.nud_qttMn.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.nud_qttMn.Enabled = false;
+            this.nud_qttMn.Location = new System.Drawing.Point(612, 106);
+            this.nud_qttMn.Name = "nud_qttMn";
+            this.nud_qttMn.Size = new System.Drawing.Size(100, 20);
+            this.nud_qttMn.TabIndex = 26;
+            this.nud_qttMn.TextChanged += new System.EventHandler(this.nud_qttMn_TextChanged);
+            this.nud_qttMn.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.nud_qtt_keyPress);
+            // 
             // txt_prxB
             // 
             this.txt_prxB.Anchor = System.Windows.Forms.AnchorStyles.Right;
@@ -372,6 +367,8 @@
             this.txt_prxB.Name = "txt_prxB";
             this.txt_prxB.Size = new System.Drawing.Size(82, 20);
             this.txt_prxB.TabIndex = 6;
+            this.txt_prxB.TextChanged += new System.EventHandler(this.txt_prxB_TextChanged);
+            this.txt_prxB.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.nud_qtt_keyPress);
             // 
             // txt_prxC
             // 
@@ -380,6 +377,8 @@
             this.txt_prxC.Name = "txt_prxC";
             this.txt_prxC.Size = new System.Drawing.Size(82, 20);
             this.txt_prxC.TabIndex = 7;
+            this.txt_prxC.TextChanged += new System.EventHandler(this.txt_prxC_TextChanged);
+            this.txt_prxC.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.nud_qtt_keyPress);
             // 
             // txt_prxAch
             // 
@@ -388,6 +387,8 @@
             this.txt_prxAch.Name = "txt_prxAch";
             this.txt_prxAch.Size = new System.Drawing.Size(82, 20);
             this.txt_prxAch.TabIndex = 5;
+            this.txt_prxAch.TextChanged += new System.EventHandler(this.txt_prxAch_TextChanged);
+            this.txt_prxAch.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.nud_qtt_keyPress);
             // 
             // txt_prxA
             // 
@@ -397,6 +398,7 @@
             this.txt_prxA.Size = new System.Drawing.Size(82, 20);
             this.txt_prxA.TabIndex = 5;
             this.txt_prxA.TextChanged += new System.EventHandler(this.txt_prxA_TextChanged);
+            this.txt_prxA.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.nud_qtt_keyPress);
             // 
             // button1
             // 
@@ -488,6 +490,7 @@
             // 
             // pictureBox1
             // 
+            this.pictureBox1.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
             this.pictureBox1.Location = new System.Drawing.Point(326, 12);
             this.pictureBox1.Name = "pictureBox1";
@@ -520,8 +523,6 @@
             this.Load += new System.EventHandler(this.AjtProduits_Load);
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nud_qttMn)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nud_qtt)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgr_nvProd)).EndInit();
             this.groubbox1.ResumeLayout(false);
             this.groubbox1.PerformLayout();
@@ -547,8 +548,6 @@
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Label label12;
-        private System.Windows.Forms.NumericUpDown nud_qttMn;
-        private System.Windows.Forms.NumericUpDown nud_qtt;
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.DataGridView dgr_nvProd;
         private System.Windows.Forms.Button button5;
@@ -571,5 +570,7 @@
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.TextBox txt_prxAch;
         private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.TextBox nud_qtt;
+        private System.Windows.Forms.TextBox nud_qttMn;
     }
 }

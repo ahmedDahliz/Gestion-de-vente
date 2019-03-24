@@ -31,15 +31,15 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MdfProduit));
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.label3 = new System.Windows.Forms.Label();
+            this.nud_qtt = new System.Windows.Forms.TextBox();
+            this.nud_qttMn = new System.Windows.Forms.TextBox();
             this.button2 = new System.Windows.Forms.Button();
+            this.label3 = new System.Windows.Forms.Label();
             this.txt_pb = new System.Windows.Forms.TextBox();
             this.txt_prxAch = new System.Windows.Forms.TextBox();
             this.txt_pc = new System.Windows.Forms.TextBox();
             this.txt_pa = new System.Windows.Forms.TextBox();
-            this.nud_qttMn = new System.Windows.Forms.NumericUpDown();
             this.label13 = new System.Windows.Forms.Label();
-            this.nud_qtt = new System.Windows.Forms.NumericUpDown();
             this.label12 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
@@ -59,8 +59,6 @@
             this.cb_chngType = new System.Windows.Forms.ComboBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.groupBox2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nud_qttMn)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nud_qtt)).BeginInit();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
@@ -70,7 +68,7 @@
             this.label1.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Mistral", 27.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(275, 9);
+            this.label1.Location = new System.Drawing.Point(233, 13);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(249, 44);
             this.label1.TabIndex = 34;
@@ -81,15 +79,15 @@
             this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox2.Controls.Add(this.label3);
+            this.groupBox2.Controls.Add(this.nud_qtt);
+            this.groupBox2.Controls.Add(this.nud_qttMn);
             this.groupBox2.Controls.Add(this.button2);
+            this.groupBox2.Controls.Add(this.label3);
             this.groupBox2.Controls.Add(this.txt_pb);
             this.groupBox2.Controls.Add(this.txt_prxAch);
             this.groupBox2.Controls.Add(this.txt_pc);
             this.groupBox2.Controls.Add(this.txt_pa);
-            this.groupBox2.Controls.Add(this.nud_qttMn);
             this.groupBox2.Controls.Add(this.label13);
-            this.groupBox2.Controls.Add(this.nud_qtt);
             this.groupBox2.Controls.Add(this.label12);
             this.groupBox2.Controls.Add(this.label4);
             this.groupBox2.Controls.Add(this.label11);
@@ -101,27 +99,31 @@
             this.groupBox2.Controls.Add(this.cb_tpPrd);
             this.groupBox2.Location = new System.Drawing.Point(12, 65);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(657, 117);
+            this.groupBox2.Size = new System.Drawing.Size(657, 123);
             this.groupBox2.TabIndex = 35;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "تعديل السلع";
             // 
-            // label3
+            // nud_qtt
             // 
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.ForeColor = System.Drawing.Color.Green;
-            this.label3.Location = new System.Drawing.Point(232, 89);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(145, 13);
-            this.label3.TabIndex = 35;
-            this.label3.Text = "تم تعديل المعلومات بنجاح";
-            this.label3.Visible = false;
+            this.nud_qtt.Location = new System.Drawing.Point(11, 19);
+            this.nud_qtt.Name = "nud_qtt";
+            this.nud_qtt.Size = new System.Drawing.Size(64, 20);
+            this.nud_qtt.TabIndex = 71;
+            this.nud_qtt.TextChanged += new System.EventHandler(this.nud_qtt_TextChanged);
+            // 
+            // nud_qttMn
+            // 
+            this.nud_qttMn.Location = new System.Drawing.Point(11, 49);
+            this.nud_qttMn.Name = "nud_qttMn";
+            this.nud_qttMn.Size = new System.Drawing.Size(64, 20);
+            this.nud_qttMn.TabIndex = 71;
+            this.nud_qttMn.TextChanged += new System.EventHandler(this.nud_qttMn_TextChanged);
             // 
             // button2
             // 
             this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button2.Location = new System.Drawing.Point(393, 84);
+            this.button2.Location = new System.Drawing.Point(393, 85);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(75, 23);
             this.button2.TabIndex = 34;
@@ -129,13 +131,25 @@
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.ForeColor = System.Drawing.Color.Green;
+            this.label3.Location = new System.Drawing.Point(230, 90);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(145, 13);
+            this.label3.TabIndex = 35;
+            this.label3.Text = "تم تعديل المعلومات بنجاح";
+            this.label3.Visible = false;
+            // 
             // txt_pb
             // 
             this.txt_pb.Location = new System.Drawing.Point(353, 52);
             this.txt_pb.Name = "txt_pb";
             this.txt_pb.Size = new System.Drawing.Size(67, 20);
             this.txt_pb.TabIndex = 33;
-            this.txt_pb.TextChanged += new System.EventHandler(this.saved);
+            this.txt_pb.TextChanged += new System.EventHandler(this.txt_pb_TextChanged);
             // 
             // txt_prxAch
             // 
@@ -143,7 +157,7 @@
             this.txt_prxAch.Name = "txt_prxAch";
             this.txt_prxAch.Size = new System.Drawing.Size(67, 20);
             this.txt_prxAch.TabIndex = 33;
-            this.txt_prxAch.TextChanged += new System.EventHandler(this.saved);
+            this.txt_prxAch.TextChanged += new System.EventHandler(this.txt_prxAch_TextChanged);
             // 
             // txt_pc
             // 
@@ -151,7 +165,7 @@
             this.txt_pc.Name = "txt_pc";
             this.txt_pc.Size = new System.Drawing.Size(67, 20);
             this.txt_pc.TabIndex = 33;
-            this.txt_pc.TextChanged += new System.EventHandler(this.saved);
+            this.txt_pc.TextChanged += new System.EventHandler(this.txt_pc_TextChanged);
             // 
             // txt_pa
             // 
@@ -159,20 +173,7 @@
             this.txt_pa.Name = "txt_pa";
             this.txt_pa.Size = new System.Drawing.Size(67, 20);
             this.txt_pa.TabIndex = 33;
-            this.txt_pa.TextChanged += new System.EventHandler(this.saved);
-            // 
-            // nud_qttMn
-            // 
-            this.nud_qttMn.Location = new System.Drawing.Point(6, 49);
-            this.nud_qttMn.Maximum = new decimal(new int[] {
-            -727379969,
-            232,
-            0,
-            0});
-            this.nud_qttMn.Name = "nud_qttMn";
-            this.nud_qttMn.Size = new System.Drawing.Size(65, 20);
-            this.nud_qttMn.TabIndex = 32;
-            this.nud_qttMn.ValueChanged += new System.EventHandler(this.saved);
+            this.txt_pa.TextChanged += new System.EventHandler(this.txt_pa_TextChanged);
             // 
             // label13
             // 
@@ -182,19 +183,6 @@
             this.label13.Size = new System.Drawing.Size(102, 13);
             this.label13.TabIndex = 31;
             this.label13.Text = " العدد الأدنى للتنبيه : ";
-            // 
-            // nud_qtt
-            // 
-            this.nud_qtt.Location = new System.Drawing.Point(6, 19);
-            this.nud_qtt.Maximum = new decimal(new int[] {
-            -727379969,
-            232,
-            0,
-            0});
-            this.nud_qtt.Name = "nud_qtt";
-            this.nud_qtt.Size = new System.Drawing.Size(65, 20);
-            this.nud_qtt.TabIndex = 30;
-            this.nud_qtt.ValueChanged += new System.EventHandler(this.saved);
             // 
             // label12
             // 
@@ -247,7 +235,7 @@
             this.txt_nmPrd.Name = "txt_nmPrd";
             this.txt_nmPrd.Size = new System.Drawing.Size(222, 20);
             this.txt_nmPrd.TabIndex = 15;
-            this.txt_nmPrd.TextChanged += new System.EventHandler(this.saved);
+            this.txt_nmPrd.TextChanged += new System.EventHandler(this.txt_nmPrd_TextChanged);
             // 
             // label6
             // 
@@ -275,12 +263,11 @@
             this.cb_tpPrd.Name = "cb_tpPrd";
             this.cb_tpPrd.Size = new System.Drawing.Size(138, 21);
             this.cb_tpPrd.TabIndex = 12;
-            this.cb_tpPrd.SelectedIndexChanged += new System.EventHandler(this.cb_tpPrd_SelectedIndexChanged);
-            this.cb_tpPrd.SelectedValueChanged += new System.EventHandler(this.saved);
+            this.cb_tpPrd.SelectionChangeCommitted += new System.EventHandler(this.cb_tpPrd_SelectionChangeCommitted);
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(109, 260);
+            this.button3.Location = new System.Drawing.Point(594, 263);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(75, 23);
             this.button3.TabIndex = 11;
@@ -291,33 +278,37 @@
             // button4
             // 
             this.button4.Enabled = false;
-            this.button4.Location = new System.Drawing.Point(12, 260);
+            this.button4.Location = new System.Drawing.Point(12, 263);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(91, 23);
             this.button4.TabIndex = 10;
             this.button4.Text = "حفظ التعديلات";
             this.button4.UseVisualStyleBackColor = true;
+            this.button4.Visible = false;
             this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
             // groupBox1
             // 
+            this.groupBox1.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.groupBox1.Controls.Add(this.button1);
             this.groupBox1.Controls.Add(this.txt_nmType);
             this.groupBox1.Controls.Add(this.label14);
             this.groupBox1.Controls.Add(this.label15);
             this.groupBox1.Controls.Add(this.cb_chngType);
-            this.groupBox1.Location = new System.Drawing.Point(12, 203);
+            this.groupBox1.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.groupBox1.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.groupBox1.Location = new System.Drawing.Point(12, 188);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(657, 51);
+            this.groupBox1.Size = new System.Drawing.Size(657, 59);
             this.groupBox1.TabIndex = 36;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "تعديل النوع";
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(86, 15);
+            this.button1.Location = new System.Drawing.Point(93, 15);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(99, 22);
+            this.button1.Size = new System.Drawing.Size(99, 23);
             this.button1.TabIndex = 16;
             this.button1.Text = "تعديل";
             this.button1.UseVisualStyleBackColor = true;
@@ -325,16 +316,15 @@
             // 
             // txt_nmType
             // 
-            this.txt_nmType.Location = new System.Drawing.Point(216, 17);
+            this.txt_nmType.Location = new System.Drawing.Point(211, 17);
             this.txt_nmType.Name = "txt_nmType";
             this.txt_nmType.Size = new System.Drawing.Size(119, 20);
             this.txt_nmType.TabIndex = 15;
-            this.txt_nmType.TextChanged += new System.EventHandler(this.txt_nmType_TextChanged);
             // 
             // label14
             // 
             this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(344, 20);
+            this.label14.Location = new System.Drawing.Point(339, 20);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(60, 13);
             this.label14.TabIndex = 14;
@@ -343,7 +333,7 @@
             // label15
             // 
             this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(614, 20);
+            this.label15.Location = new System.Drawing.Point(579, 20);
             this.label15.Name = "label15";
             this.label15.Size = new System.Drawing.Size(36, 13);
             this.label15.TabIndex = 13;
@@ -353,7 +343,7 @@
             // 
             this.cb_chngType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cb_chngType.FormattingEnabled = true;
-            this.cb_chngType.Location = new System.Drawing.Point(461, 17);
+            this.cb_chngType.Location = new System.Drawing.Point(426, 17);
             this.cb_chngType.Name = "cb_chngType";
             this.cb_chngType.Size = new System.Drawing.Size(138, 21);
             this.cb_chngType.TabIndex = 12;
@@ -363,7 +353,7 @@
             // 
             this.pictureBox1.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
-            this.pictureBox1.Location = new System.Drawing.Point(210, 5);
+            this.pictureBox1.Location = new System.Drawing.Point(168, 9);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(59, 50);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -374,7 +364,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(676, 292);
+            this.ClientSize = new System.Drawing.Size(676, 298);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.groupBox2);
@@ -392,8 +382,6 @@
             this.Load += new System.EventHandler(this.MdfProduit_Load);
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nud_qttMn)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nud_qtt)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
@@ -414,9 +402,7 @@
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.NumericUpDown nud_qttMn;
         private System.Windows.Forms.Label label13;
-        private System.Windows.Forms.NumericUpDown nud_qtt;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.ComboBox cb_tpPrd;
         private System.Windows.Forms.TextBox txt_pb;
@@ -433,5 +419,7 @@
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.TextBox txt_prxAch;
         private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.TextBox nud_qtt;
+        private System.Windows.Forms.TextBox nud_qttMn;
     }
 }

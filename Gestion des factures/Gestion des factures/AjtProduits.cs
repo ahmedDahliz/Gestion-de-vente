@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Data.SQLite;
+using System.Text.RegularExpressions;
 
 namespace Gestion_des_factures
 {
@@ -30,25 +31,9 @@ namespace Gestion_des_factures
         DataTable dtnt = new DataTable();
         int idT,idP;
         Boolean saved = true;
-        private void nud_qttMn_ValueChanged(object sender, EventArgs e)
-        {
-            
-        }
+        Decimal maxQtt = 0;
 
-        private void nud_qtt_ValueChanged(object sender, EventArgs e)
-        {
-            try
-            {
-                nud_qttMn.Maximum = nud_qtt.Value;
-                nud_qttMn.Enabled = (nud_qtt.Value > 0) ? true : false;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("هناك خطأ أثناء العملية المرجوا إعادة المحاولة");
-                string Err = "[" + DateTime.Now + "] [Exception] __ [Form :" + this.Name + " ; Controle: " + sender.ToString() + " ; Event: " + e.ToString() + "] __ ExceptionMessage : " + ex.Message;
-                Acceuil.WriteLog(Err);
-            }
-        }
+       
         bool CheckInDt(DataTable dt, string val, string Column)
         {
             DataRow[] found = dt.Select(Column + " = " + val);
@@ -75,16 +60,16 @@ namespace Gestion_des_factures
         private void button2_Click(object sender, EventArgs e)
         {
             // Add Product
-            try
-            {
-                float pac, pa, pb, pc;
+            //try
+            //{
+                Decimal pac, pa, pb, pc, qtt, qttmn;
                 if (txt_nomPrd.Text != "" && txt_prxAch.Text != "" && txt_prxA.Text != "" && txt_prxB.Text != "" && txt_prxC.Text != "" && cb_tpPrd.SelectedValue != null)
                 {
                     if (!CheckInDt(ds.Tables["Produits"], "'" + txt_nomPrd.Text + "'", "Desingation"))
                     {
-                        if (nud_qtt.Value != 0)
+                        if (Decimal.TryParse(nud_qtt.Text, out qtt) && Decimal.TryParse(nud_qttMn.Text, out qttmn))
                         {
-                            if (float.TryParse(double.Parse(txt_prxAch.Text).ToString(), out pac) && float.TryParse(txt_prxA.Text, out pa) && float.TryParse(txt_prxB.Text, out pb) && float.TryParse(txt_prxC.Text, out pc))
+                            if (Decimal.TryParse(txt_prxAch.Text, out pac) && Decimal.TryParse(txt_prxA.Text, out pa) && Decimal.TryParse(txt_prxB.Text, out pb) && Decimal.TryParse(txt_prxC.Text, out pc))
                             {
                                 DataRow ligneP = ds.Tables["Produits"].NewRow();
                                 DataRow ligneS = ds.Tables["Stocks"].NewRow();
@@ -106,15 +91,15 @@ namespace Gestion_des_factures
                                 lignePrC[1] = txt_prxC.Text;
                                 lignePrC[2] = idP;
                                 ds.Tables["TypPC"].Rows.Add(lignePrC);
-                                ligneS[1] = nud_qtt.Value;
-                                ligneS[2] = nud_qttMn.Value;
+                                ligneS[1] = nud_qtt.Text;
+                                ligneS[2] = nud_qttMn.Text;
                                 ligneS[3] = DateTime.Now.ToShortDateString();
                                 ligneS[4] = idP;
                                 ds.Tables["Stocks"].Rows.Add(ligneS);
                                 ligneDgv[0] = idP;
                                 ligneDgv[1] = txt_nomPrd.Text;
-                                ligneDgv[2] = nud_qtt.Value;
-                                ligneDgv[3] = nud_qttMn.Value;
+                                ligneDgv[2] = nud_qtt.Text;
+                                ligneDgv[3] = nud_qttMn.Text;
                                 ligneDgv[4] = txt_prxAch.Text;
                                 ligneDgv[5] = txt_prxA.Text;
                                 ligneDgv[6] = txt_prxB.Text;
@@ -124,27 +109,24 @@ namespace Gestion_des_factures
                                 dtnp.Rows.Add(ligneDgv);
                                 saved = false;
                                 button1.PerformClick();
+                                txt_nomPrd.Focus();
                                 lbl_prdAjt.Text = dtnp.Rows.Count.ToString();
+                                dgr_nvProd.FirstDisplayedScrollingRowIndex = dgr_nvProd.RowCount - 1;
                                 dgr_nvProd.ClearSelection();
-
-
                             }
                             else MessageBox.Show("أحد الأثمنة غير مقبولة", "خطأ في إدخال الأثمنة", MessageBoxButtons.OK, MessageBoxIcon.Error);
-
                         }
-                        else MessageBox.Show("عدد السلعة يساوي 0, المرجوا إدخال عدد السلعة", "عدد السلعة فارغ", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    }
+                        else MessageBox.Show("أحد عدد السلع غير مقبولة", "خطأ في إدخال عدد السلع", MessageBoxButtons.OK, MessageBoxIcon.Error);}
                     else MessageBox.Show("إسم المنتوج الذي أذخلته موجود سابقا ", "إسم المنتوج مكرر", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button2, MessageBoxOptions.RightAlign);
-
                 }
                 else MessageBox.Show("المرجو ملأ الحقول الفارغة", "أحد الحقول فارغة", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("هناك خطأ أثناء العملية المرجوا إعادة المحاولة");
-                string Err = "[" + DateTime.Now + "] [Exception] __ [Form :" + this.Name + " ; Controle: " + sender.ToString() + " ; Event: " + e.ToString() + "] __ ExceptionMessage : " + ex.Message;
-                Acceuil.WriteLog(Err);
-            }
+            //}
+            //catch (Exception ex)
+            //{
+            //    MessageBox.Show("هناك خطأ أثناء العملية المرجوا إعادة المحاولة");
+            //    string Err = "[" + DateTime.Now + "] [Exception] __ [Form :" + this.Name + " ; Controle: " + sender.ToString() + " ; Event: " + e.ToString() + "] __ ExceptionMessage : " + ex.Message;
+            //    Acceuil.WriteLog(Err);
+            //}
         }
 
         private void AjtProduits_Load(object sender, EventArgs e)
@@ -237,6 +219,8 @@ namespace Gestion_des_factures
                 dtaStocke.Update(ds, "Stocks");
                 saved = true;
                 Acceuil.cnx.Close();
+                dtnp.Rows.Clear();
+                lbl_prdAjt.Text = dtnp.Rows.Count.ToString();
                 MessageBox.Show("تم حفض المعلومات بنجاح", " حفض المعلومات", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button2, MessageBoxOptions.RightAlign);
             }
             catch (Exception ex)
@@ -266,7 +250,7 @@ namespace Gestion_des_factures
         {
             txt_nomPrd.Text = "";
             cb_tpPrd.SelectedValue = 0;
-            nud_qtt.Value = 0;
+            nud_qtt.Text= "";
             txt_prxAch.Text = "";
             txt_prxA.Text = "";
             txt_prxB.Text = "";
@@ -298,8 +282,8 @@ namespace Gestion_des_factures
                     DesP = dtnp.Rows[dgr_nvProd.CurrentRow.Index][1].ToString();
                     idPr = dtnp.Rows[dgr_nvProd.CurrentRow.Index][0].ToString();
                     txt_nomPrd.Text = dgr_nvProd.CurrentRow.Cells[1].Value.ToString();
-                    nud_qtt.Value = int.Parse(dgr_nvProd.CurrentRow.Cells[2].Value.ToString());
-                    nud_qttMn.Value = int.Parse(dgr_nvProd.CurrentRow.Cells[3].Value.ToString());
+                    nud_qtt.Text= dgr_nvProd.CurrentRow.Cells[2].Value.ToString();
+                    nud_qttMn.Text = dgr_nvProd.CurrentRow.Cells[3].Value.ToString();
                     txt_prxAch.Text = dgr_nvProd.CurrentRow.Cells[4].Value.ToString();
                     txt_prxA.Text = dgr_nvProd.CurrentRow.Cells[5].Value.ToString();
                     txt_prxB.Text = dgr_nvProd.CurrentRow.Cells[6].Value.ToString();
@@ -320,16 +304,16 @@ namespace Gestion_des_factures
         private void button8_Click(object sender, EventArgs e)
         {
             //Edit product
-            try
-            {
-             float pac, pa, pb, pc;
+            //try
+            //{
+             Decimal pac, pa, pb, pc, qtt, qttmn;
                 if (txt_nomPrd.Text != "" && txt_prxAch.Text != "" && txt_prxA.Text != "" && txt_prxB.Text != "" && txt_prxC.Text != "" && cb_tpPrd.SelectedValue != null)
                 {
                     if (!CheckInStock(txt_nomPrd.Text, "Desingation"))
                     {
-                        if (nud_qtt.Value != 0)
+                        if (Decimal.TryParse(nud_qtt.Text, out qtt) && Decimal.TryParse(nud_qttMn.Text, out qttmn))
                         {
-                            if (float.TryParse(double.Parse(txt_prxAch.Text).ToString(), out pac) && float.TryParse(txt_prxA.Text, out pa) && float.TryParse(txt_prxB.Text, out pb) && float.TryParse(txt_prxC.Text, out pc))
+                            if (Decimal.TryParse(txt_prxAch.Text, out pac) && Decimal.TryParse(txt_prxA.Text, out pa) && Decimal.TryParse(txt_prxB.Text, out pb) && Decimal.TryParse(txt_prxC.Text, out pc))
                             {
                                 int iP = ds.Tables["Produits"].Rows.IndexOf(ds.Tables["Produits"].Select("Desingation = '" + DesP + "'")[0]);
                                 int iPA = ds.Tables["TypPA"].Rows.IndexOf(ds.Tables["TypPA"].Select("NuPrd = " + idPr)[0]);
@@ -357,14 +341,14 @@ namespace Gestion_des_factures
                                 ds.Tables["TypPC"].Rows[iPC].EndEdit();
                                 //Update DataTable Stock
                                 ds.Tables["Stocks"].Rows[iS].BeginEdit();
-                                ds.Tables["Stocks"].Rows[iS]["QttPrsFini"] = nud_qttMn.Value;
-                                ds.Tables["Stocks"].Rows[iS]["QttProd"] = nud_qtt.Value;
+                                ds.Tables["Stocks"].Rows[iS]["QttPrsFini"] = nud_qttMn.Text;
+                                ds.Tables["Stocks"].Rows[iS]["QttProd"] = nud_qtt.Text;
                                 ds.Tables["Stocks"].Rows[iS].EndEdit();
                                 //Update DataTable DTNP of GridView
                                 dtnp.Rows[idg].BeginEdit();
                                 dtnp.Rows[idg]["الإسم"] = txt_nomPrd.Text;
-                                dtnp.Rows[idg]["الكمية"] = nud_qtt.Value;
-                                dtnp.Rows[idg]["الكمية الأدنى"] = nud_qttMn.Value;
+                                dtnp.Rows[idg]["الكمية"] = nud_qtt.Text;
+                                dtnp.Rows[idg]["الكمية الأدنى"] = nud_qttMn.Text;
                                 dtnp.Rows[idg]["ثمن الشراء"] = txt_prxAch.Text;
                                 dtnp.Rows[idg]["ثمن A"] = txt_prxA.Text;
                                 dtnp.Rows[idg]["ثمن B"] = txt_prxB.Text;
@@ -379,19 +363,19 @@ namespace Gestion_des_factures
                             else MessageBox.Show("أحد الأثمنة غير مقبولة", "خطأ في إدخال الأثمنة", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
                         }
-                        else MessageBox.Show("عدد السلعة يساوي 0, المرجوا إدخال عدد السلعة", "عدد السلعة فارغ", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        else MessageBox.Show("أحد عدد السلع غير مقبولة", "خطأ في إدخال عدد السلع", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                     else MessageBox.Show("إسم المنتوج الذي أذخلته موجود سابقا ", "إسم المنتوج مكرر", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button2, MessageBoxOptions.RightAlign);
 
                 }
                 else MessageBox.Show("المرجو ملأ الحقول الفارغة", "أحد الحقول فارغة", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("هناك خطأ أثناء العملية المرجوا إعادة المحاولة");
-                string Err = "[" + DateTime.Now + "] [Exception] __ [Form :" + this.Name + " ; Controle: " + sender.ToString() + " ; Event: " + e.ToString() + "] __ ExceptionMessage : " + ex.Message;
-                Acceuil.WriteLog(Err);
-            }
+            //}
+            //catch (Exception ex)
+            //{
+            //    MessageBox.Show("هناك خطأ أثناء العملية المرجوا إعادة المحاولة");
+            //    string Err = "[" + DateTime.Now + "] [Exception] __ [Form :" + this.Name + " ; Controle: " + sender.ToString() + " ; Event: " + e.ToString() + "] __ ExceptionMessage : " + ex.Message;
+            //    Acceuil.WriteLog(Err);
+            //}
           }
 
         private void AjtProduits_FormClosing(object sender, FormClosingEventArgs e)
@@ -456,9 +440,12 @@ namespace Gestion_des_factures
         {
             try
             {
-                ds.Tables["Types"].Rows.Remove(ds.Tables["Types"].Select("NumType = " + cb_nvType.SelectedValue.ToString())[0]);
-                dtnt.Rows.RemoveAt(int.Parse(cb_nvType.SelectedIndex.ToString()));
-                button3.PerformClick();
+                if (cb_nvType.SelectedValue != null)
+                {
+                    ds.Tables["Types"].Rows.Remove(ds.Tables["Types"].Select("NumType = " + cb_nvType.SelectedValue.ToString())[0]);
+                    dtnt.Rows.RemoveAt(int.Parse(cb_nvType.SelectedIndex.ToString()));
+                    button3.PerformClick();
+                }
             }
             catch (Exception ex)
             {
@@ -472,12 +459,16 @@ namespace Gestion_des_factures
         {
             try
             {
-                ds.Tables["types"].Rows[iT].BeginEdit();
-                ds.Tables["types"].Rows[iT][1] = txt_nomTp.Text;
-                ds.Tables["types"].Rows[iT].EndEdit();
-                dtnt.Rows[inT].BeginEdit();
-                dtnt.Rows[inT][1] = txt_nomTp.Text;
-                dtnt.Rows[inT].EndEdit();
+                if (cb_nvType.SelectedValue != null)
+                {
+                    ds.Tables["types"].Rows[iT].BeginEdit();
+                    ds.Tables["types"].Rows[iT][1] = txt_nomTp.Text;
+                    ds.Tables["types"].Rows[iT].EndEdit();
+                    dtnt.Rows[inT].BeginEdit();
+                    dtnt.Rows[inT][1] = txt_nomTp.Text;
+                    dtnt.Rows[inT].EndEdit();
+                }
+                
             }
             catch (Exception ex)
             {
@@ -499,7 +490,92 @@ namespace Gestion_des_factures
 
         private void txt_prxA_TextChanged(object sender, EventArgs e)
         {
+            txt_prxA.Text = txt_prxA.Text.Replace('.', ',');
+            Regex rgx = new Regex("[^0-9.,]");
+            txt_prxA.Text = rgx.Replace(txt_prxA.Text, "");
+            txt_prxA.SelectionStart = txt_prxA.Text.Length;
+            txt_prxA.SelectionLength = 0;
+        }
 
+        private void txt_prxAch_TextChanged(object sender, EventArgs e)
+        {
+            txt_prxAch.Text = txt_prxAch.Text.Replace('.', ',');
+            Regex rgx = new Regex("[^0-9.,]");
+            txt_prxAch.Text = rgx.Replace(txt_prxAch.Text, "");
+            txt_prxAch.SelectionStart = txt_prxAch.Text.Length;
+            txt_prxAch.SelectionLength = 0;
+        }
+
+        private void txt_prxB_TextChanged(object sender, EventArgs e)
+        {
+            txt_prxB.Text = txt_prxB.Text.Replace('.', ',');
+            Regex rgx = new Regex("[^0-9.,]");
+            txt_prxB.Text = rgx.Replace(txt_prxB.Text, "");
+            txt_prxB.SelectionStart = txt_prxB.Text.Length;
+            txt_prxB.SelectionLength = 0;
+        }
+
+        private void nud_qtt_TextChanged(object sender, EventArgs e)
+        {
+            nud_qttMn.Enabled = (nud_qtt.Text != "");
+            nud_qtt.Text = nud_qtt.Text.Replace('.', ',');
+            Regex rgx = new Regex("[^0-9.,]");
+            nud_qtt.Text = rgx.Replace(nud_qtt.Text, "");
+            Decimal qtt;
+            if (Decimal.TryParse(nud_qtt.Text, out qtt))
+            {
+                maxQtt = qtt;
+                if (qtt < 1)
+                {
+                    nud_qtt.Text = "0";
+                }
+            }
+            nud_qtt.SelectionStart = nud_qtt.Text.Length;
+            nud_qtt.SelectionLength = 0;
+           
+        }
+
+        private void nud_qttMn_TextChanged(object sender, EventArgs e)
+        {
+            nud_qttMn.Text = nud_qttMn.Text.Replace('.', ',');
+            Regex rgx = new Regex("[^0-9.,]");
+            nud_qttMn.Text = rgx.Replace(nud_qttMn.Text, "");
+            Decimal qtt;
+            if (Decimal.TryParse(nud_qttMn.Text, out qtt))
+            {
+
+                if (qtt > maxQtt)
+                {
+                    nud_qttMn.Text = maxQtt.ToString();
+                }
+                if (qtt < 1)
+                {
+                    nud_qttMn.Text = "0";
+                }
+            }
+            nud_qttMn.SelectionStart = nud_qttMn.Text.Length;
+            nud_qttMn.SelectionLength = 0;
+        }
+
+        private void nud_qtt_keyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == '.' && (sender as TextBox).Text.IndexOf(',') > -1)
+            {
+                e.Handled = true;
+            }
+            if (e.KeyChar == ',' && (sender as TextBox).Text.IndexOf(',') > -1)
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void txt_prxC_TextChanged(object sender, EventArgs e)
+        {
+            txt_prxC.Text = txt_prxC.Text.Replace('.', ',');
+            Regex rgx = new Regex("[^0-9.,]");
+            txt_prxC.Text = rgx.Replace(txt_prxC.Text, "");
+            txt_prxC.SelectionStart = txt_prxC.Text.Length;
+            txt_prxC.SelectionLength = 0;
         }
     }
 }

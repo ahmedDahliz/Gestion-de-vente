@@ -54,7 +54,7 @@ namespace Gestion_des_factures
 
                     }
                     else FrmAcc.Show();
-                    txt_username.Text = "";
+                    txt_password.Text = "";
                     Hide();
                 }
                 else MessageBox.Show("إسم الدخول أو كلمة المرور خاطئة", "المعلومات خاطئة", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button2, MessageBoxOptions.RightAlign);

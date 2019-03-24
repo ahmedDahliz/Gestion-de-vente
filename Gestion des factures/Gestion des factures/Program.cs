@@ -28,7 +28,7 @@ namespace Gestion_des_factures
             MessageBoxManager.Register();
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Connexion());
+            Application.Run(new Acceuil());
         }
     }
 }

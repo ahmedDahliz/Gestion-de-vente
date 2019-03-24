@@ -12,6 +12,7 @@ using iTextSharp.text.pdf;
 using iTextSharp.text;
 using System.IO;
 using System.Drawing.Printing;
+using System.Text.RegularExpressions;
 
 namespace Gestion_des_factures
 {
@@ -166,23 +167,26 @@ namespace Gestion_des_factures
         {
             EnableMskPx(false);
             lbl_prix.Text = pa;
-            lbl_prxQtt.Text = float.Parse((float.Parse(lbl_prix.Text) * int.Parse(nud_qtt.Value.ToString())).ToString()).ToString();
+            Decimal qtt = (nud_qtt.Text != "") ? Decimal.Parse(nud_qtt.Text) : 0;
+            lbl_prxQtt.Text = (Decimal.Parse(lbl_prix.Text) * qtt).ToString("0.#####");
         }
 
         private void rd_B_CheckedChanged(object sender, EventArgs e)
         {
             EnableMskPx(false);
             lbl_prix.Text = pb;
-            lbl_prxQtt.Text = float.Parse((float.Parse(lbl_prix.Text) * int.Parse(nud_qtt.Value.ToString())).ToString()).ToString();
+            Decimal qtt = (nud_qtt.Text != "") ? Decimal.Parse(nud_qtt.Text) : 0;
+            lbl_prxQtt.Text = (Decimal.Parse(lbl_prix.Text) * qtt).ToString("0.#####");
         }
 
         private void rb_C_CheckedChanged(object sender, EventArgs e)
         {
             EnableMskPx(false);
             lbl_prix.Text = pc;
-            lbl_prxQtt.Text = float.Parse((float.Parse(lbl_prix.Text) * int.Parse(nud_qtt.Value.ToString())).ToString()).ToString();
+            Decimal qtt = (nud_qtt.Text != "") ? Decimal.Parse(nud_qtt.Text) : 0;
+            lbl_prxQtt.Text = (Decimal.Parse(lbl_prix.Text) * qtt).ToString("0.#####");
         }
-
+        
         private void mskt_pxpresn_MaskInputRejected(object sender, MaskInputRejectedEventArgs e)
         {
 
@@ -205,34 +209,37 @@ namespace Gestion_des_factures
             rb_CltE.Checked = ch_ventADette.Checked;
             rb_CltnE.Checked = !ch_ventADette.Checked;
             txt_AnvcD.Enabled = ch_ventADette.Checked;
+            txt_restPrx.Enabled = ch_ventADette.Checked;
             label16.Enabled = ch_ventADette.Checked;
+            label21.Enabled = ch_ventADette.Checked;
             txt_nomC.Text = "";
 
         }
-
+        Decimal minQtt = 1, maxQtt = 0; 
         private void cb_Prod_SelectedIndexChanged(object sender, EventArgs e)
         {
             //try
             //{
                 DataView dv = new DataView(ds.Tables["Stocks"], "NuPrd = " + cb_Prod.SelectedValue.ToString(), "", DataViewRowState.CurrentRows);
                 DataView dvp = new DataView(ds.Tables["Produits"], "NumPrd = " + cb_Prod.SelectedValue.ToString(), "", DataViewRowState.CurrentRows);
-                if (int.Parse(dv[0]["QttProd"].ToString()) == 0)
+                if (float.Parse(dv[0]["QttProd"].ToString()) == 0)
                 {
-                    lbl_ttrprxav.ForeColor = System.Drawing.Color.Red;
+                    lbl_ttrqtttav.ForeColor = System.Drawing.Color.Red;
                     lbl_qttavi.ForeColor = System.Drawing.Color.Red;
+                    minQtt = 0;
                     button1.Enabled = false;
-
                 }
                 else
                 {
                     button1.Enabled = true;
-                    lbl_ttrprxav.ForeColor = System.Drawing.Color.Black;
+                    lbl_ttrqtttav.ForeColor = System.Drawing.Color.Black;
                     lbl_qttavi.ForeColor = System.Drawing.Color.Black;
-                    nud_qtt.Minimum = 1;
+                    minQtt = 1;
                 }
-                nud_qtt.Value = nud_qtt.Minimum;
+                nud_qtt.Text = "";
                 lbl_qttavi.Text = dv[0]["QttProd"].ToString();
-                nud_qtt.Maximum = int.Parse(dv[0]["QttProd"].ToString());
+                //nud_qtt_old.Maximum = int.Parse(dv[0]["QttProd"].ToString());
+                maxQtt = Decimal.Parse(dv[0]["QttProd"].ToString());
                 DataView dva = new DataView(ds.Tables["TypPA"], "NuPrd = " + cb_Prod.SelectedValue.ToString(), "", DataViewRowState.CurrentRows);
                 pa = dva[0]["Prix"].ToString();
                 DataView dvb = new DataView(ds.Tables["TypPB"], "NuPrd = " + cb_Prod.SelectedValue.ToString(), "", DataViewRowState.CurrentRows);
@@ -241,7 +248,7 @@ namespace Gestion_des_factures
                 pc = dvc[0]["Prix"].ToString();
                 txt_prx.Text ="0";
                 lbl_prix.Text = (rb_A.Checked) ? pa : (rd_B.Checked) ? pb : (rb_C.Checked) ? pc : (rb_persn.Checked) ? txt_prx.Text: "";
-                lbl_prxQtt.Text = float.Parse((float.Parse(lbl_prix.Text) * int.Parse(nud_qtt.Value.ToString())).ToString()).ToString();
+                lbl_prxQtt.Text = (float.Parse(lbl_prix.Text) * 0).ToString("0.#####");
                 lbl_prxAch.Text = dvp[0]["prxAchat"].ToString();
             //}
             //catch (Exception ex)
@@ -256,7 +263,6 @@ namespace Gestion_des_factures
 
         }
         private void CreatePdf(String FileName) {
-            
             iTextSharp.text.Rectangle pageSize = new iTextSharp.text.Rectangle(100, 290);
             Document document = new Document(pageSize, 0, 0, 0, 0);
             string path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\Factures";
@@ -311,7 +317,7 @@ namespace Gestion_des_factures
                 }
             }
             tableProduct.SpacingAfter = 5;
-            tableProduct.SpacingBefore = 5;
+            tableProduct.SpacingBefore = 10;
             document.Add(tableProduct);
             //add Sells Informations
             PdfPTable FootTable = new PdfPTable(1);
@@ -319,7 +325,7 @@ namespace Gestion_des_factures
             FootTable.RunDirection = PdfWriter.RUN_DIRECTION_RTL;
             addCell(e2, FootTable, "عدد السلع : " + lbl_qttV.Text);
             addCell(e2, FootTable, "الواجب أدائه  : " + lbl_prixTotal.Text + " درهم");
-            FootTable.SpacingAfter = 20;
+            FootTable.SpacingAfter = 55;
             document.Add(FootTable);
             //add debt informations if exit
             if (ch_ventADette.Checked)
@@ -334,17 +340,20 @@ namespace Gestion_des_factures
                 PdfPTable DetteTable = new PdfPTable(1);
                 DetteTable.WidthPercentage = 100;
                 DetteTable.RunDirection = PdfWriter.RUN_DIRECTION_RTL;
-                addCell(e2, DetteTable, "البيع بسلف ل : " + dvC[0]["NomClt"]);
-                addCell(e2, DetteTable, "الهاتف : " + dvC[0]["Tele"]);
-                addCell(e2, DetteTable, "العنوان : " + dvC[0]["Adresse"]);
-                float pxd = float.Parse(lbl_prixTotal.Text);
+                addCell(e2, DetteTable, "البيع بسلف لسيد(ة) : " + dvC[0]["NomClt"]);
+                if (dvC[0]["Tele"].ToString() != "") addCell(e2, DetteTable, "الهاتف : " + dvC[0]["Tele"]);
+                if (dvC[0]["Adresse"].ToString() != "") addCell(e2, DetteTable, "العنوان : " + dvC[0]["Adresse"]);
+                Decimal pxd = Decimal.Parse(lbl_prixTotal.Text);
                 if (txt_AnvcD.Text != "")
                 {
                     addCell(e2, DetteTable, "التسبيق   : " + txt_AnvcD.Text + " درهم");
-                    pxd -= float.Parse(txt_AnvcD.Text);
+                    pxd -= Decimal.Parse(txt_AnvcD.Text);
                 }
-                addCell(e2, DetteTable, "ثمن الدين   : " + pxd + " درهم");
-               // dt += float.Parse(lbl_prixTotal.Text);
+                Decimal restPrx = (txt_restPrx.Text != "") ? Decimal.Parse(txt_restPrx.Text) : 0;
+                Decimal TtDette = (txt_restPrx.Text != "") ? restPrx + pxd : pxd;
+                addCell(e2, DetteTable, "الباقي : " + restPrx + " درهم");
+                addCell(e2, DetteTable, "المجموع : " + TtDette + " درهم");
+                //dt += float.Parse(lbl_prixTotal.Text);
                 //addCell(e2, DetteTable, "مجموع الدين الحالي  : " + dt + " درهم");
                 document.Add(DetteTable);
             }
@@ -360,25 +369,26 @@ namespace Gestion_des_factures
         }
         private void txt_prx_TextChanged(object sender, EventArgs e)
         {
-            float px;
+            Decimal px;
+            Decimal qtt = (nud_qtt.Text != "") ? Decimal.Parse(nud_qtt.Text) : 0;
             if (txt_prx.Text != "")
             {
-                if (float.TryParse(txt_prx.Text, out px))
+                if (Decimal.TryParse(txt_prx.Text, out px))
                 {
                     lbl_prix.Text = txt_prx.Text;
-                    lbl_prxQtt.Text = float.Parse((float.Parse(lbl_prix.Text) * int.Parse(nud_qtt.Value.ToString())).ToString()).ToString();
+                    lbl_prxQtt.Text = (Decimal.Parse(lbl_prix.Text) * qtt).ToString("0.#####");
                 }
             }
             else {
                 lbl_prix.Text = "0";
-                lbl_prxQtt.Text = float.Parse((float.Parse(lbl_prix.Text) * int.Parse(nud_qtt.Value.ToString())).ToString()).ToString();
+                lbl_prxQtt.Text = (Decimal.Parse(lbl_prix.Text) * qtt).ToString("0.#####");
             }
             
         }
 
         private void nud_qtt_ValueChanged(object sender, EventArgs e)
-        {    
-            lbl_prxQtt.Text = float.Parse((float.Parse(lbl_prix.Text) * int.Parse(nud_qtt.Value.ToString())).ToString()).ToString();
+        {
+            lbl_prxQtt.Text = (Decimal.Parse(lbl_prix.Text) * Decimal.Parse(nud_qtt.Text)).ToString("0.#####");
         }
 
         private void cb_nomC_SelectionChangeCommitted(object sender, EventArgs e)
@@ -400,50 +410,63 @@ namespace Gestion_des_factures
             return false;
 
         }
-        float pxTTl = 0;
+
+        void calculatePrice(Decimal prx, bool isAddition) {
+            if (isAddition) pxTTl += prx;
+            else pxTTl -= prx;
+            lbl_prixTotal.Text = pxTTl.ToString("0.#####");
+        }
+
+        Decimal pxTTl = 0;
         private void button1_Click(object sender, EventArgs e)
         {
             try
             {
-                if (lbl_nomC.Text != "")
+                if (nud_qtt.Text != "")
                 {
-                    if (!CheckInDt(dtnv, "'" + cb_Prod.Text + "'", "السلعة"))
+                    if (lbl_nomC.Text != "")
                     {
-                        DataRow dr = ds.Tables["Cmd"].NewRow();
-                        dr[1] = idLCmd;
-                        dr[2] = lbl_prix.Text;
-                        dr[3] = lbl_prxQtt.Text;
-                        dr[4] = nud_qtt.Value;
-                        dr[5] = cb_Prod.SelectedValue.ToString();
-                        ds.Tables["Cmd"].Rows.Add(dr);
-                        //
-                        dr = dtnv.NewRow();
-                        dr[0] = cb_Prod.SelectedValue.ToString();
-                        dr[1] = nud_qtt.Value;
-                        dr[2] = cb_Prod.Text;
-                        dr[3] = lbl_prix.Text;
-                        dr[4] = lbl_prxQtt.Text;
-                        dtnv.Rows.Add(dr);
-                        ChangeQtt(cb_Prod.SelectedValue.ToString(), int.Parse(lbl_qttavi.Text) - nud_qtt.Value);
-                        lbl_qttV.Text = dtnv.Rows.Count.ToString();
-                        pxTTl += float.Parse(lbl_prxQtt.Text);
-                        lbl_prixTotal.Text = pxTTl.ToString();
-                        lbl_qttavi.Text = (int.Parse(lbl_qttavi.Text) - nud_qtt.Value).ToString();
-                        if (int.Parse(lbl_qttavi.Text) == 0)
+                        if (!CheckInDt(dtnv, "'" + cb_Prod.Text + "'", "السلعة"))
                         {
-                            lbl_ttrprxav.ForeColor = System.Drawing.Color.Red;
-                            lbl_qttavi.ForeColor = System.Drawing.Color.Red;
-                            button1.Enabled = false;
+                            DataRow dr = ds.Tables["Cmd"].NewRow();
+                            dr[1] = idLCmd;
+                            dr[2] = lbl_prix.Text;
+                            dr[3] = lbl_prxQtt.Text.ToString();
+                            dr[4] = nud_qtt.Text;
+                            dr[5] = cb_Prod.SelectedValue.ToString();
+                            ds.Tables["Cmd"].Rows.Add(dr);
+                            //
+                            dr = dtnv.NewRow();
+                            dr[0] = cb_Prod.SelectedValue.ToString();
+                            dr[1] = nud_qtt.Text;
+                            dr[2] = cb_Prod.Text;
+                            dr[3] = lbl_prix.Text;
+                            dr[4] = lbl_prxQtt.Text;
+                            dtnv.Rows.Add(dr);
+                            ChangeQtt(cb_Prod.SelectedValue.ToString(), Decimal.Parse(lbl_qttavi.Text) -  Decimal.Parse(nud_qtt.Text));
+                            lbl_qttV.Text = dtnv.Rows.Count.ToString();
+                            //pxTTl += Decimal.Parse(lbl_prxQtt.Text);
+                            //lbl_prixTotal.Text = pxTTl.ToString();
+                            calculatePrice(Decimal.Parse(lbl_prxQtt.Text), true);
+                            lbl_qttavi.Text = (Decimal.Parse(lbl_qttavi.Text) -  Decimal.Parse(nud_qtt.Text)).ToString();
+                            if (Decimal.Parse(lbl_qttavi.Text) == 0)
+                            {
+                                lbl_ttrqtttav.ForeColor = System.Drawing.Color.Red;
+                                lbl_qttavi.ForeColor = System.Drawing.Color.Red;
+                                button1.Enabled = false;
+                            }
+                            nud_qtt.Text = minQtt.ToString();
+                            button8.Enabled = true;
+                            button9.Enabled = true;
+                            button2.Enabled = true;
+                            txt_AnvcD.Enabled = ch_ventADette.Checked;
                         }
-                        nud_qtt.Value = nud_qtt.Minimum;
-                        button8.Enabled = true;
-                        button9.Enabled = true;
-                        button2.Enabled = true;
-                        txt_AnvcD.Enabled = true;
+                        else MessageBox.Show("المنتوج الذي أدخلته موجود في الفاتورة", "المنتوج موجود", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button2, MessageBoxOptions.RightAlign);
                     }
-                    else MessageBox.Show("المنتوج الذي أدخلته موجود في الفاتورة", "المنتوج موجود", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button2, MessageBoxOptions.RightAlign);
+                    else MessageBox.Show("قم بتحديد إسم الزبون أولا", "إسم الزبون غير محدد", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button2, MessageBoxOptions.RightAlign);
                 }
-                else MessageBox.Show("قم بتحديد إسم الزبون أولا", " إسم الزبون غير محدد", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button2, MessageBoxOptions.RightAlign);
+                else MessageBox.Show("قم بتحديد عدد السلع أولا", "عدد السلع غير محدد", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button2, MessageBoxOptions.RightAlign);
+
             }
             catch (Exception ex)
             {
@@ -507,27 +530,30 @@ namespace Gestion_des_factures
             button7.Enabled = (dgv_ProdV.SelectedRows.Count == 1);
         }
         string idPr;
-        float newPrice = 0;
         private void button5_Click(object sender, EventArgs e)
         {
             if (dgv_ProdV.SelectedRows.Count == 1)
             {
-                cb_Prod.Enabled = false;
                 idPr = dtnv.Rows[dgv_ProdV.CurrentRow.Index][0].ToString();
                 DataView dv = new DataView(ds.Tables["Stocks"], "NuPrd = " + idPr, "", DataViewRowState.CurrentRows);
-                ChangeQtt(cb_Prod.SelectedValue.ToString(), int.Parse(dv[0]["QttProd"].ToString()) + int.Parse(dgv_ProdV.CurrentRow.Cells[1].Value.ToString()));
                 cb_Prod.SelectedValue = idPr;
-                nud_qtt.Maximum = int.Parse(dv[0]["QttProd"].ToString());
+                cb_Prod.Enabled = false;
+                ChangeQtt(cb_Prod.SelectedValue.ToString(), Decimal.Parse(dv[0]["QttProd"].ToString()) + Decimal.Parse(dgv_ProdV.CurrentRow.Cells[1].Value.ToString()));
+                maxQtt = Decimal.Parse(dv[0]["QttProd"].ToString());
                 lbl_qttavi.ForeColor = System.Drawing.Color.Black;
-                lbl_ttrprxav.ForeColor = System.Drawing.Color.Black;
+                lbl_ttrqtttav.ForeColor = System.Drawing.Color.Black;
                 lbl_qttavi.Text = dv[0]["QttProd"].ToString();
-                nud_qtt.Value = int.Parse(dgv_ProdV.CurrentRow.Cells[1].Value.ToString());
-                newPrice = float.Parse(lbl_prixTotal.Text) - float.Parse(dtnv.Rows[dgv_ProdV.CurrentRow.Index][4].ToString());
+                nud_qtt.Text = dgv_ProdV.CurrentRow.Cells[1].Value.ToString();
+                //newPrice = float.Parse(lbl_prixTotal.Text) - float.Parse(dtnv.Rows[dgv_ProdV.CurrentRow.Index][4].ToString());
+                calculatePrice(Decimal.Parse(dtnv.Rows[dgv_ProdV.CurrentRow.Index][4].ToString()), false);
                 dgv_ProdV.Enabled = false;
                 button5.Enabled = false;
+                button9.Enabled = false;
+                button8.Enabled = false;
                 button7.Enabled = false;
                 button6.Visible = true;
                 button1.Visible = false;
+
             }
             try
             {
@@ -543,47 +569,50 @@ namespace Gestion_des_factures
         
         private void button6_Click(object sender, EventArgs e)
         {
-            //try
-            //{
+            try
+            {
                 int iV = ds.Tables["Cmd"].Rows.IndexOf(ds.Tables["Cmd"].Select("NumCmd = " + idLCmd + " AND NuPrd = " + idPr)[0]);
                 int idg = dgv_ProdV.CurrentRow.Index;
                 ds.Tables["Cmd"].Rows[iV].BeginEdit();
                 ds.Tables["Cmd"].Rows[iV]["PrixCmd"] = lbl_prxQtt.Text;
-                ds.Tables["Cmd"].Rows[iV]["QttCmd"] = nud_qtt.Value;
+                ds.Tables["Cmd"].Rows[iV]["QttCmd"] = nud_qtt.Text;
                 ds.Tables["Cmd"].Rows[iV]["NuPrd"] = cb_Prod.SelectedValue.ToString();
                 ds.Tables["Cmd"].Rows[iV].EndEdit();
                 //
                 dtnv.Rows[idg].BeginEdit();
                 dtnv.Rows[idg]["الرقم"] = cb_Prod.SelectedValue.ToString();
                 dtnv.Rows[idg]["السلعة"] = cb_Prod.Text;
-                dtnv.Rows[idg]["الكمية"] = nud_qtt.Value;
+                dtnv.Rows[idg]["الكمية"] = nud_qtt.Text;
                 dtnv.Rows[idg]["ثمن الوحدة"] = lbl_prix.Text;
                 dtnv.Rows[idg]["الواجب"] = lbl_prxQtt.Text;
                 dtnv.Rows[idg].EndEdit();
-                ChangeQtt(cb_Prod.SelectedValue.ToString(), int.Parse(lbl_qttavi.Text) - nud_qtt.Value);
-                lbl_qttavi.Text = (int.Parse(lbl_qttavi.Text) - nud_qtt.Value).ToString();
-                if (int.Parse(lbl_qttavi.Text) == 0)
+                ChangeQtt(cb_Prod.SelectedValue.ToString(), int.Parse(lbl_qttavi.Text) - Decimal.Parse(nud_qtt.Text));
+                lbl_qttavi.Text = (Decimal.Parse(lbl_qttavi.Text) - Decimal.Parse(nud_qtt.Text)).ToString();
+                if (Decimal.Parse(lbl_qttavi.Text) == 0)
                 {
-                    lbl_ttrprxav.ForeColor = System.Drawing.Color.Red;
+                    lbl_ttrqtttav.ForeColor = System.Drawing.Color.Red;
                     lbl_qttavi.ForeColor = System.Drawing.Color.Red;
                     button1.Enabled = false;
                 }
-                newPrice += float.Parse(lbl_prxQtt.Text);
-                lbl_prixTotal.Text = newPrice.ToString();
+                //newPrice += float.Parse(lbl_prxQtt.Text);
+                //lbl_prixTotal.Text = newPrice.ToString();
+                calculatePrice(Decimal.Parse(lbl_prxQtt.Text), true);
                 dgv_ProdV.Enabled = true;
                 button5.Enabled = true;
                 button7.Enabled = true;
+                button8.Enabled = true;
+                button9.Enabled = true;
                 button6.Visible = false;
                 button1.Visible = true;
                 cb_Prod.Enabled = true;
                 MessageBox.Show("تم تعديل المعلومات بنجاح", " تعديل المعلومات", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button2, MessageBoxOptions.RightAlign);
-            //}
-            //catch (Exception ex)
-            //{
-            //    MessageBox.Show("هناك خطأ أثناء العملية المرجوا إعادة المحاولة");
-            //    string Err = "[" + DateTime.Now + "] [Exception] __ [Form :" + this.Name + " ; Button: " + sender.ToString() + " ; Event: " + e.ToString() + "] __ ExceptionMessage : " + ex.Message;
-            //    Acceuil.WriteLog(Err);
-            //}
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("هناك خطأ أثناء العملية المرجوا إعادة المحاولة");
+                string Err = "[" + DateTime.Now + "] [Exception] __ [Form :" + this.Name + " ; Button: " + sender.ToString() + " ; Event: " + e.ToString() + "] __ ExceptionMessage : " + ex.Message;
+                Acceuil.WriteLog(Err);
+            }
         }
 
         private void ChangeQtt(string idp, decimal qtt)
@@ -607,7 +636,8 @@ namespace Gestion_des_factures
                         DataView dv = new DataView(ds.Tables["Stocks"], "NuPrd = " + idPr, "", DataViewRowState.CurrentRows);
                         ChangeQtt(cb_Prod.SelectedValue.ToString(), int.Parse(dv[0]["QttProd"].ToString()) + int.Parse(dgv_ProdV.CurrentRow.Cells[1].Value.ToString()));
                         ds.Tables["Cmd"].Rows.Remove((ds.Tables["Cmd"].Select("NumCmd = " + idLCmd + " AND NuPrd = " + idPr)[0]));
-                        lbl_prixTotal.Text = (float.Parse(lbl_prixTotal.Text) - float.Parse(dtnv.Rows[dgv_ProdV.CurrentRow.Index][4].ToString())).ToString();
+                        //lbl_prixTotal.Text = (float.Parse(lbl_prixTotal.Text) - float.Parse(dtnv.Rows[dgv_ProdV.CurrentRow.Index][4].ToString())).ToString();
+                        calculatePrice(Decimal.Parse(dtnv.Rows[dgv_ProdV.CurrentRow.Index][4].ToString()), false);
                         dtnv.Rows.RemoveAt(dgv_ProdV.CurrentRow.Index);
                         dgv_ProdV.Text = dtnv.Rows.Count.ToString();
                         if (dtnv.Rows.Count == 0) {
@@ -770,18 +800,66 @@ namespace Gestion_des_factures
             }
         }
 
-        private void nud_qtt_KeyDown(object sender, KeyEventArgs e)
+        private void nud_qtt_KeyUp(object sender, KeyEventArgs e)
         {
+            lbl_prxQtt.Text = (Decimal.Parse(lbl_prix.Text) * Decimal.Parse(nud_qtt.Text)).ToString("0.#####");
+        
+        }
+
+        private void txt_restPrx_TextChanged(object sender, EventArgs e)
+        {
+             try{
+                float prx;
+                if (!float.TryParse(txt_restPrx.Text, out prx) || txt_restPrx.Text == "")
+                {
+                    MessageBox.Show("الباقي الذي أدخلته غير مقبول", "خطأ في الباقي", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                    
+             }
+             catch (Exception ex)
+             {
+                 MessageBox.Show("هناك خطأ أثناء العملية المرجوا إعادة المحاولة");
+                 string Err = "[" + DateTime.Now + "] [Exception] __ [Form :" + this.Name + " ; Controle: " + sender.ToString() + " ; Event: " + e.ToString() + "] __ ExceptionMessage : " + ex.Message;
+                 Acceuil.WriteLog(Err);
+             }
+        }
+        private void nud_qtt_TextChanged(object sender, EventArgs e)
+        {
+            nud_qtt.Text = nud_qtt.Text.Replace('.', ',');
+            Regex rgx = new Regex("[^0-9.,]");
+            nud_qtt.Text = rgx.Replace(nud_qtt.Text, "");
+            Decimal qtt;
+            if (Decimal.TryParse(nud_qtt.Text, out qtt))
+            {
+                if (qtt > maxQtt)
+                {
+                    nud_qtt.Text = maxQtt.ToString();
+                }
+                if (qtt < minQtt)
+                {
+                    nud_qtt.Text = minQtt.ToString();
+                }
+                lbl_prxQtt.Text = (Decimal.Parse(nud_qtt.Text) * Decimal.Parse(lbl_prix.Text)).ToString("0.#####");
+            }
+            if (nud_qtt.Text == "")
+            {
+                lbl_prxQtt.Text = "0";
+            }
+            nud_qtt.SelectionStart = nud_qtt.Text.Length;
+            nud_qtt.SelectionLength = 0;
+           
         }
 
         private void nud_qtt_KeyPress(object sender, KeyPressEventArgs e)
         {
-        }
-
-        private void nud_qtt_KeyUp(object sender, KeyEventArgs e)
-        {
-            lbl_prxQtt.Text = float.Parse((float.Parse(lbl_prix.Text) * int.Parse(nud_qtt.Value.ToString())).ToString()).ToString();
-        
+            if (e.KeyChar == '.' && (sender as TextBox).Text.IndexOf(',') > -1)
+            {
+                e.Handled = true;
+            }
+            if (e.KeyChar == ',' && (sender as TextBox).Text.IndexOf(',') > -1)
+            {
+                e.Handled = true;
+            }
         }
 
 

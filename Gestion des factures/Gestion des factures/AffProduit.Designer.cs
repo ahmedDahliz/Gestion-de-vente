@@ -57,6 +57,7 @@
             this.lbl_titrLstProd = new System.Windows.Forms.Label();
             this.button5 = new System.Windows.Forms.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.button7 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_AfficheProd)).BeginInit();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -90,8 +91,10 @@
             this.dgv_AfficheProd.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgv_AfficheProd.Size = new System.Drawing.Size(948, 301);
             this.dgv_AfficheProd.TabIndex = 30;
+            this.dgv_AfficheProd.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgv_AfficheProd_CellDoubleClick);
             this.dgv_AfficheProd.SelectionChanged += new System.EventHandler(this.dgv_AfficheProd_SelectionChanged);
             this.dgv_AfficheProd.Sorted += new System.EventHandler(this.dgv_AfficheProd_Sorted);
+            this.dgv_AfficheProd.DoubleClick += new System.EventHandler(this.dgv_AfficheProd_DoubleClick);
             // 
             // label1
             // 
@@ -353,6 +356,7 @@
             this.label5.Size = new System.Drawing.Size(61, 13);
             this.label5.TabIndex = 35;
             this.label5.Text = "عدد السلع : ";
+            this.label5.Click += new System.EventHandler(this.label5_Click);
             // 
             // lbl_nmProd
             // 
@@ -399,11 +403,26 @@
             this.pictureBox1.TabIndex = 44;
             this.pictureBox1.TabStop = false;
             // 
+            // button7
+            // 
+            this.button7.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.button7.BackColor = System.Drawing.Color.Red;
+            this.button7.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button7.Location = new System.Drawing.Point(877, 202);
+            this.button7.Name = "button7";
+            this.button7.Size = new System.Drawing.Size(80, 29);
+            this.button7.TabIndex = 45;
+            this.button7.Text = "حذف";
+            this.button7.UseVisualStyleBackColor = false;
+            this.button7.Click += new System.EventHandler(this.button7_Click);
+            // 
             // AffProduit
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(969, 594);
+            this.Controls.Add(this.button7);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.button5);
             this.Controls.Add(this.lbl_nmProd);
@@ -413,6 +432,7 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.button6);
             this.Controls.Add(this.dgv_AfficheProd);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "AffProduit";
             this.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
@@ -459,5 +479,6 @@
         private System.Windows.Forms.CheckBox ch_ShDt;
         private System.Windows.Forms.Button button5;
         private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.Button button7;
     }
 }

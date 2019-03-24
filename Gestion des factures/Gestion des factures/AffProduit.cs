@@ -19,7 +19,7 @@ namespace Gestion_des_factures
             FrmAcc = frmA;
         }
         DataSet ds = new DataSet();
-        SQLiteDataAdapter dta = new SQLiteDataAdapter("select p.NumPrd as 'رقم السلعة', p.Desingation as 'الإسم', s.QttProd as 'الكمية', s.QttPrsFini as 'الكمية الأدنى', p.prxAchat as 'ثمن الشراء' , pa.Prix as 'ثمن A', pb.Prix as 'ثمن B', pc.prix as 'ثمن C', tp.NomType as 'النوع', s.DateAjout as 'تاريخ اللإضافة' from Stocks s, Produits p, TypePrixA pa, TypePrixB pb, TypePrixC pc, Types tp where tp.NumType = p.NuType AND s.NuPrd = p.NumPrd AND p.NumPrd = pa.NuPrd AND p.NumPrd =  pb.NuPrd AND p.NumPrd =  pc.NuPrd", Acceuil.cnx);
+        SQLiteDataAdapter dta = new SQLiteDataAdapter("select p.NumPrd as 'الرقم', p.Desingation as 'الإسم', s.QttProd as 'الكمية', s.QttPrsFini as 'الكمية الأدنى', p.prxAchat as 'ثمن الشراء' , pa.Prix as 'ثمن A', pb.Prix as 'ثمن B', pc.prix as 'ثمن C', tp.NomType as 'النوع', s.DateAjout as 'تاريخ اللإضافة' from Stocks s, Produits p, TypePrixA pa, TypePrixB pb, TypePrixC pc, Types tp where tp.NumType = p.NuType AND s.NuPrd = p.NumPrd AND p.NumPrd = pa.NuPrd AND p.NumPrd =  pb.NuPrd AND p.NumPrd =  pc.NuPrd", Acceuil.cnx);
         SQLiteDataAdapter dta2 = new SQLiteDataAdapter("select NumType, NomType from Types", Acceuil.cnx);
         public string tpPrix = "";
         public void RefreshAffPrd()
@@ -28,6 +28,8 @@ namespace Gestion_des_factures
             SQLiteDataAdapter dap2 = new SQLiteDataAdapter("select NumType, NomType from Types", Acceuil.cnx);
             DataSet nds = new DataSet();
             dap.Fill(nds, "MddfAjt");
+            ds.Tables["ProduitsAjt"].Reset();
+            dta.Fill(ds, "ProduitsAjt");
             dap2.Fill(nds, "Types");
             dgv_AfficheProd.DataSource = nds.Tables["MddfAjt"];
             DataRow rw = nds.Tables["Types"].NewRow();
@@ -357,6 +359,88 @@ namespace Gestion_des_factures
             try {
                 dgv_AfficheProd.DataSource = GetFiltredData(txt_nuProd.Text, txt_NomProd.Text, cb_type.SelectedValue.ToString(), txt_prix.Text, tpPrix, dtp_datAjout.Text);
                 ColorEmp();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("هناك خطأ أثناء العملية المرجوا إعادة المحاولة");
+                string Err = "[" + DateTime.Now + "] [Exception] __ [Form :" + this.Name + " ; Button: " + sender.ToString() + " ; Event: " + e.ToString() + "] __ ExceptionMessage : " + ex.Message;
+                Acceuil.WriteLog(Err);
+            }
+        }
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (dgv_AfficheProd.SelectedRows.Count == 1)
+                {
+                    var rep = MessageBox.Show("هل تريد حذف المنتوج المختار؟  ", "حذف المنتوج", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1, MessageBoxOptions.RightAlign);
+                    if (rep == DialogResult.Yes)
+                    {
+                        // All this work because on delete cascade doesn't work in desconnected mode !!
+                        int idP = int.Parse(dgv_AfficheProd.CurrentRow.Cells[0].Value.ToString());
+                        ds.Tables["ProduitsAjt"].Rows.Remove((ds.Tables["ProduitsAjt"].Select("الرقم = " + idP)[0]));
+                        SQLiteDataAdapter toDelP = new SQLiteDataAdapter("Select * from Produits", Acceuil.cnx);
+                        toDelP.Fill(ds, "ProductToDel");
+                        SQLiteDataAdapter toDelS = new SQLiteDataAdapter("Select * from Stocks", Acceuil.cnx);
+                        toDelS.Fill(ds, "StockToDel");
+                        SQLiteDataAdapter toDelPA = new SQLiteDataAdapter("Select * from typePrixA", Acceuil.cnx);
+                        toDelPA.Fill(ds, "PrAToDel");
+                        SQLiteDataAdapter toDelPB = new SQLiteDataAdapter("Select * from typePrixB", Acceuil.cnx);
+                        toDelPB.Fill(ds, "PrBToDel");
+                        SQLiteDataAdapter toDelPC = new SQLiteDataAdapter("Select * from typePrixC", Acceuil.cnx);
+                        toDelPC.Fill(ds, "PrCToDel");
+                        DataView dvP = new DataView(ds.Tables["ProductToDel"], "NumPrd = " + idP, "", DataViewRowState.CurrentRows);
+                        dvP[0].Delete();
+                        DataView dvS = new DataView(ds.Tables["StockToDel"], "NuPrd = " + idP, "", DataViewRowState.CurrentRows);
+                        dvS[0].Delete();
+                        DataView dvPA = new DataView(ds.Tables["PrAToDel"], "NuPrd = " + idP, "", DataViewRowState.CurrentRows);
+                        dvPA[0].Delete();
+                        DataView dvPB = new DataView(ds.Tables["PrBToDel"], "NuPrd = " + idP, "", DataViewRowState.CurrentRows);
+                        dvPB[0].Delete();
+                        DataView dvPC = new DataView(ds.Tables["PrCToDel"], "NuPrd = " + idP, "", DataViewRowState.CurrentRows);
+                        dvPC[0].Delete();
+                        SQLiteCommandBuilder cmdb = new SQLiteCommandBuilder(toDelP);
+                        toDelP.Update(ds, "ProductToDel");
+                        cmdb = new SQLiteCommandBuilder(toDelS);
+                        toDelS.Update(ds, "StockToDel");
+                        cmdb = new SQLiteCommandBuilder(toDelPA);
+                        toDelPA.Update(ds, "PrAToDel");
+                        cmdb = new SQLiteCommandBuilder(toDelPA);
+                        toDelPA.Update(ds, "PrAToDel");
+                        cmdb = new SQLiteCommandBuilder(toDelPA);
+                        toDelPA.Update(ds, "PrAToDel");
+                        lbl_nmProd.Text = ds.Tables["ProduitsAjt"].Rows.Count.ToString();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("هناك خطأ أثناء العملية المرجوا إعادة المحاولة");
+                string Err = "[" + DateTime.Now + "] [Exception] __ [Form :" + this.Name + " ; Controle: " + sender.ToString() + " ; Event: " + e.ToString() + "] __ ExceptionMessage : " + ex.Message;
+                Acceuil.WriteLog(Err);
+            }
+        }
+
+        private void label5_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void dgv_AfficheProd_DoubleClick(object sender, EventArgs e)
+        {
+           
+        }
+
+        private void dgv_AfficheProd_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            try
+            {
+                if (dgv_AfficheProd.SelectedRows.Count == 1)
+                {
+                    MdfProduit frmMdf = new MdfProduit(int.Parse(dgv_AfficheProd.CurrentRow.Cells[0].Value.ToString()), this);
+                    frmMdf.ShowDialog();
+                }
             }
             catch (Exception ex)
             {

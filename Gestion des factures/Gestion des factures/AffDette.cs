@@ -120,7 +120,6 @@ namespace Gestion_des_factures
                     var rep = MessageBox.Show("هل تريد حذف الدين المختار؟  ", "حذف الدين", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1, MessageBoxOptions.RightAlign);
                     if (rep == DialogResult.Yes)
                     {
-                        MessageBox.Show(dgv_affDette.CurrentRow.Index.ToString());
                         int idDt = int.Parse(ds.Tables["Dettes"].Rows[dgv_affDette.CurrentRow.Index][0].ToString());
                         ds.Tables["Dettes"].Rows.Remove((ds.Tables["Dettes"].Select("الرقم = " + idDt)[0]));
                         SQLiteDataAdapter toDelDabD = new SQLiteDataAdapter("Select * from Dettes", Acceuil.cnx);
@@ -137,7 +136,6 @@ namespace Gestion_des_factures
                         cmdb = new SQLiteCommandBuilder(toDelDabC);
                         toDelDabC.Update(ds, "ClientToDel");
                         lbl_nmDett.Text = ds.Tables["Dettes"].Rows.Count.ToString();
-                        MessageBox.Show(dgv_affDette.CurrentRow.Index.ToString());
                     }
                 }
             }

@@ -43,13 +43,16 @@ namespace Gestion_des_factures
         }
         public void RefreshAccui() {
             try {
-                SQLiteDataAdapter dap = new SQLiteDataAdapter("select * from Stocks", cnx);
+                SQLiteDataAdapter dap = new SQLiteDataAdapter("select * from Stocks s, Produits p where s.NuPrd = p.NumPrd", cnx);
                 DataSet nds = new DataSet();
                 dap.Fill(nds, "Stocks");
                 lbl_nbrPrdStk.Text = nds.Tables["Stocks"].Rows.Count.ToString();
                 dap = new SQLiteDataAdapter("select p.NumPrd as 'رقم السلعة', p.Desingation as 'الإسم', s.QttProd as 'الكمية', s.QttPrsFini as 'الكمية الأدنى', s.DateAjout as 'تاريخ اللإضافة' from Stocks s, Produits p where s.NuPrd = p.NumPrd order by p.NumPrd DESC LIMIT 10", cnx);
                 dap.Fill(nds, "DerProduitsAjt");
+                SQLiteDataAdapter dta2 = new SQLiteDataAdapter("select p.NumPrd as 'رقم السلعة', p.Desingation as 'الإسم', s.QttProd as 'الكمية', s.DateAjout as 'تاريخ اللإضافة' from Stocks s, Produits p where s.NuPrd = p.NumPrd AND s.QttProd = 0", cnx);
+                dta2.Fill(nds, "ProduitsFini");
                 dgv_dernProdajt.DataSource = nds.Tables["DerProduitsAjt"];
+                dgv_prodFini.DataSource = nds.Tables["ProduitsFini"];
                 RefreshLabels(nds.Tables["Stocks"]);
             }
             catch (Exception ex)
@@ -62,7 +65,7 @@ namespace Gestion_des_factures
         }
         public void LoadForm()
         {
-            SQLiteDataAdapter dta = new SQLiteDataAdapter("select * from Stocks", cnx);
+            SQLiteDataAdapter dta = new SQLiteDataAdapter("select * from Stocks s, Produits p where s.NuPrd = p.NumPrd", cnx);
             dta.Fill(ds, "Stocks");
             lbl_nbrPrdStk.Text = ds.Tables["Stocks"].Rows.Count.ToString();
             RefreshLabels(ds.Tables["Stocks"]);

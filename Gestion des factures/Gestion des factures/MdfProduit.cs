@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Data.SQLite;
+using System.Text.RegularExpressions;
 
 namespace Gestion_des_factures
 {
@@ -36,7 +37,7 @@ namespace Gestion_des_factures
         DataSet ds = new DataSet();
         bool svd = true;
         bool ex = true;
-        void saved(object sender, EventArgs e)
+        void saved()
         {
             label3.Visible = false;
             button4.Enabled = false;
@@ -64,8 +65,8 @@ namespace Gestion_des_factures
                 cb_chngType.DataSource = ds.Tables["typesMdf"];
                 label1.Text += idpr;
                 txt_nmPrd.Text = ds.Tables["EdtPrd"].Rows[0][1].ToString();
-                nud_qtt.Value = int.Parse(ds.Tables["EdtPrd"].Rows[0][2].ToString());
-                nud_qttMn.Value = int.Parse(ds.Tables["EdtPrd"].Rows[0][3].ToString());
+                nud_qtt.Text = ds.Tables["EdtPrd"].Rows[0][2].ToString();
+                nud_qttMn.Text = ds.Tables["EdtPrd"].Rows[0][3].ToString();
                 txt_pa.Text = ds.Tables["EdtPrd"].Rows[0][4].ToString();
                 txt_pb.Text = ds.Tables["EdtPrd"].Rows[0][5].ToString();
                 txt_pc.Text = ds.Tables["EdtPrd"].Rows[0][6].ToString();
@@ -157,7 +158,12 @@ namespace Gestion_des_factures
                 ds.Tables["types"].Rows[i].BeginEdit();
                 ds.Tables["types"].Rows[i][1] = txt_nmType.Text;
                 ds.Tables["types"].Rows[i].EndEdit();
-                svd = false;
+                Acceuil.cnx.Open();
+                SQLiteCommandBuilder cmdb = new SQLiteCommandBuilder(dt2);
+                dt2.Update(ds, "typesMdf");
+                Acceuil.cnx.Close();
+                svd = true;
+                MessageBox.Show("تم تعديل و حفض التغييرات بنجاح", "حفض التغييرات", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button2, MessageBoxOptions.RightAlign);
             }
             catch (Exception ex)
             {
@@ -172,10 +178,10 @@ namespace Gestion_des_factures
         {
             try
             {
-                float pac, pa, pb, pc;
+                Decimal pac, pa, pb, pc;
                 if (txt_nmPrd.Text != "" && txt_pa.Text != "" && txt_pb.Text != "" && txt_pc.Text != "" && txt_prxAch.Text != "")
                 {
-                    if (float.TryParse(txt_pa.Text, out pa) && float.TryParse(txt_pb.Text, out pb) && float.TryParse(txt_pc.Text, out pc) && float.TryParse(txt_prxAch.Text, out pac))
+                    if (Decimal.TryParse(txt_pa.Text, out pa) && Decimal.TryParse(txt_pb.Text, out pb) && Decimal.TryParse(txt_pc.Text, out pc) && Decimal.TryParse(txt_prxAch.Text, out pac))
                     {
                         DataView dv = new DataView(ds.Tables["Produits"], "NumPrd = " + idpr, "", DataViewRowState.CurrentRows);
                         dv[0].BeginEdit();
@@ -185,8 +191,8 @@ namespace Gestion_des_factures
                         dv[0].EndEdit();
                         dv = new DataView(ds.Tables["Stocks"], "NuPrd = " + idpr, "", DataViewRowState.CurrentRows);
                         dv[0].BeginEdit();
-                        dv[0][1] = nud_qtt.Value;
-                        dv[0][2] = nud_qttMn.Value;
+                        dv[0][1] = nud_qtt.Text;
+                        dv[0][2] = nud_qttMn.Text;
                         dv[0].EndEdit();
                         dv = new DataView(ds.Tables["TypPA"], "NuPrd = " + idpr, "", DataViewRowState.CurrentRows);
                         dv[0].BeginEdit();
@@ -204,6 +210,19 @@ namespace Gestion_des_factures
                         label3.Visible = true;
                         button2.BackColor = SystemColors.Control;
                         button4.Enabled = true;
+                        Acceuil.cnx.Open();
+                        SQLiteCommandBuilder cmdb = new SQLiteCommandBuilder(dtaProduit);
+                        dtaProduit.Update(ds, "Produits");
+                        cmdb = new SQLiteCommandBuilder(dtaPxA);
+                        dtaPxA.Update(ds, "TypPA");
+                        cmdb = new SQLiteCommandBuilder(dtaPxB);
+                        dtaPxB.Update(ds, "TypPB");
+                        cmdb = new SQLiteCommandBuilder(dtaPxC);
+                        dtaPxC.Update(ds, "TypPC");
+                        cmdb = new SQLiteCommandBuilder(dtaStocke);
+                        dtaStocke.Update(ds, "Stocks");
+                        Acceuil.cnx.Close();
+                        svd = true;
                     }
                     else MessageBox.Show("أحد الأثمنة غير مقبولة", "خطأ في إدخال الأثمنة", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
@@ -222,9 +241,125 @@ namespace Gestion_des_factures
 
         }
 
-        private void txt_nmType_TextChanged(object sender, EventArgs e)
+        private void button5_Click(object sender, EventArgs e)
         {
+            try
+            {
+                if (cb_chngType.SelectedValue != null)
+                {
+                    var rep = MessageBox.Show("هل تريد حذف النوع المختار؟  ", "حذف النوع", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1, MessageBoxOptions.RightAlign);
+                    if (rep == DialogResult.Yes)
+                    {
+                        int idT = int.Parse(cb_chngType.SelectedValue.ToString());
+                        ds.Tables["typesMdf"].Rows.Remove((ds.Tables["typesMdf"].Select("NumType = " + idT)[0]));
+                        SQLiteDataAdapter toDelT = new SQLiteDataAdapter("Select * from Types", Acceuil.cnx);
+                        toDelT.Fill(ds, "TypeToDel");
+                        DataView dvT = new DataView(ds.Tables["typesMdf"], "NumType = " + idT, "", DataViewRowState.CurrentRows);
+                        dvT[0].Delete();
+                        SQLiteCommandBuilder cmdb = new SQLiteCommandBuilder(toDelT);
+                        toDelT.Update(ds, "TypeToDel");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("هناك خطأ أثناء العملية المرجوا إعادة المحاولة");
+                string Err = "[" + DateTime.Now + "] [Exception] __ [Form :" + this.Name + " ; Controle: " + sender.ToString() + " ; Event: " + e.ToString() + "] __ ExceptionMessage : " + ex.Message;
+                Acceuil.WriteLog(Err);
+            }
+        }
+        Decimal maxQtt;
+        private void nud_qtt_TextChanged(object sender, EventArgs e)
+        {
+            nud_qtt.Text = nud_qtt.Text.Replace('.', ',');
+            Regex rgx = new Regex("[^0-9.,]");
+            nud_qtt.Text = rgx.Replace(nud_qtt.Text, "");
+            Decimal qtt;
+            if (Decimal.TryParse(nud_qtt.Text, out qtt))
+            {
+                maxQtt = qtt;
+                if (qtt < 1)
+                {
+                    nud_qtt.Text = "0";
+                }
+            }
+            nud_qtt.SelectionStart = nud_qtt.Text.Length;
+            nud_qtt.SelectionLength = 0;
+            saved();
+        }
 
+        private void nud_qttMn_TextChanged(object sender, EventArgs e)
+        {
+            nud_qttMn.Text = nud_qttMn.Text.Replace('.', ',');
+            Regex rgx = new Regex("[^0-9.,]");
+            nud_qttMn.Text = rgx.Replace(nud_qttMn.Text, "");
+            Decimal qtt;
+            if (Decimal.TryParse(nud_qttMn.Text, out qtt))
+            {
+                if (qtt > maxQtt)
+                {
+                    nud_qttMn.Text = maxQtt.ToString();
+                }
+                if (qtt < 1)
+                {
+                    nud_qttMn.Text = "0";
+                }
+            }
+            nud_qttMn.SelectionStart = nud_qttMn.Text.Length;
+            nud_qttMn.SelectionLength = 0;
+            saved();
+        }
+
+        private void txt_pa_TextChanged(object sender, EventArgs e)
+        {
+            txt_pa.Text = txt_pa.Text.Replace('.', ',');
+            Regex rgx = new Regex("[^0-9.,]");
+            txt_pa.Text = rgx.Replace(txt_pa.Text, "");
+            txt_pa.SelectionStart = txt_pa.Text.Length;
+            txt_pa.SelectionLength = 0;
+            saved();
+        }
+
+        private void txt_pb_TextChanged(object sender, EventArgs e)
+        {
+            txt_pb.Text = txt_pb.Text.Replace('.', ',');
+            Regex rgx = new Regex("[^0-9.,]");
+            txt_pb.Text = rgx.Replace(txt_pb.Text, "");
+            txt_pb.SelectionStart = txt_pb.Text.Length;
+            txt_pb.SelectionLength = 0;
+            saved();
+        }
+
+        private void txt_pc_TextChanged(object sender, EventArgs e)
+        {
+            txt_pc.Text = txt_pc.Text.Replace('.', ',');
+            Regex rgx = new Regex("[^0-9.,]");
+            txt_pc.Text = rgx.Replace(txt_pc.Text, "");
+            txt_pc.SelectionStart = txt_pc.Text.Length;
+            txt_pc.SelectionLength = 0;
+            saved();
+        }
+
+
+        private void cb_tpPrd_SelectionChangeCommitted(object sender, EventArgs e)
+        {
+            saved();
+        }
+
+        private void txt_nmPrd_TextChanged(object sender, EventArgs e)
+        {
+            saved();
+        }
+
+
+        private void txt_prxAch_TextChanged(object sender, EventArgs e)
+        {
+            txt_prxAch.Text = txt_prxAch.Text.Replace('.', ',');
+            Regex rgx = new Regex("[^0-9.,]");
+            txt_prxAch.Text = rgx.Replace(txt_prxAch.Text, "");
+            txt_prxAch.SelectionStart = txt_prxAch.Text.Length;
+            txt_prxAch.SelectionLength = 0;
+            saved();
         }
 
         

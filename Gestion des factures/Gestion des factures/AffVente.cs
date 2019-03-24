@@ -181,5 +181,10 @@ namespace Gestion_des_factures
                 Acceuil.WriteLog(Err);
             }
         }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
     }
 }
