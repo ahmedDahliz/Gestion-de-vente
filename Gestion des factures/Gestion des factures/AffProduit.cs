@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Data.SQLite;
+using System.Transactions;
 namespace Gestion_des_factures
 {
     public partial class AffProduit : Form
@@ -41,6 +42,7 @@ namespace Gestion_des_factures
             cb_type.DataSource = nds.Tables["Types"];
             lbl_nmProd.Text = nds.Tables["MddfAjt"].Rows.Count.ToString();
             dgv_AfficheProd.ClearSelection();
+            dgv_AfficheProd.Sort(dgv_AfficheProd.Columns["الإسم"], ListSortDirection.Ascending);
             ColorEmp();
 
         }
@@ -58,6 +60,7 @@ namespace Gestion_des_factures
             cb_type.DataSource = ds.Tables["Types"];
             lbl_nmProd.Text = ds.Tables["ProduitsAjt"].Rows.Count.ToString();
             dgv_AfficheProd.ClearSelection();
+            dgv_AfficheProd.Sort(dgv_AfficheProd.Columns["الإسم"], ListSortDirection.Ascending);
         }
         public DataTable GetEmptyProducts()
         {
@@ -157,6 +160,7 @@ namespace Gestion_des_factures
             try {
                 button3.PerformClick(); 
                 dgv_AfficheProd.DataSource = GetEmptyProducts();
+                dgv_AfficheProd.Sort(dgv_AfficheProd.Columns["الإسم"], ListSortDirection.Ascending);
                 lbl_titrLstProd.Text = button2.Text;
             }
             catch (Exception ex)
@@ -172,6 +176,7 @@ namespace Gestion_des_factures
             try {
                 button3.PerformClick();
                 dgv_AfficheProd.DataSource = GetAlmEmpProducts();
+                dgv_AfficheProd.Sort(dgv_AfficheProd.Columns["الإسم"], ListSortDirection.Ascending);
                 lbl_titrLstProd.Text = button1.Text;
             }
             catch (Exception ex)
@@ -377,40 +382,47 @@ namespace Gestion_des_factures
                     var rep = MessageBox.Show("هل تريد حذف المنتوج المختار؟  ", "حذف المنتوج", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1, MessageBoxOptions.RightAlign);
                     if (rep == DialogResult.Yes)
                     {
-                        // All this work because on delete cascade doesn't work in desconnected mode !!
-                        int idP = int.Parse(dgv_AfficheProd.CurrentRow.Cells[0].Value.ToString());
-                        ds.Tables["ProduitsAjt"].Rows.Remove((ds.Tables["ProduitsAjt"].Select("الرقم = " + idP)[0]));
-                        SQLiteDataAdapter toDelP = new SQLiteDataAdapter("Select * from Produits", Acceuil.cnx);
-                        toDelP.Fill(ds, "ProductToDel");
-                        SQLiteDataAdapter toDelS = new SQLiteDataAdapter("Select * from Stocks", Acceuil.cnx);
-                        toDelS.Fill(ds, "StockToDel");
-                        SQLiteDataAdapter toDelPA = new SQLiteDataAdapter("Select * from typePrixA", Acceuil.cnx);
-                        toDelPA.Fill(ds, "PrAToDel");
-                        SQLiteDataAdapter toDelPB = new SQLiteDataAdapter("Select * from typePrixB", Acceuil.cnx);
-                        toDelPB.Fill(ds, "PrBToDel");
-                        SQLiteDataAdapter toDelPC = new SQLiteDataAdapter("Select * from typePrixC", Acceuil.cnx);
-                        toDelPC.Fill(ds, "PrCToDel");
-                        DataView dvP = new DataView(ds.Tables["ProductToDel"], "NumPrd = " + idP, "", DataViewRowState.CurrentRows);
-                        dvP[0].Delete();
-                        DataView dvS = new DataView(ds.Tables["StockToDel"], "NuPrd = " + idP, "", DataViewRowState.CurrentRows);
-                        dvS[0].Delete();
-                        DataView dvPA = new DataView(ds.Tables["PrAToDel"], "NuPrd = " + idP, "", DataViewRowState.CurrentRows);
-                        dvPA[0].Delete();
-                        DataView dvPB = new DataView(ds.Tables["PrBToDel"], "NuPrd = " + idP, "", DataViewRowState.CurrentRows);
-                        dvPB[0].Delete();
-                        DataView dvPC = new DataView(ds.Tables["PrCToDel"], "NuPrd = " + idP, "", DataViewRowState.CurrentRows);
-                        dvPC[0].Delete();
-                        SQLiteCommandBuilder cmdb = new SQLiteCommandBuilder(toDelP);
-                        toDelP.Update(ds, "ProductToDel");
-                        cmdb = new SQLiteCommandBuilder(toDelS);
-                        toDelS.Update(ds, "StockToDel");
-                        cmdb = new SQLiteCommandBuilder(toDelPA);
-                        toDelPA.Update(ds, "PrAToDel");
-                        cmdb = new SQLiteCommandBuilder(toDelPA);
-                        toDelPA.Update(ds, "PrAToDel");
-                        cmdb = new SQLiteCommandBuilder(toDelPA);
-                        toDelPA.Update(ds, "PrAToDel");
-                        lbl_nmProd.Text = ds.Tables["ProduitsAjt"].Rows.Count.ToString();
+                        using (TransactionScope trans = new TransactionScope())
+                        {
+                            // All this work because on delete cascade doesn't work in desconnected mode !!
+                            Acceuil.cnx.Open();
+                            int idP = int.Parse(dgv_AfficheProd.CurrentRow.Cells[0].Value.ToString());
+                            ds.Tables["ProduitsAjt"].Rows.Remove((ds.Tables["ProduitsAjt"].Select("الرقم = " + idP)[0]));
+                            SQLiteDataAdapter toDelP = new SQLiteDataAdapter("Select * from Produits", Acceuil.cnx);
+                            toDelP.Fill(ds, "ProductToDel");
+                            SQLiteDataAdapter toDelS = new SQLiteDataAdapter("Select * from Stocks", Acceuil.cnx);
+                            toDelS.Fill(ds, "StockToDel");
+                            SQLiteDataAdapter toDelPA = new SQLiteDataAdapter("Select * from typePrixA", Acceuil.cnx);
+                            toDelPA.Fill(ds, "PrAToDel");
+                            SQLiteDataAdapter toDelPB = new SQLiteDataAdapter("Select * from typePrixB", Acceuil.cnx);
+                            toDelPB.Fill(ds, "PrBToDel");
+                            SQLiteDataAdapter toDelPC = new SQLiteDataAdapter("Select * from typePrixC", Acceuil.cnx);
+                            toDelPC.Fill(ds, "PrCToDel");
+                            DataView dvP = new DataView(ds.Tables["ProductToDel"], "NumPrd = " + idP, "", DataViewRowState.CurrentRows);
+                            dvP[0].Delete();
+                            DataView dvS = new DataView(ds.Tables["StockToDel"], "NuPrd = " + idP, "", DataViewRowState.CurrentRows);
+                            dvS[0].Delete();
+                            DataView dvPA = new DataView(ds.Tables["PrAToDel"], "NuPrd = " + idP, "", DataViewRowState.CurrentRows);
+                            dvPA[0].Delete();
+                            DataView dvPB = new DataView(ds.Tables["PrBToDel"], "NuPrd = " + idP, "", DataViewRowState.CurrentRows);
+                            dvPB[0].Delete();
+                            DataView dvPC = new DataView(ds.Tables["PrCToDel"], "NuPrd = " + idP, "", DataViewRowState.CurrentRows);
+                            dvPC[0].Delete();
+                            SQLiteCommandBuilder cmdb = new SQLiteCommandBuilder(toDelP);
+                            toDelP.Update(ds, "ProductToDel");
+                            cmdb = new SQLiteCommandBuilder(toDelS);
+                            toDelS.Update(ds, "StockToDel");
+                            cmdb = new SQLiteCommandBuilder(toDelPA);
+                            toDelPA.Update(ds, "PrAToDel");
+                            cmdb = new SQLiteCommandBuilder(toDelPA);
+                            toDelPA.Update(ds, "PrAToDel");
+                            cmdb = new SQLiteCommandBuilder(toDelPA);
+                            toDelPA.Update(ds, "PrAToDel");
+                            lbl_nmProd.Text = ds.Tables["ProduitsAjt"].Rows.Count.ToString();
+                            button4.PerformClick();
+                            Acceuil.cnx.Close();
+                            trans.Complete();
+                        }
                     }
                 }
             }

@@ -49,9 +49,10 @@
             this.dgv_DetailFacture = new System.Windows.Forms.DataGridView();
             this.label10 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.lbl_prxtt = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.button1 = new System.Windows.Forms.Button();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_Facture)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_DetailFacture)).BeginInit();
@@ -181,12 +182,14 @@
             this.dgv_Facture.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgv_Facture.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgv_Facture.Location = new System.Drawing.Point(12, 163);
+            this.dgv_Facture.MultiSelect = false;
             this.dgv_Facture.Name = "dgv_Facture";
             this.dgv_Facture.ReadOnly = true;
             this.dgv_Facture.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgv_Facture.Size = new System.Drawing.Size(790, 278);
             this.dgv_Facture.TabIndex = 37;
             this.dgv_Facture.TabStop = false;
+            this.dgv_Facture.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgv_Facture_CellDoubleClick);
             this.dgv_Facture.SelectionChanged += new System.EventHandler(this.dgv_Facture_SelectionChanged);
             // 
             // button6
@@ -205,7 +208,7 @@
             this.button2.Enabled = false;
             this.button2.Location = new System.Drawing.Point(12, 451);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(173, 36);
+            this.button2.Size = new System.Drawing.Size(124, 36);
             this.button2.TabIndex = 39;
             this.button2.Text = "إظهار الفاتورة";
             this.button2.UseVisualStyleBackColor = true;
@@ -287,17 +290,6 @@
             this.label11.Size = new System.Drawing.Size(731, 3);
             this.label11.TabIndex = 52;
             // 
-            // pictureBox1
-            // 
-            this.pictureBox1.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
-            this.pictureBox1.Location = new System.Drawing.Point(302, 8);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(65, 44);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBox1.TabIndex = 53;
-            this.pictureBox1.TabStop = false;
-            // 
             // lbl_prxtt
             // 
             this.lbl_prxtt.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -320,6 +312,28 @@
             this.label8.TabIndex = 55;
             this.label8.Text = "مجموع المبيعات الظاهرة : ";
             // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
+            this.pictureBox1.Location = new System.Drawing.Point(302, 8);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(65, 44);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox1.TabIndex = 53;
+            this.pictureBox1.TabStop = false;
+            // 
+            // button1
+            // 
+            this.button1.Enabled = false;
+            this.button1.Location = new System.Drawing.Point(142, 451);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(124, 36);
+            this.button1.TabIndex = 39;
+            this.button1.Text = " تعديل الفاتورة";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
             // AffVente
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -334,6 +348,7 @@
             this.Controls.Add(this.label10);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.label4);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button6);
             this.Controls.Add(this.dgv_DetailFacture);
@@ -363,10 +378,8 @@
         private System.Windows.Forms.DateTimePicker dtp_dateFact;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Button button4;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox txt_nomC;
-        private System.Windows.Forms.DataGridView dgv_Facture;
         private System.Windows.Forms.Button button6;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Label label4;
@@ -381,5 +394,8 @@
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Label lbl_prxtt;
         private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Button button1;
+        public System.Windows.Forms.Button button4;
+        public System.Windows.Forms.DataGridView dgv_Facture;
     }
 }

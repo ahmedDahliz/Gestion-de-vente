@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Data.SQLite;
 using System.Text.RegularExpressions;
+using System.Transactions;
 
 namespace Gestion_des_factures
 {
@@ -60,12 +61,12 @@ namespace Gestion_des_factures
         private void button2_Click(object sender, EventArgs e)
         {
             // Add Product
-            //try
-            //{
+            try
+            {
                 Decimal pac, pa, pb, pc, qtt, qttmn;
                 if (txt_nomPrd.Text != "" && txt_prxAch.Text != "" && txt_prxA.Text != "" && txt_prxB.Text != "" && txt_prxC.Text != "" && cb_tpPrd.SelectedValue != null)
                 {
-                    if (!CheckInDt(ds.Tables["Produits"], "'" + txt_nomPrd.Text + "'", "Desingation"))
+                    if (!CheckInDt(ds.Tables["Produits"], "'" + txt_nomPrd.Text.Trim() + "'", "Desingation"))
                     {
                         if (Decimal.TryParse(nud_qtt.Text, out qtt) && Decimal.TryParse(nud_qttMn.Text, out qttmn))
                         {
@@ -120,14 +121,16 @@ namespace Gestion_des_factures
                     else MessageBox.Show("إسم المنتوج الذي أذخلته موجود سابقا ", "إسم المنتوج مكرر", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button2, MessageBoxOptions.RightAlign);
                 }
                 else MessageBox.Show("المرجو ملأ الحقول الفارغة", "أحد الحقول فارغة", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            //}
-            //catch (Exception ex)
-            //{
-            //    MessageBox.Show("هناك خطأ أثناء العملية المرجوا إعادة المحاولة");
-            //    string Err = "[" + DateTime.Now + "] [Exception] __ [Form :" + this.Name + " ; Controle: " + sender.ToString() + " ; Event: " + e.ToString() + "] __ ExceptionMessage : " + ex.Message;
-            //    Acceuil.WriteLog(Err);
-            //}
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("هناك خطأ أثناء العملية المرجوا إعادة المحاولة");
+                string Err = "[" + DateTime.Now + "] [Exception] __ [Form :" + this.Name + " ; Controle: " + sender.ToString() + " ; Event: " + e.ToString() + "] __ ExceptionMessage : " + ex.Message;
+                Acceuil.WriteLog(Err);
+            }
         }
+       
+        
 
         private void AjtProduits_Load(object sender, EventArgs e)
         {
@@ -181,7 +184,7 @@ namespace Gestion_des_factures
                     idT++;
                     DataRow ligne = dtnt.NewRow();
                     ligne[0] = idT;
-                    ligne[1] = txt_nomTp.Text;
+                    ligne[1] = txt_nomTp.Text.Trim();
                     dtnt.Rows.Add(ligne);
                     ligne = ds.Tables["Types"].NewRow();
                     ligne[0] = idT;
@@ -204,24 +207,30 @@ namespace Gestion_des_factures
         {
             try
             {
-                Acceuil.cnx.Open();
-                SQLiteCommandBuilder cmdb = new SQLiteCommandBuilder(dtaType);
-                dtaType.Update(ds, "Types");
-                cmdb = new SQLiteCommandBuilder(dtaProduit);
-                dtaProduit.Update(ds, "Produits");
-                cmdb = new SQLiteCommandBuilder(dtaPxA);
-                dtaPxA.Update(ds, "TypPA");
-                cmdb = new SQLiteCommandBuilder(dtaPxB);
-                dtaPxB.Update(ds, "TypPB");
-                cmdb = new SQLiteCommandBuilder(dtaPxC);
-                dtaPxC.Update(ds, "TypPC");
-                cmdb = new SQLiteCommandBuilder(dtaStocke);
-                dtaStocke.Update(ds, "Stocks");
-                saved = true;
-                Acceuil.cnx.Close();
-                dtnp.Rows.Clear();
-                lbl_prdAjt.Text = dtnp.Rows.Count.ToString();
-                MessageBox.Show("تم حفض المعلومات بنجاح", " حفض المعلومات", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button2, MessageBoxOptions.RightAlign);
+                BackgroundWorker bg = new BackgroundWorker();
+                using (TransactionScope tran = new TransactionScope())
+                {
+                    
+                    Acceuil.cnx.Open();
+                    SQLiteCommandBuilder cmdb = new SQLiteCommandBuilder(dtaType);
+                    dtaType.Update(ds, "Types");
+                    cmdb = new SQLiteCommandBuilder(dtaProduit);
+                    dtaProduit.Update(ds, "Produits");
+                    cmdb = new SQLiteCommandBuilder(dtaPxA);
+                    dtaPxA.Update(ds, "TypPA");
+                    cmdb = new SQLiteCommandBuilder(dtaPxB);
+                    dtaPxB.Update(ds, "TypPB");
+                    cmdb = new SQLiteCommandBuilder(dtaPxC);
+                    dtaPxC.Update(ds, "TypPC");
+                    cmdb = new SQLiteCommandBuilder(dtaStocke);
+                    dtaStocke.Update(ds, "Stocks");
+                    saved = true;
+                    Acceuil.cnx.Close();
+                    dtnp.Rows.Clear();
+                    lbl_prdAjt.Text = dtnp.Rows.Count.ToString();
+                    tran.Complete();
+                    MessageBox.Show("تم حفض المعلومات بنجاح", " حفض المعلومات", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button2, MessageBoxOptions.RightAlign);
+                }
             }
             catch (Exception ex)
             {
@@ -230,6 +239,7 @@ namespace Gestion_des_factures
                 Acceuil.WriteLog(Err);
             }
         }
+
         bool ex = true;
         private void button6_Click(object sender, EventArgs e)
         {
@@ -251,6 +261,7 @@ namespace Gestion_des_factures
             txt_nomPrd.Text = "";
             cb_tpPrd.SelectedValue = 0;
             nud_qtt.Text= "";
+            nud_qttMn.Text = "";
             txt_prxAch.Text = "";
             txt_prxA.Text = "";
             txt_prxB.Text = "";
@@ -291,6 +302,9 @@ namespace Gestion_des_factures
                     cb_tpPrd.SelectedIndex = cb_tpPrd.FindStringExact(dgr_nvProd.CurrentRow.Cells[8].Value.ToString());
                     button8.Visible = true;
                     button2.Visible = false;
+                    button9.Enabled = false;
+                    button5.Enabled = false;
+                    dgr_nvProd.Enabled = false;
                 }
             }
             catch (Exception ex)
@@ -304,12 +318,12 @@ namespace Gestion_des_factures
         private void button8_Click(object sender, EventArgs e)
         {
             //Edit product
-            //try
-            //{
-             Decimal pac, pa, pb, pc, qtt, qttmn;
+            try
+            {
+                Decimal pac, pa, pb, pc, qtt, qttmn;
                 if (txt_nomPrd.Text != "" && txt_prxAch.Text != "" && txt_prxA.Text != "" && txt_prxB.Text != "" && txt_prxC.Text != "" && cb_tpPrd.SelectedValue != null)
                 {
-                    if (!CheckInStock(txt_nomPrd.Text, "Desingation"))
+                    if (!CheckInStock(txt_nomPrd.Text.Trim(), "Desingation"))
                     {
                         if (Decimal.TryParse(nud_qtt.Text, out qtt) && Decimal.TryParse(nud_qttMn.Text, out qttmn))
                         {
@@ -323,7 +337,7 @@ namespace Gestion_des_factures
                                 int idg = dtnp.Rows.IndexOf(dtnp.Select("الرقم = " + idPr)[0]);
                                 //Update DataTable Product
                                 ds.Tables["Produits"].Rows[iP].BeginEdit();
-                                ds.Tables["Produits"].Rows[iP]["Desingation"] = txt_nomPrd.Text;
+                                ds.Tables["Produits"].Rows[iP]["Desingation"] = txt_nomPrd.Text.Trim();
                                 ds.Tables["Produits"].Rows[iP]["NuType"] = cb_tpPrd.SelectedValue;
                                 ds.Tables["Produits"].Rows[iP]["prxAchat"] = txt_prxAch.Text;
                                 ds.Tables["Produits"].Rows[iP].EndEdit();
@@ -357,6 +371,9 @@ namespace Gestion_des_factures
                                 dtnp.Rows[idg].EndEdit();
                                 button8.Visible = false;
                                 button2.Visible = true;
+                                button9.Enabled = true;
+                                button5.Enabled = true;
+                                dgr_nvProd.Enabled = true;
                                 button1.PerformClick();
                                 MessageBox.Show("تم تعديل المعلومات بنجاح", " تعديل المعلومات", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button2, MessageBoxOptions.RightAlign);
                             }
@@ -369,13 +386,13 @@ namespace Gestion_des_factures
 
                 }
                 else MessageBox.Show("المرجو ملأ الحقول الفارغة", "أحد الحقول فارغة", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            //}
-            //catch (Exception ex)
-            //{
-            //    MessageBox.Show("هناك خطأ أثناء العملية المرجوا إعادة المحاولة");
-            //    string Err = "[" + DateTime.Now + "] [Exception] __ [Form :" + this.Name + " ; Controle: " + sender.ToString() + " ; Event: " + e.ToString() + "] __ ExceptionMessage : " + ex.Message;
-            //    Acceuil.WriteLog(Err);
-            //}
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("هناك خطأ أثناء العملية المرجوا إعادة المحاولة");
+                string Err = "[" + DateTime.Now + "] [Exception] __ [Form :" + this.Name + " ; Controle: " + sender.ToString() + " ; Event: " + e.ToString() + "] __ ExceptionMessage : " + ex.Message;
+                Acceuil.WriteLog(Err);
+            }
           }
 
         private void AjtProduits_FormClosing(object sender, FormClosingEventArgs e)

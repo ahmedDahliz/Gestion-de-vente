@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Transactions;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -60,10 +61,14 @@ namespace Gestion_des_factures
             try
             {
                 float pd;
-                if (txt_nmClt.Text != "" && txt_pxDtt.Text != "")
+                if (txt_nmClt.Text !="")
                 {
                     if (!CheckInDt(ds.Tables["Client"], "'" + txt_nmClt.Text + "'", "NomClt"))
                     {
+                        if (txt_pxDtt.Text == "")
+                        {
+                            txt_pxDtt.Text = "0";
+                        }
                         if (float.TryParse(txt_pxDtt.Text, out pd))
                         {
                             DataRow ligneC = ds.Tables["Client"].NewRow();
@@ -93,7 +98,7 @@ namespace Gestion_des_factures
                     }
                     else MessageBox.Show("إسم الزبون الذي أذخلته موجود سابقا ", "إسم الزبون مكرر", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button2, MessageBoxOptions.RightAlign);
                 }
-                else MessageBox.Show("الإسم الزبون و الثمن ضروريان  ", "أحد الحقول فارغة", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button2, MessageBoxOptions.RightAlign);
+                else MessageBox.Show(" المرجو إدخال إسم الزبون", "إسم الزبون فارغ", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button2, MessageBoxOptions.RightAlign);
             }
             catch (Exception ex)
             {
@@ -115,15 +120,20 @@ namespace Gestion_des_factures
         {
             try
             {
-                Acceuil.cnx.Open();
-                SQLiteCommandBuilder cmdb = new SQLiteCommandBuilder(dtaClt);
-                dtaClt.Update(ds, "Client");
-                cmdb = new SQLiteCommandBuilder(dtaDette);
-                dtaDette.Update(ds, "Dettes");
-                saved = true;
-                dtnp.Rows.Clear();
-                Acceuil.cnx.Close();
-                MessageBox.Show("تم حفض المعلومات بنجاح", " حفض المعلومات", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button2, MessageBoxOptions.RightAlign);
+                using (TransactionScope trans = new TransactionScope())
+                {
+                    Acceuil.cnx.Open();
+                    SQLiteCommandBuilder cmdb = new SQLiteCommandBuilder(dtaClt);
+                    dtaClt.Update(ds, "Client");
+                    cmdb = new SQLiteCommandBuilder(dtaDette);
+                    dtaDette.Update(ds, "Dettes");
+                    saved = true;
+                    dtnp.Rows.Clear();
+                    Acceuil.cnx.Close();
+                    trans.Complete();
+                    MessageBox.Show("تم حفض المعلومات بنجاح", " حفض المعلومات", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button2, MessageBoxOptions.RightAlign);
+                    
+                }
             }
             catch (Exception ex)
             {

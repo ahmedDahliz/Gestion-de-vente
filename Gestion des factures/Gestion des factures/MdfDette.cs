@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Data.SQLite;
+using System.Transactions;
 namespace Gestion_des_factures
 {
     public partial class MdfDette : Form
@@ -168,15 +169,19 @@ namespace Gestion_des_factures
         {
             try
             {
-                Acceuil.cnx.Open();
-                ds.Tables["Client"].Rows.RemoveAt(0);
-                SQLiteCommandBuilder cmdb = new SQLiteCommandBuilder(dtaClt);
-                dtaClt.Update(ds, "Client");
-                cmdb = new SQLiteCommandBuilder(dtaDette);
-                dtaDette.Update(ds, "Dettes");
-                saved = true;
-                Acceuil.cnx.Close();
-                MessageBox.Show("تم حفض المعلومات بنجاح", " حفض المعلومات", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button2, MessageBoxOptions.RightAlign);
+                using (TransactionScope trans = new TransactionScope())
+                {
+                    Acceuil.cnx.Open();
+                    ds.Tables["Client"].Rows.RemoveAt(0);
+                    SQLiteCommandBuilder cmdb = new SQLiteCommandBuilder(dtaClt);
+                    dtaClt.Update(ds, "Client");
+                    cmdb = new SQLiteCommandBuilder(dtaDette);
+                    dtaDette.Update(ds, "Dettes");
+                    saved = true;
+                    Acceuil.cnx.Close();
+                    trans.Complete();
+                    MessageBox.Show("تم حفض المعلومات بنجاح", " حفض المعلومات", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button2, MessageBoxOptions.RightAlign);
+                }
             }
             catch (Exception ex)
             {

@@ -64,6 +64,7 @@
       <HintPath>..\packages\System.Data.SQLite.Linq.1.0.110.0\lib\net40\System.Data.SQLite.Linq.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="System.Transactions" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -135,6 +136,12 @@
     <Compile Include="MdfProduit.Designer.cs">
       <DependentUpon>MdfProduit.cs</DependentUpon>
     </Compile>
+    <Compile Include="MdfVent.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MdfVent.Designer.cs">
+      <DependentUpon>MdfVent.cs</DependentUpon>
+    </Compile>
     <Compile Include="MessageBoxManager.cs" />
     <Compile Include="MfdConnexion.cs">
       <SubType>Form</SubType>
@@ -173,6 +180,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="MdfProduit.resx">
       <DependentUpon>MdfProduit.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MdfVent.resx">
+      <DependentUpon>MdfVent.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MfdConnexion.resx">
       <DependentUpon>MfdConnexion.cs</DependentUpon>

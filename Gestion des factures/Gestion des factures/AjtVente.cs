@@ -13,6 +13,8 @@ using iTextSharp.text;
 using System.IO;
 using System.Drawing.Printing;
 using System.Text.RegularExpressions;
+using System.Transactions;
+using System.Diagnostics;
 
 namespace Gestion_des_factures
 {
@@ -20,10 +22,23 @@ namespace Gestion_des_factures
     {
 
         private readonly Acceuil FrmAcc;
+        private bool isModification;
         public AjtVente(Acceuil FAcc)
         {
             InitializeComponent();
             FrmAcc = FAcc;
+            isModification = false;
+        }
+        private readonly int idvtPassed;
+        private readonly AffVente frm;
+        private readonly String fileNameToEdit;
+        public AjtVente(int idV, AffVente f, String fileNameToEdit)
+        {
+            InitializeComponent();
+            idvtPassed = idV;
+            frm = f;
+            this.fileNameToEdit = fileNameToEdit;
+            isModification = true;
         }
         SQLiteDataAdapter dtaType = new SQLiteDataAdapter("Select * from Types", Acceuil.cnx);
         SQLiteDataAdapter dtaProduit = new SQLiteDataAdapter("Select * from Produits", Acceuil.cnx);
@@ -39,6 +54,40 @@ namespace Gestion_des_factures
         int idCmd, idLCmd;
         string pa = "0", pb = "0", pc = "0";
         bool saved = true;
+        public void RefreshAjtVnt()
+        {
+            SQLiteDataAdapter dtaTypeU = new SQLiteDataAdapter("Select * from Types", Acceuil.cnx);
+            SQLiteDataAdapter dtaProduitU = new SQLiteDataAdapter("Select * from Produits", Acceuil.cnx);
+            SQLiteDataAdapter dtaStockeU = new SQLiteDataAdapter("Select * from Stocks", Acceuil.cnx);
+            SQLiteDataAdapter dtaPxAU = new SQLiteDataAdapter("Select * from TypePrixA", Acceuil.cnx);
+            SQLiteDataAdapter dtaPxBU = new SQLiteDataAdapter("Select * from TypePrixB", Acceuil.cnx);
+            SQLiteDataAdapter dtaPxCU = new SQLiteDataAdapter("Select * from TypePrixC", Acceuil.cnx);
+            ds.Tables["Types"].Clear();
+            ds.Tables["Produits"].Clear();
+            ds.Tables["Stocks"].Clear();
+            ds.Tables["TypPA"].Clear();
+            ds.Tables["TypPB"].Clear();
+            ds.Tables["TypPC"].Clear();
+            dtaTypeU.Fill(ds, "Types");
+            dtaProduitU.Fill(ds, "Produits");
+            dtaStockeU.Fill(ds, "Stocks");
+            dtaPxAU.Fill(ds, "TypPA");
+            dtaPxBU.Fill(ds, "TypPB");
+            dtaPxCU.Fill(ds, "TypPC");
+            cb_Prod.ValueMember = "NumPrd";
+            cb_Prod.DisplayMember = "Desingation";
+            cb_Prod.DataSource = ds.Tables["Produits"];
+            cb_Prod.SelectedIndexChanged += new EventHandler(cb_Prod_SelectedIndexChanged);
+            DataRow rw = ds.Tables["Types"].NewRow();
+            rw["NomType"] = "جميع الأنواع";
+            rw["NumType"] = 0;
+            ds.Tables["Types"].Rows.InsertAt(rw, 0);
+            cb_typePrd.SelectedIndex = 0;
+            txt_numP.Text = "";
+            txt_nomPrd.Text = "";
+            cb_Prod_SelectedIndexChanged(cb_Prod, EventArgs.Empty);
+            
+        }
         private void GetProduct(object sender, EventArgs e)
         {
             try
@@ -96,8 +145,9 @@ namespace Gestion_des_factures
         {
             try
             {
+                
                 this.WindowState = FormWindowState.Maximized;
-                SQLiteDataAdapter dtaIdCmd = new SQLiteDataAdapter("Select * from sqlite_sequence where name='Commande'", Acceuil.cnx);
+                SQLiteDataAdapter dtaIdCmd = new SQLiteDataAdapter("Select * from Commande order by NumCmd DESC LIMIT 1", Acceuil.cnx);
                 SQLiteDataAdapter dtaIdLCmd = new SQLiteDataAdapter("Select * from sqlite_sequence where name='Ling_commande'", Acceuil.cnx);
                 dtaType.Fill(ds, "Types");
                 dtaProduit.Fill(ds, "Produits");
@@ -115,10 +165,12 @@ namespace Gestion_des_factures
                 rw["NomType"] = "جميع الأنواع";
                 rw["NumType"] = 0;
                 ds.Tables["Types"].Rows.InsertAt(rw, 0);
+                cb_typePrd.DropDownHeight = 300;  
                 cb_typePrd.ValueMember = "NumType";
                 cb_typePrd.DisplayMember = "NomType";
                 cb_typePrd.DataSource = ds.Tables["Types"];
                 // load list of Products
+                cb_Prod.DropDownHeight = 400;
                 cb_Prod.ValueMember = "NumPrd";
                 cb_Prod.DisplayMember = "Desingation";
                 cb_Prod.DataSource = ds.Tables["Produits"];
@@ -130,7 +182,7 @@ namespace Gestion_des_factures
                 cb_nomC.ValueMember = "NumClt";
                 cb_nomC.DisplayMember = "Nomclt";
                 cb_nomC.DataSource = ds.Tables["Client"];
-                idCmd = int.Parse(ds.Tables["IdCmd"].Rows[0]["seq"].ToString());
+                idCmd = int.Parse(ds.Tables["IdCmd"].Rows[0]["NumCmd"].ToString());
                 idLCmd = int.Parse(ds.Tables["idLign"].Rows[0]["seq"].ToString());
                 idLCmd++;
                 dtnv.Columns.Add("الرقم");
@@ -140,6 +192,23 @@ namespace Gestion_des_factures
                 dtnv.Columns.Add("الواجب");
                 dgv_ProdV.DataSource = dtnv;
                 lbl_datAjr.Text = DateTime.Today.ToShortDateString();
+                if (isModification)
+                {
+                    this.Text = "تعديل البيع";
+                    SQLiteDataAdapter dtaCmdEdit = new SQLiteDataAdapter("select p.NumPrd 'الرقم', c.QttCmd 'الكمية', p.Desingation 'السلعة', c.PrixU 'ثمن الوحدة', c.PrixCmd 'الواجب'  from Produits p, Commande c where p.NumPrd = c.NuPrd AND c.NumCmd = " + idvtPassed, Acceuil.cnx);
+                    dtaCmdEdit.Fill(dtnv);
+                    lbl_qttV.Text = dtnv.Rows.Count.ToString();
+                    DataView dv = new DataView(ds.Tables["LignCmd"], "NuCmd = " + idvtPassed, "", DataViewRowState.CurrentRows);
+                    txt_nomC.Text = dv[0]["NmClt"].ToString();
+                    lbl_datAjr.Text = dv[0]["DateCmd"].ToString();
+                    calculatePrice(Decimal.Parse(dv[0]["PrixTotal"].ToString()), true);
+                    button9.Visible = false;
+                    button8.Visible = false;
+                    button2.Enabled = true;
+                    idLCmd = int.Parse(dv[0]["NumLgCmd"].ToString());
+                    panel1.Visible = true;
+                    label22.Text += idvtPassed;
+                }
             }
             catch (Exception ex)
             {
@@ -218,38 +287,39 @@ namespace Gestion_des_factures
         Decimal minQtt = 1, maxQtt = 0; 
         private void cb_Prod_SelectedIndexChanged(object sender, EventArgs e)
         {
+  
             //try
             //{
-                DataView dv = new DataView(ds.Tables["Stocks"], "NuPrd = " + cb_Prod.SelectedValue.ToString(), "", DataViewRowState.CurrentRows);
-                DataView dvp = new DataView(ds.Tables["Produits"], "NumPrd = " + cb_Prod.SelectedValue.ToString(), "", DataViewRowState.CurrentRows);
-                if (float.Parse(dv[0]["QttProd"].ToString()) == 0)
-                {
-                    lbl_ttrqtttav.ForeColor = System.Drawing.Color.Red;
-                    lbl_qttavi.ForeColor = System.Drawing.Color.Red;
-                    minQtt = 0;
-                    button1.Enabled = false;
-                }
-                else
-                {
-                    button1.Enabled = true;
-                    lbl_ttrqtttav.ForeColor = System.Drawing.Color.Black;
-                    lbl_qttavi.ForeColor = System.Drawing.Color.Black;
-                    minQtt = 1;
-                }
-                nud_qtt.Text = "";
-                lbl_qttavi.Text = dv[0]["QttProd"].ToString();
-                //nud_qtt_old.Maximum = int.Parse(dv[0]["QttProd"].ToString());
-                maxQtt = Decimal.Parse(dv[0]["QttProd"].ToString());
-                DataView dva = new DataView(ds.Tables["TypPA"], "NuPrd = " + cb_Prod.SelectedValue.ToString(), "", DataViewRowState.CurrentRows);
-                pa = dva[0]["Prix"].ToString();
-                DataView dvb = new DataView(ds.Tables["TypPB"], "NuPrd = " + cb_Prod.SelectedValue.ToString(), "", DataViewRowState.CurrentRows);
-                pb = dvb[0]["Prix"].ToString();
-                DataView dvc = new DataView(ds.Tables["TypPC"], "NuPrd = " + cb_Prod.SelectedValue.ToString(), "", DataViewRowState.CurrentRows);
-                pc = dvc[0]["Prix"].ToString();
-                txt_prx.Text ="0";
-                lbl_prix.Text = (rb_A.Checked) ? pa : (rd_B.Checked) ? pb : (rb_C.Checked) ? pc : (rb_persn.Checked) ? txt_prx.Text: "";
-                lbl_prxQtt.Text = (float.Parse(lbl_prix.Text) * 0).ToString("0.#####");
-                lbl_prxAch.Text = dvp[0]["prxAchat"].ToString();
+            DataView dv = new DataView(ds.Tables["Stocks"], "NuPrd = " + cb_Prod.SelectedValue.ToString(), "", DataViewRowState.CurrentRows);
+            DataView dvp = new DataView(ds.Tables["Produits"], "NumPrd = " + cb_Prod.SelectedValue.ToString(), "", DataViewRowState.CurrentRows);
+            if (float.Parse(dv[0]["QttProd"].ToString()) == 0)
+            {
+                lbl_ttrqtttav.ForeColor = System.Drawing.Color.Red;
+                lbl_qttavi.ForeColor = System.Drawing.Color.Red;
+                minQtt = 0;
+                button1.Enabled = false;
+            }
+            else
+            {
+                button1.Enabled = true;
+                lbl_ttrqtttav.ForeColor = System.Drawing.Color.Black;
+                lbl_qttavi.ForeColor = System.Drawing.Color.Black;
+                minQtt = 1;
+            }
+            nud_qtt.Text = "";
+            lbl_qttavi.Text = dv[0]["QttProd"].ToString();
+            //nud_qtt_old.Maximum = int.Parse(dv[0]["QttProd"].ToString());
+            maxQtt = Decimal.Parse(dv[0]["QttProd"].ToString());
+            DataView dva = new DataView(ds.Tables["TypPA"], "NuPrd = " + cb_Prod.SelectedValue.ToString(), "", DataViewRowState.CurrentRows);
+            pa = dva[0]["Prix"].ToString();
+            DataView dvb = new DataView(ds.Tables["TypPB"], "NuPrd = " + cb_Prod.SelectedValue.ToString(), "", DataViewRowState.CurrentRows);
+            pb = dvb[0]["Prix"].ToString();
+            DataView dvc = new DataView(ds.Tables["TypPC"], "NuPrd = " + cb_Prod.SelectedValue.ToString(), "", DataViewRowState.CurrentRows);
+            pc = dvc[0]["Prix"].ToString();
+            txt_prx.Text = "0";
+            lbl_prix.Text = (rb_A.Checked) ? pa : (rd_B.Checked) ? pb : (rb_C.Checked) ? pc : (rb_persn.Checked) ? txt_prx.Text : "";
+            lbl_prxQtt.Text = (float.Parse(lbl_prix.Text) * 0).ToString("0.#####");
+            lbl_prxAch.Text = dvp[0]["prxAchat"].ToString();
             //}
             //catch (Exception ex)
             //{
@@ -262,10 +332,40 @@ namespace Gestion_des_factures
             lbl_nomC.Text = str;
 
         }
+        protected virtual bool IsFileinUse(FileInfo file)
+        {
+            FileStream stream = null;
+
+            try
+            {
+                stream = file.Open(FileMode.Open, FileAccess.ReadWrite, FileShare.None);
+            }
+            catch (IOException)
+            {
+                return true;
+            }
+            finally
+            {
+                if (stream != null)
+                    stream.Close();
+            }
+            return false;
+        }
         private void CreatePdf(String FileName) {
+            string path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\Factures";
+            if (isModification)
+            {
+                foreach (Process proc in Process.GetProcessesByName("AcroRd32"))
+                {
+                    proc.Kill();
+                    proc.WaitForExit();
+                }
+
+
+                FileName = this.fileNameToEdit;
+            }
             iTextSharp.text.Rectangle pageSize = new iTextSharp.text.Rectangle(100, 290);
             Document document = new Document(pageSize, 0, 0, 0, 0);
-            string path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\Factures";
             DirectoryInfo di = Directory.CreateDirectory(path);
             PdfWriter writer = PdfWriter.GetInstance(document, new FileStream(path + "\\"+FileName, FileMode.Create));
             document.Open();
@@ -365,7 +465,7 @@ namespace Gestion_des_factures
             document.Add(underFootTable);
             document.Close();
             // open pdf
-            System.Diagnostics.Process.Start(path + "\\"+ FileName);
+            Acceuil.idPDF = Process.Start(path + "\\"+ FileName).Id;
         }
         private void txt_prx_TextChanged(object sender, EventArgs e)
         {
@@ -398,7 +498,7 @@ namespace Gestion_des_factures
 
         private void txt_nomC_TextChanged(object sender, EventArgs e)
         {
-            getNamClient(txt_nomC.Text);
+            getNamClient(txt_nomC.Text.Trim());
         }
         bool CheckInDt(DataTable dt, string val, string Column)
         {
@@ -460,6 +560,7 @@ namespace Gestion_des_factures
                             button9.Enabled = true;
                             button2.Enabled = true;
                             txt_AnvcD.Enabled = ch_ventADette.Checked;
+                            saved = false;
                         }
                         else MessageBox.Show("المنتوج الذي أدخلته موجود في الفاتورة", "المنتوج موجود", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button2, MessageBoxOptions.RightAlign);
                     }
@@ -480,46 +581,81 @@ namespace Gestion_des_factures
         {
             try
             {
-                SQLiteCommandBuilder cmdb;
-                if (ch_ventADette.Checked)
-                {   //add to table Dettes
-                    SQLiteDataAdapter dtaDette = new SQLiteDataAdapter("Select * from Dettes", Acceuil.cnx);
-                    dtaDette.Fill(ds, "Dettes");
-                    DataView dv = new DataView(ds.Tables["Dettes"], "NuClt = " + cb_nomC.SelectedValue.ToString(), "", DataViewRowState.CurrentRows);
-                    float dt = float.Parse(dv[0]["PrixDette"].ToString());
-                    float prx = float.Parse(lbl_prixTotal.Text);
-                    if (txt_AnvcD.Text != "")
+                using (TransactionScope tran = new TransactionScope())
+                {
+                    if (lbl_nomC.Text != "")
                     {
-                        prx -= float.Parse(txt_AnvcD.Text);
+                         Acceuil.cnx.Open();
+                        SQLiteCommandBuilder cmdb;
+                        if (ch_ventADette.Checked)
+                        {   //add to table Dettes
+                            SQLiteDataAdapter dtaDette = new SQLiteDataAdapter("Select * from Dettes", Acceuil.cnx);
+                            dtaDette.Fill(ds, "Dettes");
+                            DataView dv = new DataView(ds.Tables["Dettes"], "NuClt = " + cb_nomC.SelectedValue.ToString(), "", DataViewRowState.CurrentRows);
+                            Decimal dt = Decimal.Parse(dv[0]["PrixDette"].ToString());
+                            Decimal prx = Decimal.Parse(lbl_prixTotal.Text);
+                            if (txt_AnvcD.Text != "")
+                            {
+                                prx -= Decimal.Parse(txt_AnvcD.Text);
+                            }
+                            dt += prx;
+                            dv[0]["PrixDette"] = dt;
+                            cmdb = new SQLiteCommandBuilder(dtaDette);
+                            dtaDette.Update(ds, "Dettes");
+                        }
+                        if (isModification)
+                        {
+                            DataView dvEdit = new DataView(ds.Tables["LignCmd"], "NuCmd = " + idvtPassed, "", DataViewRowState.CurrentRows);
+                            dvEdit[0].BeginEdit();
+                            dvEdit[0][1] = lbl_nomC.Text;
+                            dvEdit[0][3] = lbl_prixTotal.Text;
+                            dvEdit[0].EndEdit();
+                        }
+                        else
+                        {
+                            DataRow dr = ds.Tables["LignCmd"].NewRow();
+                            idCmd++;
+                            dr[1] = lbl_nomC.Text;
+                            dr[2] = idCmd;
+                            dr[3] = lbl_prixTotal.Text;
+                            dr[4] = DateTime.Now.ToShortDateString();
+                            ds.Tables["LignCmd"].Rows.Add(dr);
+                        }
+                        cmdb = new SQLiteCommandBuilder(dtaCmd);
+                        dtaCmd.Update(ds, "Cmd");
+                        cmdb = new SQLiteCommandBuilder(dtaLCmd);
+                        dtaLCmd.Update(ds, "LignCmd");
+                        cmdb = new SQLiteCommandBuilder(dtaStocke);
+                        dtaStocke.Update(ds, "Stocks");
+                        String dtn = DateTime.Now.Day + "_" + DateTime.Now.Month + "_" + DateTime.Now.Year;
+                        CreatePdf("No" + idLCmd + "_" + dtn + ".pdf");
+                        Acceuil.cnx.Close();
+                        button9.Enabled = false;
+                        NewSell();
+                        tran.Complete();
+                        if (isModification) Close();
                     }
-                    dt += prx;
-                    dv[0]["PrixDette"] = dt;
-                    cmdb = new SQLiteCommandBuilder(dtaDette);
-                    dtaDette.Update(ds, "Dettes");
+                    else MessageBox.Show("قم بتحديد إسم الزبون أولا", "إسم الزبون غير محدد", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button2, MessageBoxOptions.RightAlign);
                 }
-                DataRow dr = ds.Tables["LignCmd"].NewRow();
-                idCmd++;
-                dr[1] = lbl_nomC.Text;
-                dr[2] = idCmd;
-                dr[3] = lbl_prixTotal.Text;
-                dr[4] = DateTime.Now.ToShortDateString();
-                ds.Tables["LignCmd"].Rows.Add(dr);
-                cmdb = new SQLiteCommandBuilder(dtaCmd);
-                dtaCmd.Update(ds, "Cmd");
-                cmdb = new SQLiteCommandBuilder(dtaLCmd);
-                dtaLCmd.Update(ds, "LignCmd");
-                cmdb = new SQLiteCommandBuilder(dtaStocke);
-                dtaStocke.Update(ds, "Stocks");
-                String dtn = DateTime.Now.Day + "_" + DateTime.Now.Month + "_" + DateTime.Now.Year;
-                CreatePdf("No" + idLCmd + "_" + dtn + ".pdf");
-                button9.Enabled = false;
-                NewSell();
             }
             catch (Exception ex)
             {
-                MessageBox.Show("هناك خطأ أثناء العملية المرجوا إعادة المحاولة");
+                if (isModification)
+                {
+                    string path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\Factures";
+                    FileInfo file = new FileInfo(path + "\\" + this.fileNameToEdit);
+                    if (IsFileinUse(file))
+                    {
+                        MessageBox.Show("المرجو إغلاق ملف الفاتورة", "إغلاق الفاتورة", MessageBoxButtons.OK, MessageBoxIcon.Stop, MessageBoxDefaultButton.Button2, MessageBoxOptions.RightAlign);
+                    }
+
+                }
+                else {
+                     MessageBox.Show("هناك خطأ أثناء العملية المرجوا إعادة المحاولة");
                 string Err = "[" + DateTime.Now + "] [Exception] __ [Form :" + this.Name + " ; Button: " + sender.ToString() + " ; Event: " + e.ToString() + "] __ ExceptionMessage : " + ex.Message;
                 Acceuil.WriteLog(Err);
+                }
+               
             }
         }
            
@@ -605,6 +741,7 @@ namespace Gestion_des_factures
                 button6.Visible = false;
                 button1.Visible = true;
                 cb_Prod.Enabled = true;
+                saved = false;
                 MessageBox.Show("تم تعديل المعلومات بنجاح", " تعديل المعلومات", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button2, MessageBoxOptions.RightAlign);
             }
             catch (Exception ex)
@@ -635,11 +772,13 @@ namespace Gestion_des_factures
                         idPr = dtnv.Rows[dgv_ProdV.CurrentRow.Index][0].ToString();
                         DataView dv = new DataView(ds.Tables["Stocks"], "NuPrd = " + idPr, "", DataViewRowState.CurrentRows);
                         ChangeQtt(cb_Prod.SelectedValue.ToString(), int.Parse(dv[0]["QttProd"].ToString()) + int.Parse(dgv_ProdV.CurrentRow.Cells[1].Value.ToString()));
-                        ds.Tables["Cmd"].Rows.Remove((ds.Tables["Cmd"].Select("NumCmd = " + idLCmd + " AND NuPrd = " + idPr)[0]));
+                        //ds.Tables["Cmd"].Rows.Remove(ds.Tables["Cmd"].Select("NumCmd = " + idLCmd + " AND NuPrd = " + idPr)[0]);
+                        ds.Tables["Cmd"].Select("NumCmd = " + idLCmd + " AND NuPrd = " + idPr)[0].Delete();
                         //lbl_prixTotal.Text = (float.Parse(lbl_prixTotal.Text) - float.Parse(dtnv.Rows[dgv_ProdV.CurrentRow.Index][4].ToString())).ToString();
                         calculatePrice(Decimal.Parse(dtnv.Rows[dgv_ProdV.CurrentRow.Index][4].ToString()), false);
                         dtnv.Rows.RemoveAt(dgv_ProdV.CurrentRow.Index);
-                        dgv_ProdV.Text = dtnv.Rows.Count.ToString();
+                        lbl_qttV.Text = dtnv.Rows.Count.ToString();
+                        saved = false;
                         if (dtnv.Rows.Count == 0) {
                             txt_AnvcD.Enabled = false;
                         }
@@ -678,6 +817,7 @@ namespace Gestion_des_factures
             button9.Enabled = false;
             button2.Enabled = false;
             txt_AnvcD.Enabled = false;
+            saved = true;
             txt_nomC.Text = "";
             pxTTl = 0;
         }
@@ -722,7 +862,10 @@ namespace Gestion_des_factures
 
         private void AjtVente_FormClosing(object sender, FormClosingEventArgs e)
         {
-            FrmAcc.RefreshAccui();
+            if (!isModification) { 
+                FrmAcc.RefreshAccui();
+                frm.RefreshFactures();
+            }
             if (!saved)
             {
                 if (ex)
@@ -751,6 +894,7 @@ namespace Gestion_des_factures
                 button9.Enabled = false;
                 button2.Enabled = false;
                 txt_AnvcD.Enabled = false;
+                saved = true;
             }
 
         }
@@ -862,8 +1006,22 @@ namespace Gestion_des_factures
             }
         }
 
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+         
+                label17.Visible = cb_showPrxAch.Checked;
+                label14.Visible = cb_showPrxAch.Checked;
+                lbl_prxAch.Visible = cb_showPrxAch.Checked;
+         
+            
+        }
 
-       
-        
+        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            cb_Prod.SelectedIndexChanged -= new EventHandler(cb_Prod_SelectedIndexChanged);
+            MdfProduit mp = new MdfProduit(int.Parse(cb_Prod.SelectedValue.ToString()), this);
+            mp.ShowDialog();
+        }
+  
     }
 }

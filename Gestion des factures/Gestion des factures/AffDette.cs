@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Data.SQLite;
+using System.Transactions;
 
 namespace Gestion_des_factures
 {
@@ -120,22 +121,29 @@ namespace Gestion_des_factures
                     var rep = MessageBox.Show("هل تريد حذف الدين المختار؟  ", "حذف الدين", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1, MessageBoxOptions.RightAlign);
                     if (rep == DialogResult.Yes)
                     {
-                        int idDt = int.Parse(ds.Tables["Dettes"].Rows[dgv_affDette.CurrentRow.Index][0].ToString());
-                        ds.Tables["Dettes"].Rows.Remove((ds.Tables["Dettes"].Select("الرقم = " + idDt)[0]));
-                        SQLiteDataAdapter toDelDabD = new SQLiteDataAdapter("Select * from Dettes", Acceuil.cnx);
-                        toDelDabD.Fill(ds, "DetteToDel");
-                        SQLiteDataAdapter toDelDabC = new SQLiteDataAdapter("Select * from Clients", Acceuil.cnx);
-                        toDelDabC.Fill(ds, "ClientToDel");
-                        DataView dvD = new DataView(ds.Tables["DetteToDel"], "NumDette = " + idDt, "", DataViewRowState.CurrentRows);
-                        string idClt = dvD.ToTable().Rows[0]["NuClt"].ToString();
-                        DataView dvC = new DataView(ds.Tables["ClientToDel"], "NumClt = " + idClt, "", DataViewRowState.CurrentRows);
-                        dvD[0].Delete();
-                        dvC[0].Delete();
-                        SQLiteCommandBuilder cmdb = new SQLiteCommandBuilder(toDelDabD);
-                        toDelDabD.Update(ds, "DetteToDel");
-                        cmdb = new SQLiteCommandBuilder(toDelDabC);
-                        toDelDabC.Update(ds, "ClientToDel");
-                        lbl_nmDett.Text = ds.Tables["Dettes"].Rows.Count.ToString();
+                        using (TransactionScope trans = new TransactionScope())
+                        {
+                            Acceuil.cnx.Open();
+                            int idDt = int.Parse(ds.Tables["Dettes"].Rows[dgv_affDette.CurrentRow.Index][0].ToString());
+                            ds.Tables["Dettes"].Rows.Remove((ds.Tables["Dettes"].Select("الرقم = " + idDt)[0]));
+                            SQLiteDataAdapter toDelDabD = new SQLiteDataAdapter("Select * from Dettes", Acceuil.cnx);
+                            toDelDabD.Fill(ds, "DetteToDel");
+                            SQLiteDataAdapter toDelDabC = new SQLiteDataAdapter("Select * from Clients", Acceuil.cnx);
+                            toDelDabC.Fill(ds, "ClientToDel");
+                            DataView dvD = new DataView(ds.Tables["DetteToDel"], "NumDette = " + idDt, "", DataViewRowState.CurrentRows);
+                            string idClt = dvD.ToTable().Rows[0]["NuClt"].ToString();
+                            DataView dvC = new DataView(ds.Tables["ClientToDel"], "NumClt = " + idClt, "", DataViewRowState.CurrentRows);
+                            dvD[0].Delete();
+                            dvC[0].Delete();
+                            SQLiteCommandBuilder cmdb = new SQLiteCommandBuilder(toDelDabD);
+                            toDelDabD.Update(ds, "DetteToDel");
+                            cmdb = new SQLiteCommandBuilder(toDelDabC);
+                            toDelDabC.Update(ds, "ClientToDel");
+                            lbl_nmDett.Text = ds.Tables["Dettes"].Rows.Count.ToString();
+                            Acceuil.cnx.Close();
+                            trans.Complete();
+                            
+                        }
                     }
                 }
             }

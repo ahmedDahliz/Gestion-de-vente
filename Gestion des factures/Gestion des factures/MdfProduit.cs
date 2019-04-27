@@ -9,18 +9,27 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Data.SQLite;
 using System.Text.RegularExpressions;
+using System.Transactions;
 
 namespace Gestion_des_factures
 {
     public partial class MdfProduit : Form
     {
         private readonly int idpr;
-        private readonly AffProduit frm;
+        private readonly AffProduit frmAfP;
+        private readonly AjtVente frmAjV;
         public MdfProduit(int idP, AffProduit f)
         {
             InitializeComponent();
             idpr = idP;
-            frm = f;
+            frmAfP = f;
+
+        }
+        public MdfProduit(int idP, AjtVente f)
+        {
+            InitializeComponent();
+            idpr = idP;
+            frmAjV = f;
 
         }
         public MdfProduit()
@@ -37,6 +46,7 @@ namespace Gestion_des_factures
         DataSet ds = new DataSet();
         bool svd = true;
         bool ex = true;
+        String NomProduit;
         void saved()
         {
             label3.Visible = false;
@@ -72,6 +82,7 @@ namespace Gestion_des_factures
                 txt_pc.Text = ds.Tables["EdtPrd"].Rows[0][6].ToString();
                 cb_tpPrd.SelectedValue = ds.Tables["EdtPrd"].Rows[0][7].ToString();
                 txt_prxAch.Text = ds.Tables["EdtPrd"].Rows[0][8].ToString();
+                NomProduit = ds.Tables["EdtPrd"].Rows[0][1].ToString();
             }
             catch (Exception ex)
             {
@@ -139,7 +150,10 @@ namespace Gestion_des_factures
         {
             if (svd)
             {
-                if (ex) frm.RefreshAffPrd();
+                if (ex) {
+                    if (frmAfP != null) frmAfP.RefreshAffPrd();
+                    if (frmAjV != null) frmAjV.RefreshAjtVnt();
+                }
             }
             else
             {
@@ -152,18 +166,22 @@ namespace Gestion_des_factures
         {
             try
             {
-                ds.Tables["typesMdf"].Rows[i].BeginEdit();
-                ds.Tables["typesMdf"].Rows[i][1] = txt_nmType.Text;
-                ds.Tables["typesMdf"].Rows[i].EndEdit();
-                ds.Tables["types"].Rows[i].BeginEdit();
-                ds.Tables["types"].Rows[i][1] = txt_nmType.Text;
-                ds.Tables["types"].Rows[i].EndEdit();
-                Acceuil.cnx.Open();
-                SQLiteCommandBuilder cmdb = new SQLiteCommandBuilder(dt2);
-                dt2.Update(ds, "typesMdf");
-                Acceuil.cnx.Close();
-                svd = true;
-                MessageBox.Show("تم تعديل و حفض التغييرات بنجاح", "حفض التغييرات", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button2, MessageBoxOptions.RightAlign);
+                using (TransactionScope trans = new TransactionScope())
+                {
+                    ds.Tables["typesMdf"].Rows[i].BeginEdit();
+                    ds.Tables["typesMdf"].Rows[i][1] = txt_nmType.Text;
+                    ds.Tables["typesMdf"].Rows[i].EndEdit();
+                    ds.Tables["types"].Rows[i].BeginEdit();
+                    ds.Tables["types"].Rows[i][1] = txt_nmType.Text;
+                    ds.Tables["types"].Rows[i].EndEdit();
+                    Acceuil.cnx.Open();
+                    SQLiteCommandBuilder cmdb = new SQLiteCommandBuilder(dt2);
+                    dt2.Update(ds, "typesMdf");
+                    Acceuil.cnx.Close();
+                    svd = true;
+                    trans.Complete();
+                    MessageBox.Show("تم تعديل و حفض التغييرات بنجاح", "حفض التغييرات", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button2, MessageBoxOptions.RightAlign);
+                }
             }
             catch (Exception ex)
             {
@@ -173,7 +191,19 @@ namespace Gestion_des_factures
             }
 
         }
+        bool CheckInStock(string val, string Column)
+        {
+            SQLiteCommand cmd = new SQLiteCommand("select * from Produits where " + Column + " = '" + val + "'", Acceuil.cnx);
+            Acceuil.cnx.Open();
+            if (cmd.ExecuteReader().HasRows)
+            {
+                Acceuil.cnx.Close();
+                return true;
+            }
+            Acceuil.cnx.Close();
+            return false;
 
+        }
         private void button2_Click(object sender, EventArgs e)
         {
             try
@@ -183,50 +213,62 @@ namespace Gestion_des_factures
                 {
                     if (Decimal.TryParse(txt_pa.Text, out pa) && Decimal.TryParse(txt_pb.Text, out pb) && Decimal.TryParse(txt_pc.Text, out pc) && Decimal.TryParse(txt_prxAch.Text, out pac))
                     {
-                        DataView dv = new DataView(ds.Tables["Produits"], "NumPrd = " + idpr, "", DataViewRowState.CurrentRows);
-                        dv[0].BeginEdit();
-                        dv[0][1] = txt_nmPrd.Text;
-                        dv[0][2] = cb_tpPrd.SelectedValue;
-                        dv[0][3] = txt_prxAch.Text;
-                        dv[0].EndEdit();
-                        dv = new DataView(ds.Tables["Stocks"], "NuPrd = " + idpr, "", DataViewRowState.CurrentRows);
-                        dv[0].BeginEdit();
-                        dv[0][1] = nud_qtt.Text;
-                        dv[0][2] = nud_qttMn.Text;
-                        dv[0].EndEdit();
-                        dv = new DataView(ds.Tables["TypPA"], "NuPrd = " + idpr, "", DataViewRowState.CurrentRows);
-                        dv[0].BeginEdit();
-                        dv[0][1] = txt_pa.Text;
-                        dv[0].EndEdit();
-                        dv = new DataView(ds.Tables["TypPB"], "NuPrd = " + idpr, "", DataViewRowState.CurrentRows);
-                        dv[0].BeginEdit();
-                        dv[0][1] = txt_pb.Text;
-                        dv[0].EndEdit();
-                        dv = new DataView(ds.Tables["TypPC"], "NuPrd = " + idpr, "", DataViewRowState.CurrentRows);
-                        dv[0].BeginEdit();
-                        dv[0][1] = txt_pc.Text;
-                        dv[0].EndEdit();
-                        ds.Tables["EdtPrd"].Rows[0].EndEdit();
-                        label3.Visible = true;
-                        button2.BackColor = SystemColors.Control;
-                        button4.Enabled = true;
-                        Acceuil.cnx.Open();
-                        SQLiteCommandBuilder cmdb = new SQLiteCommandBuilder(dtaProduit);
-                        dtaProduit.Update(ds, "Produits");
-                        cmdb = new SQLiteCommandBuilder(dtaPxA);
-                        dtaPxA.Update(ds, "TypPA");
-                        cmdb = new SQLiteCommandBuilder(dtaPxB);
-                        dtaPxB.Update(ds, "TypPB");
-                        cmdb = new SQLiteCommandBuilder(dtaPxC);
-                        dtaPxC.Update(ds, "TypPC");
-                        cmdb = new SQLiteCommandBuilder(dtaStocke);
-                        dtaStocke.Update(ds, "Stocks");
-                        Acceuil.cnx.Close();
-                        svd = true;
-                    }
+                        if (txt_nmPrd.Text != NomProduit)
+                        {
+                            if (CheckInStock(txt_nmPrd.Text, "Desingation")) {
+                                MessageBox.Show("إسم المنتوج الذي أذخلته موجود سابقا ", "إسم المنتوج مكرر", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button2, MessageBoxOptions.RightAlign);
+                                return;
+                            };
+                        }
+                        using (TransactionScope trans = new TransactionScope())
+                        {
+                            DataView dv = new DataView(ds.Tables["Produits"], "NumPrd = " + idpr, "", DataViewRowState.CurrentRows);
+                            dv[0].BeginEdit();
+                            dv[0][1] = txt_nmPrd.Text;
+                            dv[0][2] = cb_tpPrd.SelectedValue;
+                            dv[0][3] = txt_prxAch.Text;
+                            dv[0].EndEdit();
+                            dv = new DataView(ds.Tables["Stocks"], "NuPrd = " + idpr, "", DataViewRowState.CurrentRows);
+                            dv[0].BeginEdit();
+                            dv[0][1] = nud_qtt.Text;
+                            dv[0][2] = nud_qttMn.Text;
+                            dv[0].EndEdit();
+                            dv = new DataView(ds.Tables["TypPA"], "NuPrd = " + idpr, "", DataViewRowState.CurrentRows);
+                            dv[0].BeginEdit();
+                            dv[0][1] = txt_pa.Text;
+                            dv[0].EndEdit();
+                            dv = new DataView(ds.Tables["TypPB"], "NuPrd = " + idpr, "", DataViewRowState.CurrentRows);
+                            dv[0].BeginEdit();
+                            dv[0][1] = txt_pb.Text;
+                            dv[0].EndEdit();
+                            dv = new DataView(ds.Tables["TypPC"], "NuPrd = " + idpr, "", DataViewRowState.CurrentRows);
+                            dv[0].BeginEdit();
+                            dv[0][1] = txt_pc.Text;
+                            dv[0].EndEdit();
+                            ds.Tables["EdtPrd"].Rows[0].EndEdit();
+                            label3.Visible = true;
+                            button2.BackColor = SystemColors.Control;
+                            button4.Enabled = true;
+                            Acceuil.cnx.Open();
+                            SQLiteCommandBuilder cmdb = new SQLiteCommandBuilder(dtaProduit);
+                            dtaProduit.Update(ds, "Produits");
+                            cmdb = new SQLiteCommandBuilder(dtaPxA);
+                            dtaPxA.Update(ds, "TypPA");
+                            cmdb = new SQLiteCommandBuilder(dtaPxB);
+                            dtaPxB.Update(ds, "TypPB");
+                            cmdb = new SQLiteCommandBuilder(dtaPxC);
+                            dtaPxC.Update(ds, "TypPC");
+                            cmdb = new SQLiteCommandBuilder(dtaStocke);
+                            dtaStocke.Update(ds, "Stocks");
+                            Acceuil.cnx.Close();
+                            svd = true;
+                            trans.Complete();
+                        }
+                       }
                     else MessageBox.Show("أحد الأثمنة غير مقبولة", "خطأ في إدخال الأثمنة", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
                 else MessageBox.Show("المرجو ملأ الحقول الفارغة", "أحد الحقول فارغة", MessageBoxButtons.OK, MessageBoxIcon.Error);
+              
             }
             catch (Exception ex)
             {
@@ -360,8 +402,6 @@ namespace Gestion_des_factures
             txt_prxAch.SelectionStart = txt_prxAch.Text.Length;
             txt_prxAch.SelectionLength = 0;
             saved();
-        }
-
-        
+        }    
     }
 }

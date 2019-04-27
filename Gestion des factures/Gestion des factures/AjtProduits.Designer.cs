@@ -176,7 +176,7 @@
             this.txt_nomTp.Location = new System.Drawing.Point(119, 22);
             this.txt_nomTp.Name = "txt_nomTp";
             this.txt_nomTp.Size = new System.Drawing.Size(126, 20);
-            this.txt_nomTp.TabIndex = 9;
+            this.txt_nomTp.TabIndex = 10;
             this.txt_nomTp.TextChanged += new System.EventHandler(this.txt_nomTp_TextChanged);
             // 
             // label6
@@ -345,7 +345,7 @@
             this.nud_qtt.Location = new System.Drawing.Point(612, 79);
             this.nud_qtt.Name = "nud_qtt";
             this.nud_qtt.Size = new System.Drawing.Size(100, 20);
-            this.nud_qtt.TabIndex = 26;
+            this.nud_qtt.TabIndex = 3;
             this.nud_qtt.TextChanged += new System.EventHandler(this.nud_qtt_TextChanged);
             this.nud_qtt.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.nud_qtt_keyPress);
             // 
@@ -356,7 +356,7 @@
             this.nud_qttMn.Location = new System.Drawing.Point(612, 106);
             this.nud_qttMn.Name = "nud_qttMn";
             this.nud_qttMn.Size = new System.Drawing.Size(100, 20);
-            this.nud_qttMn.TabIndex = 26;
+            this.nud_qttMn.TabIndex = 4;
             this.nud_qttMn.TextChanged += new System.EventHandler(this.nud_qttMn_TextChanged);
             this.nud_qttMn.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.nud_qtt_keyPress);
             // 
@@ -366,7 +366,7 @@
             this.txt_prxB.Location = new System.Drawing.Point(347, 83);
             this.txt_prxB.Name = "txt_prxB";
             this.txt_prxB.Size = new System.Drawing.Size(82, 20);
-            this.txt_prxB.TabIndex = 6;
+            this.txt_prxB.TabIndex = 7;
             this.txt_prxB.TextChanged += new System.EventHandler(this.txt_prxB_TextChanged);
             this.txt_prxB.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.nud_qtt_keyPress);
             // 
@@ -376,7 +376,7 @@
             this.txt_prxC.Location = new System.Drawing.Point(347, 108);
             this.txt_prxC.Name = "txt_prxC";
             this.txt_prxC.Size = new System.Drawing.Size(82, 20);
-            this.txt_prxC.TabIndex = 7;
+            this.txt_prxC.TabIndex = 8;
             this.txt_prxC.TextChanged += new System.EventHandler(this.txt_prxC_TextChanged);
             this.txt_prxC.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.nud_qtt_keyPress);
             // 
@@ -396,7 +396,7 @@
             this.txt_prxA.Location = new System.Drawing.Point(347, 57);
             this.txt_prxA.Name = "txt_prxA";
             this.txt_prxA.Size = new System.Drawing.Size(82, 20);
-            this.txt_prxA.TabIndex = 5;
+            this.txt_prxA.TabIndex = 6;
             this.txt_prxA.TextChanged += new System.EventHandler(this.txt_prxA_TextChanged);
             this.txt_prxA.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.nud_qtt_keyPress);
             // 
@@ -429,7 +429,7 @@
             this.button2.Location = new System.Drawing.Point(454, 134);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(91, 32);
-            this.button2.TabIndex = 8;
+            this.button2.TabIndex = 9;
             this.button2.Text = "إضافة";
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);

@@ -22,7 +22,7 @@ namespace Gestion_des_factures
        
         SQLiteDataAdapter dtaLCmd = new SQLiteDataAdapter("select NumLgCmd as 'رقم', nmClt as 'الزبون' , PrixTotal as 'مجموع الأداء' , DateCmd as 'تاريخ' from Ling_commande", Acceuil.cnx);
         DataSet ds = new DataSet();
-        DataTable GetFilterdFacture(string idF, string nmC, string dateF)
+        public DataTable GetFilterdFacture(string idF, string nmC, string dateF)
         {
 
             String flNum = (idF != "") ? " AND NumLgCmd = " + idF : "";
@@ -42,6 +42,24 @@ namespace Gestion_des_factures
             dgv_Facture.ClearSelection();
             return dst.Tables["Dettefiltrd"];
         }
+        public void RefreshFactures()
+        {
+
+         
+            string rqt = "select distinct NumCmd as 'رقم', nmClt as 'الزبون' , PrixTotal as 'مجموع الأداء' , DateCmd as 'تاريخ' from Ling_commande l, Commande c where l.NumLgCmd = c.NumCmd";
+            SQLiteDataAdapter da = new SQLiteDataAdapter(rqt, Acceuil.cnx);
+            DataSet dst = new DataSet();
+            da.Fill(dst, "FctRefresh");
+            lbl_VentAp.Text = dst.Tables["FctRefresh"].Rows.Count.ToString();
+            lbl_prxtt.Text = "0";
+            foreach (DataRow prd in dst.Tables["FctRefresh"].Rows)
+            {
+                lbl_prxtt.Text = (Decimal.Parse(lbl_prxtt.Text) + Decimal.Parse(prd["مجموع الأداء"].ToString())).ToString();
+            }
+            dgv_Facture.ClearSelection();
+            dgv_Facture.DataSource = dst.Tables["FctRefresh"];
+        }
+       
         bool first = true;
         private void AffVente_Load(object sender, EventArgs e)
         {
@@ -131,6 +149,7 @@ namespace Gestion_des_factures
             try {
                 if (!first)
                 {
+                    button1.Enabled = (dgv_Facture.SelectedRows.Count == 1);
                     button2.Enabled = (dgv_Facture.SelectedRows.Count == 1);
                     if (dgv_Facture.SelectedRows.Count == 1)
                     {
@@ -168,7 +187,7 @@ namespace Gestion_des_factures
                 string file = path + "\\" + "No" + dgv_Facture.CurrentRow.Cells[0].Value.ToString() + "_" + dtn + ".pdf";
                 if (File.Exists(file))
                 {
-                    System.Diagnostics.Process.Start(file);
+                    Acceuil.idPDF = System.Diagnostics.Process.Start(file).Id;
                 }
                 else { 
                      MessageBox.Show("الفاتورة المختارة غير موجودة في المجلد", "الملف غير موجود", MessageBoxButtons.OK, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button2, MessageBoxOptions.RightAlign);
@@ -185,6 +204,39 @@ namespace Gestion_des_factures
         private void button6_Click(object sender, EventArgs e)
         {
             Close();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            if (dgv_Facture.SelectedRows.Count == 1)
+            {
+                DateTime dt = DateTime.Parse(dgv_Facture.CurrentRow.Cells[3].Value.ToString());
+                string dtn = dt.Day + "_" + dt.Month + "_" + dt.Year;
+                string fileName = "\\" + "No" + dgv_Facture.CurrentRow.Cells[0].Value.ToString() + "_" + dtn + ".pdf";
+                AjtVente mdVnt = new AjtVente(int.Parse(dgv_Facture.CurrentRow.Cells[0].Value.ToString()), this, fileName);
+                mdVnt.ShowDialog();
+            }
+        }
+
+        private void dgv_Facture_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            try
+            {
+                if (dgv_Facture.SelectedRows.Count == 1)
+                {
+                    DateTime dt = DateTime.Parse(dgv_Facture.CurrentRow.Cells[3].Value.ToString());
+                    string dtn = dt.Day + "_" + dt.Month + "_" + dt.Year;
+                    string fileName = "\\" + "No" + dgv_Facture.CurrentRow.Cells[0].Value.ToString() + "_" + dtn + ".pdf";
+                    AjtVente mdVnt = new AjtVente(int.Parse(dgv_Facture.CurrentRow.Cells[0].Value.ToString()), this, fileName);
+                    mdVnt.ShowDialog();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("هناك خطأ أثناء العملية المرجوا إعادة المحاولة");
+                string Err = "[" + DateTime.Now + "] [Exception] __ [Form :" + this.Name + " ; Button: " + sender.ToString() + " ; Event: " + e.ToString() + "] __ ExceptionMessage : " + ex.Message;
+                Acceuil.WriteLog(Err);
+            }
         }
     }
 }

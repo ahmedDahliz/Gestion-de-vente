@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Data.SQLite;
-
+using System.Transactions;
 namespace Gestion_des_factures
 {
     public partial class MfdConnexion : Form
@@ -42,16 +42,20 @@ namespace Gestion_des_factures
                     {
                         if (ds.Tables["users"].Rows[0]["password"].ToString() == txt_psO.Text)
                         {
-                            ds.Tables["users"].Rows[0].BeginEdit();
-                            ds.Tables["users"].Rows[0]["username"] = txt_nomU.Text;
-                            ds.Tables["users"].Rows[0]["password"] = txt_psCN.Text;
-                            ds.Tables["users"].Rows[0].EndEdit();
-                            SQLiteCommandBuilder cmdb = new SQLiteCommandBuilder(dta);
-                            dta.Update(ds, "users");
-                            MessageBox.Show("نم تغيير المعلومات بنجاح", "تعديل المعلومات ", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button2, MessageBoxOptions.RightAlign);
+                            using (TransactionScope trans = new TransactionScope())
+                            {
+                                ds.Tables["users"].Rows[0].BeginEdit();
+                                ds.Tables["users"].Rows[0]["username"] = txt_nomU.Text;
+                                ds.Tables["users"].Rows[0]["password"] = txt_psCN.Text;
+                                ds.Tables["users"].Rows[0].EndEdit();
+                                Acceuil.cnx.Open();
+                                SQLiteCommandBuilder cmdb = new SQLiteCommandBuilder(dta);
+                                dta.Update(ds, "users");
+                                Acceuil.cnx.Close();
+                                MessageBox.Show("نم تغيير المعلومات بنجاح", "تعديل المعلومات ", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button2, MessageBoxOptions.RightAlign);
+                            }
                         }
                         else MessageBox.Show("كلمة السر الحالية غير صحيحة", "كلمة السر الحالية", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button2, MessageBoxOptions.RightAlign);
-
                     }
                     else MessageBox.Show("كلمتا السر غير متطابقتان", "تأكيد كلمة السر", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button2, MessageBoxOptions.RightAlign);
                 }

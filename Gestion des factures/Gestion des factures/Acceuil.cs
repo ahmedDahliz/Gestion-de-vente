@@ -27,6 +27,7 @@ namespace Gestion_des_factures
         }
         public static SQLiteConnection cnx = new SQLiteConnection("Data Source="+Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)+@"\GestionFactures\db\GestionStckFct.db;Version=3;");
         public static DataSet ds = new DataSet();
+        public static int idPDF;
         public static void WriteLog(string msg) {
             string path = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\GestionFactures\\Log";
             DirectoryInfo di = Directory.CreateDirectory(path);
