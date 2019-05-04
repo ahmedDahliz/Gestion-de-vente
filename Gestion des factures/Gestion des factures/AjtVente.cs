@@ -32,13 +32,14 @@ namespace Gestion_des_factures
         private readonly int idvtPassed;
         private readonly AffVente frm;
         private readonly String fileNameToEdit;
-        public AjtVente(int idV, AffVente f, String fileNameToEdit)
+        public AjtVente(int idV, AffVente f, String fileNameToEdit, Acceuil frmA)
         {
             InitializeComponent();
             idvtPassed = idV;
             frm = f;
             this.fileNameToEdit = fileNameToEdit;
             isModification = true;
+            FrmAcc = frmA;
         }
         SQLiteDataAdapter dtaType = new SQLiteDataAdapter("Select * from Types", Acceuil.cnx);
         SQLiteDataAdapter dtaProduit = new SQLiteDataAdapter("Select * from Produits", Acceuil.cnx);
@@ -581,6 +582,7 @@ namespace Gestion_des_factures
         {
             try
             {
+                bool done = false;
                 using (TransactionScope tran = new TransactionScope())
                 {
                     if (lbl_nomC.Text != "")
@@ -633,9 +635,13 @@ namespace Gestion_des_factures
                         button9.Enabled = false;
                         NewSell();
                         tran.Complete();
-                        if (isModification) Close();
+                        done = true;
                     }
                     else MessageBox.Show("قم بتحديد إسم الزبون أولا", "إسم الزبون غير محدد", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button2, MessageBoxOptions.RightAlign);
+                }
+                if (done)
+                {
+                    if (isModification) Close();
                 }
             }
             catch (Exception ex)
@@ -652,8 +658,8 @@ namespace Gestion_des_factures
                 }
                 else {
                      MessageBox.Show("هناك خطأ أثناء العملية المرجوا إعادة المحاولة");
-                string Err = "[" + DateTime.Now + "] [Exception] __ [Form :" + this.Name + " ; Button: " + sender.ToString() + " ; Event: " + e.ToString() + "] __ ExceptionMessage : " + ex.Message;
-                Acceuil.WriteLog(Err);
+                    string Err = "[" + DateTime.Now + "] [Exception] __ [Form :" + this.Name + " ; Button: " + sender.ToString() + " ; Event: " + e.ToString() + "] __ ExceptionMessage : " + ex.Message;
+                    Acceuil.WriteLog(Err);
                 }
                
             }
@@ -862,17 +868,25 @@ namespace Gestion_des_factures
 
         private void AjtVente_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (!isModification) { 
+            try{
                 FrmAcc.RefreshAccui();
-                frm.RefreshFactures();
-            }
-            if (!saved)
-            {
-                if (ex)
-                {
-                    var rep = MessageBox.Show("لم تقم بحفض المعلومات, سيتم إلغاء الإضافات الجديدة !, هل تريد الإستمرار في الخروج ؟ ", "إلغاء العملية", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1, MessageBoxOptions.RightAlign);
-                    e.Cancel = (rep == DialogResult.No);
+                if (isModification) { 
+                    frm.RefreshFactures();
                 }
+                if (!saved)
+                {
+                    if (ex)
+                    {
+                        var rep = MessageBox.Show("لم تقم بحفض المعلومات, سيتم إلغاء الإضافات الجديدة !, هل تريد الإستمرار في الخروج ؟ ", "إلغاء العملية", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1, MessageBoxOptions.RightAlign);
+                        e.Cancel = (rep == DialogResult.No);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("هناك خطأ أثناء العملية المرجوا إعادة المحاولة");
+                string Err = "[" + DateTime.Now + "] [Exception] __ [Form :" + this.Name + " ; Control: " + sender.ToString() + " ; Event: " + e.ToString() + "] __ ExceptionMessage : " + ex.Message;
+                Acceuil.WriteLog(Err);
             }
         }
 

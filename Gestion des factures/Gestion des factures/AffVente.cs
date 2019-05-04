@@ -15,9 +15,15 @@ namespace Gestion_des_factures
 {
     public partial class AffVente : Form
     {
+        private readonly Acceuil FrmAcc;
         public AffVente()
         {
             InitializeComponent();
+        }
+        public AffVente(Acceuil frm)
+        {
+            InitializeComponent();
+            FrmAcc = frm;
         }
        
         SQLiteDataAdapter dtaLCmd = new SQLiteDataAdapter("select NumLgCmd as 'رقم', nmClt as 'الزبون' , PrixTotal as 'مجموع الأداء' , DateCmd as 'تاريخ' from Ling_commande", Acceuil.cnx);
@@ -44,8 +50,6 @@ namespace Gestion_des_factures
         }
         public void RefreshFactures()
         {
-
-         
             string rqt = "select distinct NumCmd as 'رقم', nmClt as 'الزبون' , PrixTotal as 'مجموع الأداء' , DateCmd as 'تاريخ' from Ling_commande l, Commande c where l.NumLgCmd = c.NumCmd";
             SQLiteDataAdapter da = new SQLiteDataAdapter(rqt, Acceuil.cnx);
             DataSet dst = new DataSet();
@@ -213,7 +217,7 @@ namespace Gestion_des_factures
                 DateTime dt = DateTime.Parse(dgv_Facture.CurrentRow.Cells[3].Value.ToString());
                 string dtn = dt.Day + "_" + dt.Month + "_" + dt.Year;
                 string fileName = "\\" + "No" + dgv_Facture.CurrentRow.Cells[0].Value.ToString() + "_" + dtn + ".pdf";
-                AjtVente mdVnt = new AjtVente(int.Parse(dgv_Facture.CurrentRow.Cells[0].Value.ToString()), this, fileName);
+                AjtVente mdVnt = new AjtVente(int.Parse(dgv_Facture.CurrentRow.Cells[0].Value.ToString()), this, fileName, FrmAcc);
                 mdVnt.ShowDialog();
             }
         }
@@ -227,7 +231,7 @@ namespace Gestion_des_factures
                     DateTime dt = DateTime.Parse(dgv_Facture.CurrentRow.Cells[3].Value.ToString());
                     string dtn = dt.Day + "_" + dt.Month + "_" + dt.Year;
                     string fileName = "\\" + "No" + dgv_Facture.CurrentRow.Cells[0].Value.ToString() + "_" + dtn + ".pdf";
-                    AjtVente mdVnt = new AjtVente(int.Parse(dgv_Facture.CurrentRow.Cells[0].Value.ToString()), this, fileName);
+                    AjtVente mdVnt = new AjtVente(int.Parse(dgv_Facture.CurrentRow.Cells[0].Value.ToString()), this, fileName, FrmAcc);
                     mdVnt.ShowDialog();
                 }
             }

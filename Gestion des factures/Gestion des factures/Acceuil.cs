@@ -59,7 +59,6 @@ namespace Gestion_des_factures
             catch (Exception ex)
             {
                 MessageBox.Show("هناك خطأ أثناء العملية المرجوا إعادة المحاولة");
-                MessageBox.Show("هناك خطأ أثناء العملية المرجوا إعادة المحاولة");
                 string Err = "[" + DateTime.Now + "] [Exception] __ [Form :" + this.Name + " ; Controle: Actualisation de page d'acceuil ; Event: ] __ ExceptionMessage : " + ex.Message;
                 Acceuil.WriteLog(Err);
             }
@@ -131,7 +130,7 @@ namespace Gestion_des_factures
 
         private void ttVentToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            OpenForm(new AffVente());
+            OpenForm(new AffVente(this));
         }
 
         private void AffProdToolStripMenuItem_Click(object sender, EventArgs e)
